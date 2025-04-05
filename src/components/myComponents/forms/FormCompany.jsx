@@ -35,6 +35,7 @@ export function FormCompany(props) {
       setloading(true)
       const cleanData = adaptCompanymodel(dataSet, segment)
       await editCompany(cleanData)
+      console.log(cleanData)
       setloading(false)
       props.handleClick()
     }
@@ -50,10 +51,9 @@ export function FormCompany(props) {
       <Input name="id"  disabled value={stored.company.id}/>
       <Label>Segmento*</Label>
       <Select name="Segmento" onChange={(e)=> setSegment(JSON.parse(e.target.value))}>
-       
         <option value="">Selecciona una opcion</option>
         {
-          segments && segments.map((segment)=> <option value={JSON.stringify(segment)}>{segment.name}</option>)
+          segments && segments.map((segment)=> <option value={JSON.stringify(segment)} key={segment.name}>{segment.name}</option>)
         }
       </Select>
       <Label for="favcolor">Selecciona el color primario:</Label>

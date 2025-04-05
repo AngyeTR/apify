@@ -9,7 +9,7 @@ import { FormWarehouse } from '../../components/myComponents/forms/FormWarehouse
 import { FormProduct } from '../../components/myComponents/forms/FormProduct'
 
 export const WizardPage = ()=> {
-  const [currentStep, setCurrentStep]  = useState(1)
+  const [currentStep, setCurrentStep]  = useState(5)
   const handleClick = ()=> setCurrentStep(currentStep +1)
 
   const steps = [{component: <FormCompany handleClick={handleClick} /> }, 

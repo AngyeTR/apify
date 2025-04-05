@@ -61,3 +61,14 @@ export const getModuleId = (name)=>{
     return dictionary[name]
 }
 
+export const getBase64=(file)=>{ 
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload= function(){
+        const newArr = [];
+        const base64 = reader.result;
+        newArr = base64.split(",");
+        return newArr[1]
+    }
+}
+

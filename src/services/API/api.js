@@ -33,6 +33,18 @@ export const getLogin = async (email, password)=> {
     return res
   }
 
+  export  const  getProfiles  = async()=>{
+    const token = getToken();
+    const endPoint = `${host}/Profiles/Get`
+    const res = await axios.get(endPoint, 
+      { 
+        headers:
+         {  "Authorization": "Bearer " + token,}})
+         .then(response =>  {return response.data})
+         .catch(error =>  error)
+    return res
+  }
+
   export const postUser = async (data)=>{
     const token = getToken();
     const endPoint = `${host}/Users/Add`
@@ -91,5 +103,19 @@ export const getLogin = async (email, password)=> {
       .then(response =>  console.log(response))
       .catch(error => console.log(error));
   }
+
+export const getWarehouseByCompany = async(id)=>{
+  const token = getToken();
+  const endPoint = `${host}/Warehouses/GetByIdCompany/${id}` 
+  const res = await axios.get(endPoint,
+    { 
+      headers:
+       {  "Authorization": "Bearer " + token,}})
+       .then(response =>  {return response.data.data})
+       .catch(error =>  error)
+  return res
+}
+
+
 
  

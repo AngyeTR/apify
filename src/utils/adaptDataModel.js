@@ -3,7 +3,7 @@ const stored = JSON.parse(rawData)
 const date= new Date().toISOString()
 
 
-export const adaptWarehouseModel = (dataSet, country, state, selectedCity) =>{
+export const adaptWarehouseModel = (dataSet, country, state, selectedCity, isActive) =>{
     const city = {
      id : 	selectedCity.id,
      name: selectedCity.name,
@@ -25,10 +25,15 @@ export const adaptWarehouseModel = (dataSet, country, state, selectedCity) =>{
    dataSet["idCompany"]= stored.company.id
    dataSet["idCity"] = city.id
    dataSet["city"] = city  
+   dataSet["isActive"] = isActive  
    return dataSet
 }
 
 export const adaptCompanymodel = (dataSet, segment)=> {
+    dataSet["createdDate"] = date
+    dataSet["modifiedDate"] = date
+    dataSet["modifiedBy"] = stored.user.name
+    dataSet["createdBy"]= stored.user.name
     dataSet["id"] = stored.company.id
     dataSet["name"] = stored.company.name
     dataSet["idSegment"]= parseInt(segment.id)
@@ -40,7 +45,7 @@ export const adaptUserModel = (dataSet) => {
         dataSet["createdDate"] = date
         dataSet["modifiedDate"] = date
         dataSet["createdBy"] = stored.user.name
-        dataSet["createdBy"]= "string"
+        dataSet["createdBy"]= stored.user.name
         dataSet["idCompany"]= stored.company.id
         dataSet["id"] = 15
         return dataSet
@@ -52,19 +57,92 @@ export  const adaptProductModel = (dataSet) => {
     dataSet["createdBy"] = stored.user.name
     dataSet["createdBy"]= "string"
     dataSet["idCompany"]= stored.company.id
-    dataSet["company"]= stored.company
-    // isActive: true,
+    // dataSet["company"]= stored.company
+    // company : {
+        // id	[...]
+        // name*	[...]
+        // idSegment*	[...]
+        // segment	: {
+            // id	[...]
+            // name*	[...}
+        // urlLogo	[...]
+        // principalColor	[...]
+        // secondaryColor	[...]}
     // id: 0,
     // idManufacturer: 0,
-    // manufacturer: {},
-    // isSizes: true,
-    // isColors: true,
+    // manufacturer: {
+            // isActive	[...]
+            // createdDate	[...]
+            // modifiedDate	[...]
+            // createdBy*	[...]
+            // modifiedBy*	[...]
+            // id	[...]
+            // idCompany*	[...]
+            // company	CompanyModel{...}
+            // name*	[...]},
     // guid: "",
     // groupGuid:  "",
-    // images: [],
-    // colors:	[],
-    // prices:	{},
-    // stock: {}
+    // // images: [ {
+    //   "isActive": true,
+    //   "createdDate": "2025-04-04T19:44:44.311Z",
+    //   "modifiedDate": "2025-04-04T19:44:44.311Z",
+    //   "createdBy": "string",
+    //   "modifiedBy": "string",
+    //   "id": 0,
+    //   "idProduct": 0,
+    //   "product": "string",
+    //   "position": 0,
+    //   "url": "string",
+    //   "isPrincipal": true
+    // }],
+    // colors:	[ {
+        // isActive	[...]
+        // createdDate	[...]
+        // modifiedDate	[...]
+        // createdBy*	[...]
+        // modifiedBy*	[...]
+        // id	[...]
+        // idProduct	[...]
+        // product	{...}
+        // nombre*	[...]
+        // colorCode*	[...]}
+    // ],
+    // prices : {
+        // isActive	[...]
+        // createdDate	[...]
+        // modifiedDate	[...]
+        // createdBy*	[...]
+        // modifiedBy*	[...]
+        // id	[...]
+        // idProduct	[...]
+        // product	{...}
+        // name*	[...]
+        // quantity*	[...]
+        // price*	[...]}
+    // stock: [
+//             {
+//                 id	[...]
+// idWarehouse	[...]
+// // warehouse: {
+//     isActive	[...]
+//     createdDate	[...]
+//     modifiedDate	[...]
+//     createdBy*	[...]
+//     modifiedBy*	[...]
+//     id	[...]
+//     name*	[...]
+//     idCompany*	[...]
+//     idCity*	[...]
+//     city	CityDTO{...}
+//     address*	[...]
+//     cellphone*	[...]
+//     contactName*	[...]
+//     latitude	[...]
+//     longitude	[...]}
+// stock	[...
+//             }  
+
+//]
     return dataSet
 
 }
