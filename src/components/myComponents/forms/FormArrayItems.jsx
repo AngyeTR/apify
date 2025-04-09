@@ -1,27 +1,23 @@
 import { useState } from "react"
-import { Input } from '../../input'
 import { Button } from '../../button'
 
-async function  getURL(value){ 
-    const res = await URL.createObjectURL(value)
-    console.log(res)
-    return res
-}
+ function  getURL(value){ 
+    const res = URL.createObjectURL(value)
+    return res}
 
 export const FormArrayItems = ({ref, state, setState, disabled})=>{
     const [variable, setVariable] = useState("")
 
     const ColorInput =()=>{
         const [colorName, setColorName] = useState("")
-        const [colorCode, setColorCode] = useState("#ffffff")
-        console.log(variable)
+        const [colorCode, setColorCode] = useState("")
         return(
             <>
-            <input type="color" value={variable} className='w-15  my-2 mx-2' name={ref}  onChange={(e)=> setColorCode(e.target.value)} />
+            <input type="color" value={colorCode} className='w-15  my-2 mx-2' name={ref}  onChange={(e)=> setColorCode(e.target.value)} />
             <input placeholder="Nombre" 
             className='w-30 my-2 mx-2 h-8 bg-white shadow-sm border border-gray-400  rounded-md'
             name={ref}  onChange={(e)=> setColorName(e.target.value)} /> 
-            <Button onClick={()=> setState([...state, { name: colorName, code: colorCode, id: colorCode }])}>Añadir</Button>
+            <Button disabled={colorCode.length ==0 || colorName.length == 0} onClick={()=> setState([...state, { name: colorName, code: colorCode }])}>Añadir</Button>
             <div className="w-xs md:w-lg lg:w-xl flex  my-2 overflow-hidden ">
             { state?.map((stat)=> <div key={stat.id} style={{background:stat.code}} 
             className='rounded-full h-6 w-6 mx-1 cursor-pointer hover:border hover:border-gray-800' 
@@ -30,7 +26,6 @@ export const FormArrayItems = ({ref, state, setState, disabled})=>{
             </>)
     }
    
-
     const ImageInput =()=>{
         return(
             <>
@@ -43,8 +38,8 @@ export const FormArrayItems = ({ref, state, setState, disabled})=>{
             <div key={stat.id} 
             className='max-w-xs overflow-hidden mx-1 px-1 cursor-pointer rounded-lg hover:border hover:border-gray-800' 
             onClick={()=> setState(state.filter(state => state.value!== stat.value))}>
-                <img className="preview"  className="w-30 h-30"
-                src={URL.createObjectURL(stat.value)} alt=""/>
+                <img   className="w-30 h-30"
+                src={getURL(stat.value)} alt=""/>
             </div>
         )}
             </div>
@@ -65,7 +60,5 @@ export const FormArrayItems = ({ref, state, setState, disabled})=>{
             </>)
     }
 
-    return (
-        <>{ref == "color" ? <ColorInput /> : ref == "imageUrl" ? <ImageInput /> : <SizeInput />}</>
-    )
+    return ( <>{ref == "color" ? <ColorInput /> : ref == "imageUrl" ? <ImageInput /> : <SizeInput />}</>)
 }

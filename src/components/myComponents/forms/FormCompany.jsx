@@ -5,24 +5,39 @@ import { Input } from '../../input'
 import { Button } from '../../button'
 import { Select } from "../../select"
 import { useEffect, useState } from 'react';
-import { editCompany, getSegments } from '../../../services/API/api'
+import { editCompany, getSegments, postImage } from '../../../services/API/api'
 import { MyLoader } from '../MyLoader'
 import { companyModel } from '../../../services/API/models'
 import { adaptCompanymodel } from '../../../utils/adaptDataModel'
+import { getBase64 } from '../../../utils/functions'
 
 export function FormCompany(props) {
     const [loading, setloading] = useState(false)
+    const [error, setError] = useState(false)
     const [segment, setSegment]  = useState("")
     const [imgUrl, setImgUrl] = useState("")
+    const [base64, setBase64] = useState("")
     const [colorPrimary, setColorPrimary] = useState("");
     const [colorSecondary, setColorSecondary] = useState("");
     const [segments, setSegments] = useState(null)
     const rawData = window.localStorage.getItem("data")
     const stored = JSON.parse(rawData)
 
+    const upLoadImage = async (value)=> 
+      {const url = URL.createObjectURL(value)
+        setImgUrl(url)
+        let base64 = null
+        try {
+          base64 = await getBase64(value).then(res => {return res})
+          setBase64( base64)
+        } catch (error) {
+          console.log(error)
+        } 
+      }
+
     useEffect(() => {
       getSegments().then((res) => {
-        setSegments(res.data)})}, []);
+        setSegments(res.data)})}, [imgUrl]);
     
     let dataSet = companyModel
       const handleChange = (e) => {
@@ -33,11 +48,12 @@ export function FormCompany(props) {
 
     const handleSave= async()=>{
       setloading(true)
-      const cleanData = adaptCompanymodel(dataSet, segment)
-      await editCompany(cleanData)
-      console.log(cleanData)
+      setError(null)
+      const cleanData = adaptCompanymodel(dataSet, segment, base64)
+      const res = await editCompany(cleanData)
+      console.log(res)
       setloading(false)
-      props.handleClick()
+      res?.isValid ? props.handleClick() : setError(res?.errorMessages[0])
     }
   return (
     <>
@@ -46,9 +62,7 @@ export function FormCompany(props) {
     </div>
     <Field>
       <Label>Nombre de Tienda</Label>
-      <Input name="full_name"  disabled value={stored.company.name}/>
-      <Label>Id Tienda</Label>
-      <Input name="id"  disabled value={stored.company.id}/>
+      <Input name="name"  value={stored.company.name} onChange={handleChange}/>
       <Label>Segmento*</Label>
       <Select name="Segmento" onChange={(e)=> setSegment(JSON.parse(e.target.value))}>
         <option value="">Selecciona una opcion</option>
@@ -60,6 +74,11 @@ export function FormCompany(props) {
       <input type="color" name="principalColor"  value={colorPrimary} onChange={handleChange} className='my-2 block  w-50'/> 
       <Label for="favcolor">Selecciona el color secundario:</Label>
       <input type="color" value={colorSecondary} className='block  w-50 my-2' name='secondaryColor'  onChange={handleChange} />
+      <Label>Imagen de Tienda</Label>
+      <input accept="image/*" type="file" multiple className='w-50 my-2 mx-2 h-8 bg-white shadow-sm border border-gray-400  rounded-md'
+     onChange={(e)=> upLoadImage(e.target.files[0])} />
+      <img   className={` ${imgUrl ? "h-30 visible" : "invisible"}`} src={imgUrl} alt=""/>
+      <p className={`text-red-600 pt-5 ${error ? "visible" : "invisible"}`}>Ups! Algo salió mal: {error}</p>  
     <Button onClick={handleSave} disabled={segment.length ==0 } className="my-10 mr-2" >
       {loading ? <MyLoader /> : "Guardar"}</Button>     
  </Field>

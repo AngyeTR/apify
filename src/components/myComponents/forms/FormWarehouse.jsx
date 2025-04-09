@@ -14,6 +14,7 @@ import { adaptWarehouseModel } from '../../../utils/adaptDataModel'
 
 export function FormWarehouse(props) {
     const [countries, setCountries] = useState([]);
+    const [error, setError] = useState(null);
     const [loading, setloading] = useState(false)
     const [isActive, setIsActive] = useState(false)
     const [ava, setAva] = useState(false)
@@ -39,10 +40,11 @@ export function FormWarehouse(props) {
 
     const handleSave= async ()=>{
       setloading(true)
-      const cleanData = adaptWarehouseModel(dataSet, country, state, selectedCity, isActive)
-      await postWareHouse(cleanData)
+      setError(null)
+      const cleanData = adaptWarehouseModel(dataSet, selectedCity, isActive)
+      const res = await postWareHouse(cleanData)
       setloading(false)
-      props.handleClick()
+      res?.isValid ? props.handleClick() : setError(res?.errorMessages[0])
     }
 
   return (
@@ -89,6 +91,7 @@ export function FormWarehouse(props) {
       <Input  name="longitude"  onChange={handleChange}/>
       
  </Field>
+ <p className={`text-red-600 pt-5 ${error ? "visible" : "invisible"}`}>Ups! Algo salió mal: {error}</p>  
  <Button onClick={handleSave} className="my-10 mr-2" disabled={!ava}> 
   {loading ? <MyLoader /> : "Guardar"}</Button> 
     </>

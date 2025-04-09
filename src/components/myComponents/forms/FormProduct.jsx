@@ -1,58 +1,55 @@
 import { useEffect } from 'react'
 import { Field, Label } from '../../fieldset'
-import { Divider } from '../../divider'
 import { Textarea } from '../../textarea'
 import { Switch } from '../../switch'
 import { Heading } from '../../heading'
 import { Input } from '../../input'
 import { Button } from '../../button'
-import { Select } from "../../select"
 import { useState } from 'react';
 import { productModel } from '../../../services/API/models'
 import { adaptProductModel } from '../../../utils/adaptDataModel'
 import { MyLoader } from '../MyLoader'
 import { FormArrayItems } from './FormArrayItems'
 import { getWarehouseByCompany } from '../../../services/API/api'
+import { FormSelectAndAdd } from './FormSelectAndAdd'
 
 export function FormProduct(props) {
-  const [loading, setloading] = useState(false)
+    const [loading, setloading] = useState(false)
+    const [error, setError] = useState(null)
     const [status, setStatus] = useState("")
     const [ava, setAva] = useState(false)
-    const [manufacturer, setManufacturer] = useState("");
-    const [isSizes, setIsSizes] = useState("");
-    const [isColors, setIsColors] = useState("");
+    const [manufacturer, setManufacturer] = useState(null);
+    const [category, setCategory] = useState(null);
+    const [isSizes, setIsSizes] = useState(false);
+    const [isColors, setIsColors] = useState(false);
     const [sizes, setSizes] = useState([]);
     const [colors, setColors] = useState([]);
     const [images,setImages] = useState([]);
-    const [stock, setStock] = useState("");
-    const [buttonDisabled, setButtonDisabled] = useState(false)
+    const [stock, setStock] = useState([]);
     const [warehouses, setWarehouses] = useState("");
+    const [buttonDisabled, setButtonDisabled] = useState(false)
     const rawData = window.localStorage.getItem("data")
     const stored = JSON.parse(rawData)
 
-
     let dataSet = productModel
+
     const handleChange = (e) => {
       const { name, value } = e.target;
       dataSet[name] = value
       const dispo =  ((dataSet.name && dataSet.description && dataSet.prices ) ? true : false) 
-      setAva(dispo)
-    };
+      setAva(dispo)};
 
     useEffect(() => {
-      getWarehouseByCompany(stored.company.id).then((res) => {
-        setWarehouses(res)
-      })
-      images.length >= 3 ? setButtonDisabled(true) : setButtonDisabled(false)}, [, isColors, isSizes, colors, sizes, stock, images]);
-
+      getWarehouseByCompany(stored.company.id).then((res) => {setWarehouses(res)})
+      images.length >= 3 ? setButtonDisabled(true) : setButtonDisabled(false)
+    }, [isColors, isSizes, colors, sizes, stock, images, manufacturer, category ]);
 
     const handleSave= async ()=>{
-        // setloading(true)
-        const cleanData = adaptProductModel(dataSet, status)
-        console.log(cleanData)
-        // await postWareHouse(cleanData)
-        // setloading(false)
-        // props.handleClick()
+        setloading(true)
+        setError(null)
+        const res = await adaptProductModel(dataSet, status, manufacturer,  category, isColors, isSizes, colors, sizes, stock, images)
+        setloading(false)
+        res?.isValid ? props.handleClick() : setError(res?.errorMessages[0])
     }
   return (
     <>
@@ -68,39 +65,32 @@ export function FormProduct(props) {
       <Textarea name="description" onChange={handleChange}/>
       <Label className="block my-5" >Producto Activo <Switch checked={status} onChange={setStatus} /> </Label>
       <Label>Fabricante</Label>
-      <Select name="manufacturer" onChange={(e)=> setManufacturer(e.target.value )}>
-      </Select>
-      <Divider/>
+      <FormSelectAndAdd ref="manufacturer"  setState={setManufacturer}/>
+      <Label>Categoría</Label>
+      <FormSelectAndAdd ref="category"  setState={setCategory}/>
       <Label className="block my-5" >Producto disponible en mas de 1 color  <Switch checked={isColors} onChange={setIsColors} > </Switch> </Label>
       {isColors && 
       <><label className='mt-4'> Seleccione los colores </label>
       <FormArrayItems ref={"color"} state={colors} setState={setColors} /></> }
-      <Divider/>
       <Label className="block my-5">Producto disponible en más de una talla  <Switch checked={isSizes} onChange={setIsSizes}  > </Switch></Label>
       {isSizes && 
       <><label className='mt-4'> Ingrese las tallas </label>
       <FormArrayItems ref={"size"} state={sizes} setState={setSizes}/></>}
-      <Divider/>
       <Label >Precio</Label>
       <Input  name="prices" type="number" onChange={handleChange}/>
-      <Divider/>
       <Label className="mt-5 block">Stock</Label>
       {
-        !warehouses ? <p> No se encontraron Bodegas asociadas a la compañía</p> :
-        warehouses.map(warehouse => 
-          <>
-        <Label>Bodega - { warehouse.name} </Label>
-        <Input  name="stock" className="w-20"
-         onChange={(e)=> setStock([...stock?.filter(stock => stock.warehouse.id !== warehouse.id), { warehouse: warehouse, stock: parseInt(e.target.value) }])}/>
-          </>)
+        !warehouses ? <p> No se encontraron Bodegas asociadas a la compañía</p> : warehouses.map(warehouse => 
+        <> <Label >Bodega - { warehouse.name} </Label>
+          <Input  name="stock" className="w-20" key={warehouse.id} 
+          onChange={(e)=> setStock([...stock?.filter(stock => stock.idWarehouse !== warehouse.id), {idWarehouse: warehouse.id, stock: parseInt(e.target.value) }])
+         }/></>)
       }
-      <Divider className="mt-2"/>
       <Label > Imagenes de producto </Label>
       <FormArrayItems ref={"imageUrl"} state={images} setState={setImages} disabled={buttonDisabled}/> 
+      <p className={`text-red-600 pt-5 ${error ? "visible" : "invisible"}`}>Ups! Algo salió mal: {error}</p>  
     <Button onClick={handleSave}  className="my-10 mr-2" 
-    disabled={!ava }>{loading ? <MyLoader /> : "Guardar"}</Button>     
+    disabled={!ava }>{loading ? <MyLoader /> : "Guardar"}</Button>      
  </Field>
-    </>
-    
-  )
-}
+    </>  
+  )}

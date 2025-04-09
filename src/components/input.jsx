@@ -32,7 +32,7 @@ export const Input = forwardRef(function Input(
       className={clsx([
         className,
         // Basic layout
-        'relative block w-xs md:w-md lg:w-xl',
+        'relative block w-xs md:w-md ',
         // Background color + shadow applied to inset pseudo element, so shadow blends with border in light mode
         'before:absolute before:inset-px before:rounded-[calc(var(--radius-lg)-1px)] before:bg-white before:shadow-sm',
         // Background color is moved to control and shadow is removed in dark mode so hide `before` pseudo

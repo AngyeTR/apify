@@ -1,39 +1,29 @@
 export const productModel= 
 {
     isActive: true,
-    createdDate:  "",
-    modifiedDate: "",
     createdBy:	"",
     modifiedBy:	"",
-    id: 0,
-    idCompany: 0,
-    company: {},
-    idManufacturer: 0,
-    manufacturer: {},
+    idCompany: null,
+    idManufacturer: null,
     name: "",
     reference: "",
     description: "",
-    isSizes: true,
-    isColors: true,
-    guid: "",
-    groupGuid:  "",
+    isSizes: false,
+    isColors: false,
+    idManufacturer: null,
     images: [],
     colors:	[],
-    prices:	{},
-    stock: {}
+    prices:	[],
+    stock: []
 }
 
 export const warehouseModel = {
     isActive: true,
-    createdDate:  "",
-    modifiedDate: "",
     createdBy:	"",
     modifiedBy:	"",
-    id: 0,
     name: "",
-    idCompany: 0,
-    idCity: 0,
-    city: {},
+    idCompany: null,
+    idCity: null,
     address: "",
     cellphone: "",
     contactName: "",
@@ -47,11 +37,11 @@ export const userModel = {
     modifiedDate: "",
     createdBy:	"",
     modifiedBy:	"",
-    idCompany: 0,
+    idCompany: null,
     firstName: "",
     lastName: "",
     fullname: "",
-    idProfile: 0,
+    idProfile: null,
     email: "",
     password: "",
     avatar: ""
@@ -63,11 +53,26 @@ export const companyModel = {
     modifiedDate: "",
     createdBy:	"",
     modifiedBy:	"",
-    id: 0,
     name: "",
     idSegment: 0,
-    segment: {},
     urlLogo: "",
     principalColor: "",
     secondaryColor:	""
         }
+
+export const manufacturerModel= {
+    createdBy: "",
+    modifiedBy: "",
+    idCompany: 0,
+    name: ""
+  }
+
+export const  salesModel = {
+    isActive: true,
+    createdDate:  "",
+    idCompany: null,
+    name: "",
+    lastName: "",
+    fullname: "",
+    email: "",
+}

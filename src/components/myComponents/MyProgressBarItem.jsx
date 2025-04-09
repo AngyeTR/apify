@@ -20,7 +20,7 @@ export const MyProgressBarItem = ({status})=>{
         } 
     }
         return (
-        <li className="relative pr-8 sm:pr-20">
+        <li className="relative pr-5 md:pr-10 lg:pr-16">
           <div className="absolute inset-0 flex items-center" aria-hidden="true">
             <div className={`h-0.5 w-full ${status == "completed" ? "bg-indigo-600" : "bg-gray-200"}`}></div>
           </div>

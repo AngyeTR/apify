@@ -1,150 +1,96 @@
+
+import { getBase64 } from "./functions"
+import { postImage, postProduct } from "../services/API/api"
+
 const rawData = window.localStorage.getItem("data")
 const stored = JSON.parse(rawData)
-const date= new Date().toISOString()
+const date = new Date().toISOString();
 
-
-export const adaptWarehouseModel = (dataSet, country, state, selectedCity, isActive) =>{
-    const city = {
-     id : 	selectedCity.id,
-     name: selectedCity.name,
-     code: selectedCity.code,
-     idState:  selectedCity.idState,
-     state: {
-       idState: state.id,
-       name: state.name,
-       code: state.code,
-       country: {
-         id: country.id,
-         name: country.name,
-         code: country.code}}
-    }
-   dataSet["createdDate"] = date
-   dataSet["modifiedDate"] = date
-   dataSet["createdBy"] = stored.user.name
-   dataSet["createdBy"]= "string"
+export const adaptWarehouseModel = (dataSet,  selectedCity, isActive) =>{
+   dataSet["createdBy"] = stored.user.email
+   dataSet["modifiedBy"]= stored.user.email
    dataSet["idCompany"]= stored.company.id
-   dataSet["idCity"] = city.id
-   dataSet["city"] = city  
+   dataSet["idCity"] = selectedCity.id
    dataSet["isActive"] = isActive  
    return dataSet
 }
 
-export const adaptCompanymodel = (dataSet, segment)=> {
-    dataSet["createdDate"] = date
-    dataSet["modifiedDate"] = date
-    dataSet["modifiedBy"] = stored.user.name
-    dataSet["createdBy"]= stored.user.name
+export const adaptCompanymodel = (dataSet, segment, base64)=> {
+  const getUrl = async (value)=> 
+    {try {
+      const data ={name: `companyImage${Date.now()}`, "base64": value, "imageType": 1}
+        const url  = await postImage(data).then(res => {return res})
+        dataSet["urlLogo"] = url
+      } catch (error) {console.log(error)}}
+    getUrl(base64)
+    dataSet["modifiedBy"] = stored.user.email
+    dataSet["createdBy"]= stored.user.email
     dataSet["id"] = stored.company.id
-    dataSet["name"] = stored.company.name
+    !dataSet.name && (dataSet["name"] = stored.company.name)
     dataSet["idSegment"]= parseInt(segment.id)
-    dataSet["segment"] = segment
     return dataSet
 }
 
-export const adaptUserModel = (dataSet) => {
+export const adaptUserModel = (dataSet, base64) => {
+  const getUrl = async (value)=> 
+    {try {
+      const data ={name: `companyImage${Date.now()}`, "base64": value, "imageType": 1}
+        const url  = await postImage(data).then(res => {return res})
+        dataSet["avatar"] = url
+      } catch (error) {console.log(error)}}
+    getUrl(base64)
+        dataSet["createdBy"] = stored.user.email
+        dataSet["modifiedBy"]= stored.user.email
         dataSet["createdDate"] = date
-        dataSet["modifiedDate"] = date
-        dataSet["createdBy"] = stored.user.name
-        dataSet["createdBy"]= stored.user.name
+        dataSet["modifiedDate"]= date
         dataSet["idCompany"]= stored.company.id
-        dataSet["id"] = 15
         return dataSet
     }
 
-export  const adaptProductModel = (dataSet) => {
-    dataSet["createdDate"] = date
-    dataSet["modifiedDate"] = date
-    dataSet["createdBy"] = stored.user.name
-    dataSet["createdBy"]= "string"
-    dataSet["idCompany"]= stored.company.id
-    // dataSet["company"]= stored.company
-    // company : {
-        // id	[...]
-        // name*	[...]
-        // idSegment*	[...]
-        // segment	: {
-            // id	[...]
-            // name*	[...}
-        // urlLogo	[...]
-        // principalColor	[...]
-        // secondaryColor	[...]}
-    // id: 0,
-    // idManufacturer: 0,
-    // manufacturer: {
-            // isActive	[...]
-            // createdDate	[...]
-            // modifiedDate	[...]
-            // createdBy*	[...]
-            // modifiedBy*	[...]
-            // id	[...]
-            // idCompany*	[...]
-            // company	CompanyModel{...}
-            // name*	[...]},
-    // guid: "",
-    // groupGuid:  "",
-    // // images: [ {
-    //   "isActive": true,
-    //   "createdDate": "2025-04-04T19:44:44.311Z",
-    //   "modifiedDate": "2025-04-04T19:44:44.311Z",
-    //   "createdBy": "string",
-    //   "modifiedBy": "string",
-    //   "id": 0,
-    //   "idProduct": 0,
-    //   "product": "string",
-    //   "position": 0,
-    //   "url": "string",
-    //   "isPrincipal": true
-    // }],
-    // colors:	[ {
-        // isActive	[...]
-        // createdDate	[...]
-        // modifiedDate	[...]
-        // createdBy*	[...]
-        // modifiedBy*	[...]
-        // id	[...]
-        // idProduct	[...]
-        // product	{...}
-        // nombre*	[...]
-        // colorCode*	[...]}
-    // ],
-    // prices : {
-        // isActive	[...]
-        // createdDate	[...]
-        // modifiedDate	[...]
-        // createdBy*	[...]
-        // modifiedBy*	[...]
-        // id	[...]
-        // idProduct	[...]
-        // product	{...}
-        // name*	[...]
-        // quantity*	[...]
-        // price*	[...]}
-    // stock: [
-//             {
-//                 id	[...]
-// idWarehouse	[...]
-// // warehouse: {
-//     isActive	[...]
-//     createdDate	[...]
-//     modifiedDate	[...]
-//     createdBy*	[...]
-//     modifiedBy*	[...]
-//     id	[...]
-//     name*	[...]
-//     idCompany*	[...]
-//     idCity*	[...]
-//     city	CityDTO{...}
-//     address*	[...]
-//     cellphone*	[...]
-//     contactName*	[...]
-//     latitude	[...]
-//     longitude	[...]}
-// stock	[...
-//             }  
+export  const adaptProductModel =  (dataSet, status,  manufacturer,  category, isColors, isSizes, colorsState, sizes, stock, images) => {
+    dataSet["images"] = []
+    const modifyColor = (color)=> {
+        color["createdBy"] = stored.user.email
+        color["modifiedBy"]= stored.user.email
+        color["nombre"]= color.name
+        color["colorCode"]= color.code
+        return color} 
 
-//]
-    return dataSet
-
+    const adaptedImages =   async (images) => {
+        for (const image of images) {
+            try {
+                const base64 = await getBase64(image.value)
+                const url = await postImage({name: `productImage${Date.now()}`, "base64": base64, "imageType": 2})
+                dataSet["images"].push({url: url,  modifiedBy: stored.user.email, createdBy: stored.user.email })
+              } catch (error) {
+                console.error("Error al convertir:", error);
+              }              
+      }; 
+      dataSet["createdBy"] = stored.user.email
+      dataSet["modifiedBy"]= stored.user.email
+      dataSet["idCompany"]= parseInt(stored.company.id)
+      dataSet["idCategory"] = category ?  parseInt(category) : null
+      dataSet["idManufacturer"] = manufacturer ? parseInt(manufacturer) : null
+      dataSet["isColors"] = isColors
+      dataSet["isSizes"] = isSizes
+      dataSet["isActive"] = status ? status : false
+      dataSet["colors"] = colorsState.map((color) => modifyColor(color))
+      dataSet["sizes"] = sizes
+      dataSet["stock"] = stock
+      const res = await postProduct(dataSet)
+    }
+      const img = ((async ()=>  await adaptedImages(images))())
+    return res
 }
 
+export const adaptSalesmanModel = (dataSet, isActive) => {
+  dataSet["createdBy"] = stored.user.email
+  dataSet["modifiedBy"]= stored.user.email
+  dataSet["createdDate"] = date
+  dataSet["modifiedDate"]= date
+  dataSet["idCompany"]= stored.company.id
+  dataSet["fullname"] = dataSet.name + " "+ dataSet.lastName
+  dataSet["isActive"] = isActive
+  return dataSet
+}
     
