@@ -1,34 +1,54 @@
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../table"
-import { HiOutlinePencil, HiOutlineTrash  } from "react-icons/hi";
+import { useNavigate, useParams } from "react-router-dom";
+import DataTable from 'datatables.net-react';
+import DT from 'datatables.net-dt';
+DataTable.use(DT);
+import { TableHead, TableHeader, TableRow } from "../table"
+import { Navbar, NavbarSection,} from '../navbar'
+import { Button } from "../button"
+import {  } from "react-icons/hi";
+import { HiOutlinePencil, HiOutlineTrash, HiOutlinePlusCircle  } from "react-icons/hi";
+import { getDataToShow } from "../../utils/functions";
+import { useRef } from "react";
 
+const Table  = ({data, headers}) => {
+  console.log("cinco")
+  const params = useParams()
+  const nav = useNavigate()
+  const tableRef = useRef(null); 
 
-export function MyTable({ users }) {
   return (
-    <Table className="[--gutter:--spacing(6)] sm:[--gutter:--spacing(8)]">
+    <DataTable data={data} className="display "  key={params.option} ref={tableRef} 
+    slots={{0: (data) => (
+          <HiOutlinePencil className="mx-2 cursor-pointer hover:text-blue-500 text-lg my-1 justify-self-center" 
+          onClick={()=> nav(`/${params.module}/edit/${params.option}/${data}`)}/> )}}>
       <TableHead>
-        <TableRow>
-          <TableHeader>Name</TableHeader>
-          <TableHeader>Role</TableHeader>
-          <TableHeader>Email</TableHeader>
-          <TableHeader>Access</TableHeader>
-          <TableHeader>Actions</TableHeader>
+        <TableRow className="justify-center ">
+          {headers.map((option)=><TableHeader key={option}>{option}</TableHeader>)}
         </TableRow>
       </TableHead>
-      <TableBody>
-        {users.map((user) => (
-          <TableRow key={user.email}>
-            <TableCell className="font-medium">{user.name}</TableCell>
-            <TableCell>{user.role}</TableCell>
-            <TableCell>{user.email}</TableCell>
-            <TableCell className="text-zinc-500">{user.access}</TableCell>
-            <TableCell className="flex">
-                <HiOutlinePencil className="mx-2 cursor-pointer hover:text-blue-500 text-lg my-1"/>
-                <HiOutlineTrash className="mx-2 cursor-pointer hover:text-red-500 text-lg my-1"/>
+      </DataTable> )} 
 
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-  )
+export function MyTable({ data }) {
+  const params = useParams()
+  const nav = useNavigate()
+  const [newData, headers] = getDataToShow(data, params.option)
+  const render = ()=> {
+    if(newData.length > 0 && headers.length > 0 ){
+      console.log("cuatro")
+      return (
+        <Table  data={newData} headers={headers} />
+      )}}
+
+  return (
+    <>
+    <Navbar className="grid grid-flow-col justify-items-end" >
+      <NavbarSection>
+          <Button className="visible sm:invisible sm:w-0"><HiOutlinePlusCircle className="w-6 h-6"/></Button>
+          <Button className="invisible w-0 sm:visible sm:w-auto" onClick={()=> nav(`/${params.module}/add/${params.option}`)}>Añadir registro</Button>
+      </NavbarSection>
+    </Navbar>
+    { 
+        !data.length && !headers.length ? <p>Cargando tabla...</p> : render()
+        }
+    </>)
 }

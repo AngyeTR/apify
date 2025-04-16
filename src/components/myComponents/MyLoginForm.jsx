@@ -2,7 +2,7 @@ import {  useState } from "react";
 import { useLocalStorage } from "../../hooks/useLocalStorage.js";
 import { getLogin } from "../../services/API/api";
 import logo from "../../assets/logo.avif"
-import { adjustLoginData } from "../../utils/functions.jsx";
+import { adjustLoginData, validateEmail } from "../../utils/functions.jsx";
 import { useNavigate } from "react-router-dom";
 import { MyLoader } from "./MyLoader";
 import { setToken } from "../../services/cookies.js";
@@ -20,19 +20,23 @@ export function LoginForm() {
   const [loading, setLoading] = useState(false)
   const [data, setData] = useLocalStorage("data", null)
   const [mods, setMods] = useLocalStorage("modules", null)
+  const [modules, setModules] = useLocalStorage("alteredModules", null)
   const nav = useNavigate()
   const handleClick = async (e)=>{
     e.preventDefault()
     setLoading(true)
     setError(null)
     const response = await getLogin(user, password)
-    console.log(response)
     if(response?.response?.isValid){
     await setToken(response.token.token.toString(), response.token.expiredDate.toString())
     await setData(adjustLoginData(response))
+    let adaptedModules = {}
+    response.options.map(module=>{adaptedModules[module.module.name] = {options:[], id: module.module.id, name:module.module.name}})
+    response.options.map(module => adaptedModules[module.module.name].options.push(module.name))
     await setMods(response.options)
+    await setModules(adaptedModules)
     setError(null)
-    nav(response.implementation.success ? "/" : "/wizard")
+    nav(!response.implementation.success && response.user.idProfile ==1  ? "/wizard" : "/" )
     nav(0)
     }   else setError(response.response.message);
     setLoading(false)    

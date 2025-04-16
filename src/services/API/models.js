@@ -1,8 +1,8 @@
 export const productModel= 
 {
     isActive: true,
-    createdBy:	"",
-    modifiedBy:	"",
+    createdBy:	null,
+    modifiedBy:	null,
     idCompany: null,
     idManufacturer: null,
     name: "",
@@ -13,14 +13,15 @@ export const productModel=
     idManufacturer: null,
     images: [],
     colors:	[],
+    sizes:	[],
     prices:	[],
     stock: []
 }
 
 export const warehouseModel = {
     isActive: true,
-    createdBy:	"",
-    modifiedBy:	"",
+    createdBy:	null,
+    modifiedBy:	null,
     name: "",
     idCompany: null,
     idCity: null,
@@ -35,8 +36,8 @@ export const userModel = {
     isActive: true,
     createdDate:  "",
     modifiedDate: "",
-    createdBy:	"",
-    modifiedBy:	"",
+    createdBy:	null,
+    modifiedBy:	null,
     idCompany: null,
     firstName: "",
     lastName: "",
@@ -50,8 +51,8 @@ export const userModel = {
 export const companyModel = {
     isActive: true,
     createdDate:  "",
-    modifiedDate: "",
-    createdBy:	"",
+    createdBy:	null,
+    modifiedBy:	null,
     modifiedBy:	"",
     name: "",
     idSegment: 0,
@@ -61,8 +62,8 @@ export const companyModel = {
         }
 
 export const manufacturerModel= {
-    createdBy: "",
-    modifiedBy: "",
+    createdBy:	null,
+    modifiedBy:	null,
     idCompany: 0,
     name: ""
   }
@@ -75,4 +76,29 @@ export const  salesModel = {
     lastName: "",
     fullname: "",
     email: "",
+}
+
+export const implementation = {
+    isActive: true,
+    createdBy:	null,
+    modifiedBy:	null,
+    idCompany: 0,
+     implementationStep: 0,
+     initial: "",
+     end: "",
+     success: true
+}
+
+export const officeModel = {
+    isActive: true,
+    createdBy:	null,
+    modifiedBy:	null,
+    name: "",
+    idCompany: null,
+    idCity: null,
+    address: "",
+    cellphone: "",
+    contactName: "",
+    latitude: "",
+    longitude: "",
 }

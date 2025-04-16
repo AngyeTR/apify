@@ -1,6 +1,4 @@
 import {  HiCalculator, HiCog, HiBell, HiChartPie, HiGlobeAlt, HiLibrary } from "react-icons/hi";
-import { deleteToken } from "../services/cookies";
-import { useLocalStorage } from "../hooks/useLocalStorage";
 
 export const adjustLoginData = (data)=>{
     const newData = {
@@ -9,13 +7,16 @@ export const adjustLoginData = (data)=>{
             name: data.company?.name,
             urlLogo: data.company?.urlLogo,
             principalColor: data.company?.principalColor,
-            secondaryColor: data.company?.secondaryColor },
+            secondaryColor: data.company?.secondaryColor,
+            idSegment: data.company?.idSegment },
         user: {
             firstName: data.user?.firstName,
             lastName: data.user?.lastName,
             fullname: data.user?.fullname,
             email: data.user?.email,
-            isActive: data.user?.isActive},
+            isActive: data.user?.isActive,
+            id: data.user?.id,
+            avatar: data.user?.avatar},
         subscription: {
             id: data.suscription?.id,
             type: data.suscription?.suscriptionType.name,
@@ -39,24 +40,28 @@ export const getModuleIcon = (id)=>{
         // logistics: <HiGlobeAlt  className="size-6 shrink-0"/>,
         // store: <HiLibrary className="size-6 shrink-0"/>,
       }
-      return modules[id]
+      return modules[id] 
 }
 
-export const getOptionInfo= (name)=>{
+export const getTranslate= (name)=>{
     const dictionary = {
         general: "general",
-        sedes: "branches",
+        sedes: "offices",
         usuarios: "users",
         campañas: "campaigns",
-        diseñador: "designers"
+        diseñador: "designers",
+        marketing: "marketing",
+        configuración: "settings",
+        vendedores: "salesman", 
+        "not-found": "not-found"
     }
-    return dictionary[name]
+    return dictionary[name] ?  dictionary[name] : "not-found"
 }
 
 export const getModuleId = (name)=>{
     const dictionary = {
-        settings: 1,
-        marketing:2
+        settings: {id: 1, name:"Configuración"} ,
+        marketing:{id: 2, name: "Marketing"}
     }
     return dictionary[name]
 }
@@ -75,3 +80,42 @@ export const getBase64= (file)=>{
       }); 
 }
 
+export const getTableHeaders = (name)=>{
+    const dictionary = {
+    products: [["Actions", "Activo", "Nombre", "Referencia", "Descripción"],["id" ,"isActive", "name", "reference", "description" ]],
+    warehouses: [["Actions", "Activo","Nombre", "Dirección", "Teléfono", "Encargad@"], ["id" , "isActive","name", "address", "cellphone", "contactName"]],
+    users: [["Actions", "Activo","Nombre", "Email", "Rol"], ["id" , "isActive","fullname", "email", "idProfile"]], 
+    salesman: [["Actions","Activo","Nombre", "Email",], ["id" , "isActive","fullname", "email"]],
+    offices: [["Actions", "Activo","Nombre", "Dirección", "Teléfono", "Encargad@"], ["id" ,"isActive","name", "address", "cellphone", "contactName"]]}
+    return dictionary[name]
+}
+
+export const getDataToShow = (data, name) => {
+    const newData = []
+    const keys = getTableHeaders(name)
+    data.map((item => newData.push(keys[1].map(key=> key == "isActive" ? (item["isActive"] ? "Activo" : "Inactivo") : item[key]))))
+    return [newData, keys[0]]
+}
+
+export const getIsTable = (name)=>{
+    const dictionary = ["products", "warehouses", "users", "salesman", "offices"]
+    return dictionary.includes(name)
+}
+export const getUpdatedLocalData = (data, newData)=>{
+    data.company.idSegment = newData.idSegment
+    data.company.name = newData.name
+    data.company.principalColor = newData.principalColor
+    data.company.secondaryColor = newData.secondaryColor
+    data.company.urlLogo = newData.urlLogo
+    return data
+}
+
+export const getProfileName =(id) => {
+    const dictionary = {1: "Admin", 2: "Ventas", 3: "Logística"}
+    return dictionary[id]
+}
+
+export const validateEmail = (value) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(value) ? null : "El email no tiene un formato válido"
+  };

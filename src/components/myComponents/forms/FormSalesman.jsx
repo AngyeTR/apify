@@ -6,34 +6,44 @@ import { Input } from '../../input'
 import { Button } from '../../button'
 import { useState } from 'react';
 import { MyLoader } from '../MyLoader'
-import { userModel } from '../../../services/API/models'
+import { salesModel, userModel } from '../../../services/API/models'
 import { adaptSalesmanModel,  } from '../../../utils/adaptDataModel'
-import { postSalesman } from '../../../services/API/api'
+import { edit, getByID, post } from '../../../services/API/api'
+import { validateEmail } from '../../../utils/functions'
 
 export function FormSalesman(props) {
+  useEffect(() => {
+    props.origin == "editor" ?  getByID("Salesman", props.id).then(res => setModel(res)) : setModel(salesModel)
+    props.origin == "editor" &&  getByID("Salesman",props.id).then(res => setIsActive(res.isActive))
+   }, [ ]);
+  const [model, setModel] = useState(null)
   const [loading, setloading] = useState(false)
-  const [ava, setAva] = useState(false)
+  const [ava, setAva] = useState(props.origin == "editor" ? true : false)
   const [error, setError] = useState(null)
   const [isActive, setIsActive] = useState(false)
-  
-//   useEffect(() => {
-//       }, []);
-        
-   let dataSet = userModel
+  let dataSet = model
+  console.log(dataSet)
+       
     const handleChange = (e) => {
       const { name, value } = e.target;
       dataSet[name] = value
-      const dispo =  ((dataSet.name && dataSet.lastName && dataSet.email ) ? true : false) 
+      const dispo =  props.origin == "editor" ? true :((dataSet.name && dataSet.lastName && dataSet.email ) ? true : false) 
       setAva(dispo)
     };
     
   const handleSave= async()=>{
         setloading(true)
         setError(null)
-        const cleanData = adaptSalesmanModel(dataSet, isActive)
-        const res = await postSalesman(cleanData)
-        setloading(false)
-        res?.isValid ? props.handleClick() : setError(res?.errorMessages[0])
+        const verifyEmail = validateEmail(dataSet.email)
+        if(verifyEmail) {
+          setError(verifyEmail) 
+          setloading(false)
+        }else {
+          const cleanData = adaptSalesmanModel(dataSet, props.origin,  isActive)
+          const res = props.origin == "editor" ? await edit("Salesman",cleanData) :  await post("Salesman", cleanData)
+          setloading(false)
+          res?.isValid ? props.handleClick() : setError(res?.errorMessages[0])
+        }
       }
 
   return (
@@ -43,12 +53,12 @@ export function FormSalesman(props) {
     </div>
     <Field>
       <Label>Nombre de vendedor*</Label>
-      <Input name="name" onChange={handleChange} id="name"/>
+      <Input name="name" placeholder={dataSet?.name && dataSet.name} onChange={handleChange} id="name"/>
       <Label>Apellido de Vendedor*</Label>
-      <Input name="lastName"  onChange={handleChange} id="last name"/>
+      <Input name="lastName" placeholder={dataSet?.lastName && dataSet.lastName}   onChange={handleChange} id="last name"/>
       <Label className="block my-5" >Vendedor Activo <Switch checked={isActive} onChange={setIsActive} /> </Label>
       <Label>Email*</Label>
-      <Input type="email" name="email"  onChange={handleChange} id="email"/>
+      <Input type="email" name="email"  onChange={handleChange} id="email" placeholder={dataSet?.email && dataSet.email}/>
       <p className={`text-red-600 pt-5 ${error ? "visible" : "invisible"}`}>Ups! Algo salió mal: {error}</p>  
     <Button onClick={handleSave} className="my-10 mr-2" 
     disabled={!ava}>

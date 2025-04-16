@@ -1,20 +1,24 @@
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
+import { HiHome } from "react-icons/hi";
 import { Navbar, NavbarItem, NavbarSection } from '../navbar'
-import { getOptionInfo, getModuleId } from '../../utils/functions'
+import { getModuleId, getTranslate } from '../../utils/functions'
 import { useLocalStorage } from '../../hooks/useLocalStorage'
 
 export function MyNavBar() {
-  const modules = useLocalStorage("modules")?.[0]
+  const mods = useLocalStorage("alteredModules")?.[0]
   const params = useParams()
-  const options = modules.filter((option) => option.module.id == getModuleId(params.module))
-
+  const opts = mods[getModuleId(params.module)?.name]?.options
+  const nav = useNavigate()
+  const handleClick = (option)=>{
+    window.location.href = `/${params.module}/${getTranslate(option.toLowerCase())}`; 
+  }
     return (
       <Navbar>
         <NavbarSection>
-          <NavbarItem href="/" current>
-            Home
+          <NavbarItem href="/" >
+          <HiHome className='w-6 h-6'/>
           </NavbarItem>
-         {options.map((option)=> <NavbarItem href={`/${params.module}/${getOptionInfo(option.name.toLowerCase())}`} >{option.name}</NavbarItem>)}
+         {opts?.map((option)=> <NavbarItem key={option} onClick={()=>handleClick(option)} current={params.option == getTranslate(option.toLowerCase())}>{option}</NavbarItem>)}
         </NavbarSection>
       </Navbar>
     )

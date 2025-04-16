@@ -2,18 +2,18 @@ import { useState } from "react"
 import { Button } from '../../button'
 import { useEffect } from "react"
 import { Select } from "../../select"
-import { getCategoryByCompany, getManufacturerByCompany, postCategory, postManufacturer } from "../../../services/API/api"
+import { getByCompanyId, post } from "../../../services/API/api"
+import { useLocalStorage } from "../../../hooks/useLocalStorage"
 
 export const FormSelectAndAdd = ({ref,  state, setState})=>{
-    const rawData = window.localStorage.getItem("data")
-    const stored = JSON.parse(rawData)
+    const [stored] = useLocalStorage("data")
     const [variable, setVariable] = useState("")
     const [internalState, setInternalState] = useState()
     let newOption = ""
 
      useEffect(() => {
-        ref == "manufacturer" ? getManufacturerByCompany(stored.company.id).then((res) => {setInternalState(res)}):
-          getCategoryByCompany(stored.company.id).then((res) => {setInternalState(res)})
+        ref == "manufacturer" ? getByCompanyId("Manufacturer", stored.company.id).then((res) => {setInternalState(res)}):
+          getByCompanyId("Categories", stored.company.id).then((res) => {setInternalState(res)})
         }, [ ]);
 
     const handleChange=(value)=>{
@@ -23,18 +23,18 @@ export const FormSelectAndAdd = ({ref,  state, setState})=>{
         }else setVariable("add")
     }
     const addNewOption = async ()=>{
-    const rawData = window.localStorage.getItem("data")
-    const data = JSON.parse(rawData)
+        // const [data] = useLocalStorage("data")
+        console.log( stored)
     const body = {
         isActive: true,
-        createdBy: "data.user.email",
-        modifiedBy: "data.user.email",
-        idCompany: parseInt(data.company.id), 
+        createdBy: stored.user.email,
+        modifiedBy: stored.user.email,
+        idCompany: parseInt(stored.company.id), 
         name: newOption}
     let response = []
             try {
-                ref == "manufacturer" ? await postManufacturer(body) : await postCategory(body)
-                response =  ref == "manufacturer" ? await getManufacturerByCompany(data.company.id) : await getCategoryByCompany(data.company.id)
+                ref == "manufacturer" ? await post("Manufacturer", body) : await post("Categories", body)
+                response =  ref == "manufacturer" ? await getByCompanyId("Manufacturer", stored.company.id) : await getByCompanyId("Categories", stored.company.id)
                 setState(null)
                 setVariable("")
             } catch (error) {
@@ -45,10 +45,10 @@ export const FormSelectAndAdd = ({ref,  state, setState})=>{
     }
     const render = ()=> {
         if(variable == "add"){ return (
-        <>
+        <div className="block">
         <input  className='w-30 my-2 mx-2 h-8 bg-white shadow-sm border border-gray-400  rounded-md' onChange={e => newOption = e.target.value} />
         <Button onClick={()=> addNewOption()}>Añadir</Button>
-        </>)
+        </div>)
         }else {return (
             <Select name="idManufacturer" onChange={e=> handleChange(e.target.value)} >
                 <option value={null}>Selecciona una opcion</option>

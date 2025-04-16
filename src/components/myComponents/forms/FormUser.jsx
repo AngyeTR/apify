@@ -5,25 +5,25 @@ import { Input } from '../../input'
 import { Button } from '../../button'
 import { Select } from "../../select"
 import { useState } from 'react';
-import { getProfiles, postUser } from '../../../services/API/api'
+import { edit, getByID, getProfiles, post } from '../../../services/API/api'
 import { MyLoader } from '../MyLoader'
 import { userModel } from '../../../services/API/models'
 import { adaptUserModel } from '../../../utils/adaptDataModel'
-import { getBase64 } from '../../../utils/functions'
+import { getBase64, validateEmail } from '../../../utils/functions'
 
 export function FormUser(props) {
+  useEffect(() => {props.origin == "editor" ?  getByID("Users",props.id).then(res => setModel(res)) : setModel(userModel)}, []);
   const [loading, setloading] = useState(false)
-  const [ava, setAva] = useState(false)
+  const [ model, setModel] = useState(null)
+  const [ava, setAva] = useState(props.origin == "editor" ? true : false)
+  const [isSeller, setIsSeller] = useState(false)
   const [imgUrl, setImgUrl] = useState("")
   const [base64, setBase64] = useState("")
   const [error, setError] = useState(null)
   const [profiles, setProfiles] = useState([])
-  
-  useEffect(() => {
-      getProfiles().then((res) => {
-        setProfiles(res.data)
-        console.log(res.data)})
-      }, [imgUrl]);
+  let dataSet = model
+ 
+  useEffect(() => {getProfiles().then((res) => {setProfiles(res.data)})}, [ , imgUrl]);
 
   const upLoadImage = async (value)=> 
       {const url = URL.createObjectURL(value)
@@ -32,28 +32,29 @@ export function FormUser(props) {
         try {
           base64 = await getBase64(value).then(res => {return res})
           setBase64( base64)
-        } catch (error) {
-          console.log(error)
-        } 
+        } catch (error) {console.log(error)} 
       }
         
-   let dataSet = userModel
     const handleChange = (e) => {
       const { name, value } = e.target;
       dataSet[name] = value
-      const dispo =  ((dataSet.idProfile && dataSet.firstName && dataSet.lastName && dataSet.email && dataSet.password) ? true : false) 
+      const dispo =  props.origin == "editor" ? true :((dataSet.idProfile && dataSet.firstName && dataSet.lastName && dataSet.email && dataSet.password) ? true : false) 
       setAva(dispo)
     };
     
   const handleSave= async()=>{
         setloading(true)
         setError(null)
-        const cleanData = adaptUserModel(dataSet, base64)
-        const res = await postUser(cleanData)
-        console.log(res)
+         const verifyEmail = validateEmail(dataSet.email)
+        if(verifyEmail) {setError(verifyEmail) 
+          setloading(false)
+        }else {
+        const cleanData = adaptUserModel(dataSet, props.origin, base64)
+        const sellerRes = {}
+        isSeller ? (sellerRes = props.origin == "editor" ? await edit("Users", cleanData) :  await post("Users", cleanData)) : sellerRes.isValid = true
+        const res = props.origin == "editor" ? await edit("Users", cleanData) :  await post("Users", cleanData)
         setloading(false)
-        res?.isValid ? props.handleClick() : setError(res?.errorMessages[0])
-      }
+        (res?.isValid && sellerRes.isValid )? props.handleClick() : setError(res?.errorMessages[0] ? res?.errorMessages[0] : sellerRes?.errorMessages[0] )}}
 
   return (
     <>
@@ -62,16 +63,17 @@ export function FormUser(props) {
     </div>
     <Field>
       <Label>Nombre de Usuario*</Label>
-      <Input name="firstName" onChange={handleChange} id="name"/>
+      <Input name="firstName" placeholder={dataSet?.firstName && dataSet.firstName} onChange={handleChange} id="name"/>
       <Label>Apellido de Usuario*</Label>
-      <Input name="lastName"  onChange={handleChange} id="last name"/>
+      <Input name="lastName" placeholder={dataSet?.lastName && dataSet.lastName} onChange={handleChange} id="last name"/>
       <Label>Perfil*</Label>
       <Select name="idProfile" onChange={handleChange}>
         <option value="">Selecciona una opcion</option>
         { profiles?.map((profile)=> <option value={profile.id}>{profile.name}</option>)}
       </Select>
+      <Label className="block my-4">Este usuario también es vendedor<Switch checked={isSeller} onChange={setIsSeller} /> </Label>
       <Label>Email*</Label>
-      <Input type="email" name="email"  onChange={handleChange} id="email"/>
+      <Input type="email" name="email"  onChange={handleChange} id="email" placeholder={dataSet?.email && dataSet.email}/>
       <Label>Contraseña*</Label>
       <Input type="password" name="password"  onChange={handleChange} id="password"/>
       <Label>Avatar</Label>

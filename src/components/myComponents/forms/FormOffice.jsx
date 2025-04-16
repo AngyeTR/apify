@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Switch } from '../../switch'
 import { Field, Label } from '../../fieldset'
@@ -6,21 +5,18 @@ import { Heading } from '../../heading'
 import { Input } from '../../input'
 import { Button } from '../../button'
 import { Select } from "../../select"
-import { getCities, getCountries, getStates, getByID, edit, post } from '../../../services/API/api'
+import {  getCities, getCountries, getStates,  getByID, post, edit } from '../../../services/API/api'
 import { MyLoader } from '../MyLoader'
-import { warehouseModel } from '../../../services/API/models'
+import { officeModel } from '../../../services/API/models'
 import { adaptWarehouseModel } from '../../../utils/adaptDataModel'
 
-export function FormWarehouse(props) {
-  useEffect(() => { props.origin == "editor" ?  getByID("Warehouses", props.id).then(res => setModel(res)) : setModel(warehouseModel)
-    console.log(model)
-  }, []);
+export function FormOffice(props) {
+  useEffect(() => { props.origin == "editor" ?  getByID("Offices", props.id).then(res => setModel(res)) : setModel(officeModel)}, []);
     const [countries, setCountries] = useState([]);
     const [error, setError] = useState(null);
     const [loading, setloading] = useState(false)
     const [model, setModel] = useState(null)
     const [isActive, setIsActive] = useState(false)
-    const [salesPoint, setSalesPoint] = useState(false)
     const [ava, setAva] = useState(props.origin == "editor" ? true : false)
     const [country, setCountry] = useState(null);
     const [states, setStates] = useState(null)
@@ -31,7 +27,7 @@ export function FormWarehouse(props) {
     const handleChange = (e) => {
       const { name, value } = e.target;
       dataSet[name] = value
-      const dispo = props.origin == "editor" ? true : ((selectedCity  && dataSet.name && dataSet.cellphone && dataSet.address && dataSet.contactName) ? true : false) 
+      const dispo =  props.origin == "editor" ? true :((selectedCity  && dataSet.name && dataSet.cellphone && dataSet.address && dataSet.contactName) ? true : false) 
       setAva(dispo)
     };
 
@@ -45,9 +41,7 @@ export function FormWarehouse(props) {
       setloading(true)
       setError(null)
       const cleanData = adaptWarehouseModel(dataSet, props.origin, selectedCity, isActive)
-      // let officeRes =  null 
-      // salesPoint ? (officeRes = props.origin == "editor" ? await edit("offices", cleanData) : await post("offices", cleanData)):  officeRes.isValid = true  
-      const res = props.origin == "editor" ? await edit("Warehouses", cleanData) : await post("Warehouses", cleanData) 
+      const res = props.origin == "editor" ? await edit("Offices", cleanData) : await post("Offices", cleanData) 
       setloading(false)
       res?.isValid ? props.handleClick() : setError(res?.errorMessages[0])
     }
@@ -55,13 +49,12 @@ export function FormWarehouse(props) {
   return (
     <>
     <div className="flex w-full flex-wrap items-end justify-between gap-4 border-b border-zinc-950/10 pb-6 dark:border-white/10 my-5">
-      <Heading>Información de la Bodega</Heading>
+      <Heading>Información de punto de Venta</Heading>
     </div>
     <Field>
       <Label>Nombre*</Label>
       <Input name="name" placeholder={dataSet?.name && dataSet.name} onChange={handleChange} />
-      <Label className="block my-4">Esta bodega también es punto de atención al público <Switch checked={salesPoint} onChange={setSalesPoint} /> </Label>
-      <Label className="block my-4">Bodega Activa <Switch checked={isActive} onChange={setIsActive} /> </Label>
+      <Label className="block my-4">Punto de venta Activo <Switch checked={isActive} onChange={setIsActive} /> </Label>
       <Label>Pais*</Label>
       <Select name="country" onChange={(e)=> setCountry(JSON.parse(e.target.value))}>
         <option value="">Selecciona una opcion</option>

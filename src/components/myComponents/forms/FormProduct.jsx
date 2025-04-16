@@ -10,46 +10,63 @@ import { productModel } from '../../../services/API/models'
 import { adaptProductModel } from '../../../utils/adaptDataModel'
 import { MyLoader } from '../MyLoader'
 import { FormArrayItems } from './FormArrayItems'
-import { getWarehouseByCompany } from '../../../services/API/api'
+import { edit, getByCompanyId, getByID, post } from '../../../services/API/api'
 import { FormSelectAndAdd } from './FormSelectAndAdd'
+import { useLocalStorage } from '../../../hooks/useLocalStorage'
 
+// Expected props= origin: [enum["wizard", "editor", "creator"], {handleClick: [funct(), optional], step: [int, optional], required], id: [int, optional]
 export function FormProduct(props) {
+  const updateinitial = (data) => {
+    setColors(data.colors)
+    setStatus(data.isActive)
+    setIsColors(data.isColors)
+    setIsSizes(data.isSizes)
+  }
+  useEffect(() => {
+    props.origin == "editor" ?  getByID("Products",props.id).then(res => setmodel(res)) : setmodel(productModel)
+    props.origin == "editor" &&  getByID("Products",props.id).then(res => updateinitial(res)) 
+   }, [ ]);
+
     const [loading, setloading] = useState(false)
     const [error, setError] = useState(null)
+    const [model, setmodel] = useState(null)
     const [status, setStatus] = useState("")
-    const [ava, setAva] = useState(false)
+    const [ava, setAva] = useState(props.origin == "editor" ? true : false)
     const [manufacturer, setManufacturer] = useState(null);
     const [category, setCategory] = useState(null);
-    const [isSizes, setIsSizes] = useState(false);
-    const [isColors, setIsColors] = useState(false);
+    const [isSizes, setIsSizes] = useState(null); 
+    const [isColors, setIsColors] = useState(null);
     const [sizes, setSizes] = useState([]);
     const [colors, setColors] = useState([]);
     const [images,setImages] = useState([]);
     const [stock, setStock] = useState([]);
     const [warehouses, setWarehouses] = useState("");
     const [buttonDisabled, setButtonDisabled] = useState(false)
-    const rawData = window.localStorage.getItem("data")
-    const stored = JSON.parse(rawData)
-
-    let dataSet = productModel
+    const [stored] = useLocalStorage("data")
+    let dataSet = model
 
     const handleChange = (e) => {
       const { name, value } = e.target;
       dataSet[name] = value
-      const dispo =  ((dataSet.name && dataSet.description && dataSet.prices ) ? true : false) 
+      const dispo =  props.origin == "editor" ? true :((dataSet.name && dataSet.description && dataSet.prices ) ? true : false) 
       setAva(dispo)};
 
     useEffect(() => {
-      getWarehouseByCompany(stored.company.id).then((res) => {setWarehouses(res)})
-      images.length >= 3 ? setButtonDisabled(true) : setButtonDisabled(false)
-    }, [isColors, isSizes, colors, sizes, stock, images, manufacturer, category ]);
-
+      getByCompanyId("Products", stored.company.id).then((res) => {setWarehouses(res)})
+      images?.length >= 3 ? setButtonDisabled(true) : setButtonDisabled(false)
+      console.log(colors)
+    }, [ ,isColors, isSizes, colors, sizes, stock, images, manufacturer, category ]);
+ 
     const handleSave= async ()=>{
         setloading(true)
         setError(null)
-        const res = await adaptProductModel(dataSet, status, manufacturer,  category, isColors, isSizes, colors, sizes, stock, images)
-        setloading(false)
-        res?.isValid ? props.handleClick() : setError(res?.errorMessages[0])
+        try {
+          const data = await adaptProductModel(dataSet, props.origin, status, manufacturer,  category, isColors, isSizes, colors, sizes, stock, images)
+          await new Promise(resolve => setTimeout(resolve, 3000));
+          const res = props.origin == "editor" ? await edit("Products",data) :  await post("Products",data)
+          res?.isValid ? props.handleClick() : setError(res?.errorMessages[0])
+        } catch (error) {setError("Error")}
+        setloading(false) 
     }
   return (
     <>
@@ -58,11 +75,11 @@ export function FormProduct(props) {
     </div>
     <Field>
       <Label>Nombre*</Label>
-      <Input name="name" onChange={handleChange} />
+      <Input name="name" placeholder={dataSet?.name} onChange={handleChange} />
       <Label>Referencia</Label>
-      <Input name="reference"  onChange={handleChange}/>
+      <Input name="reference" placeholder={dataSet?.reference} onChange={handleChange}/>
       <Label>Descripción*</Label>
-      <Textarea name="description" onChange={handleChange}/>
+      <Textarea name="description" placeholder={dataSet?.description} onChange={handleChange}/>
       <Label className="block my-5" >Producto Activo <Switch checked={status} onChange={setStatus} /> </Label>
       <Label>Fabricante</Label>
       <FormSelectAndAdd ref="manufacturer"  setState={setManufacturer}/>
@@ -79,18 +96,17 @@ export function FormProduct(props) {
       <Label >Precio</Label>
       <Input  name="prices" type="number" onChange={handleChange}/>
       <Label className="mt-5 block">Stock</Label>
-      {
-        !warehouses ? <p> No se encontraron Bodegas asociadas a la compañía</p> : warehouses.map(warehouse => 
+      {!warehouses ? <p> No se encontraron Bodegas asociadas a la compañía</p> : warehouses.map(warehouse => 
         <> <Label >Bodega - { warehouse.name} </Label>
-          <Input  name="stock" className="w-20" key={warehouse.id} 
-          onChange={(e)=> setStock([...stock?.filter(stock => stock.idWarehouse !== warehouse.id), {idWarehouse: warehouse.id, stock: parseInt(e.target.value) }])
-         }/></>)
-      }
+          <Input placeholder="cantidad para añadir a la bodega" name="stock" className="w-20" key={warehouse.id} 
+          onChange={(e)=> setStock([...stock?.filter(stock => stock.idWarehouse !== warehouse.id), {idWarehouse: warehouse.id, quantity: parseInt(e.target.value) }])
+         }/></>)}
       <Label > Imagenes de producto </Label>
+      <p className='w-md italic text-xs'>Añadir máximo 3 imágenes. Las imágenes previamente almacenadas serán reemplazadas</p>
       <FormArrayItems ref={"imageUrl"} state={images} setState={setImages} disabled={buttonDisabled}/> 
       <p className={`text-red-600 pt-5 ${error ? "visible" : "invisible"}`}>Ups! Algo salió mal: {error}</p>  
     <Button onClick={handleSave}  className="my-10 mr-2" 
-    disabled={!ava }>{loading ? <MyLoader /> : "Guardar"}</Button>      
+    disabled={!ava}>{loading ? <MyLoader /> : "Guardar"}</Button>      
  </Field>
     </>  
   )}

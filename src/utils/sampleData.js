@@ -1,7 +1,7 @@
 export  const items = [
     {key: "settings", name: "Configuración", options: null}, 
     {key: "store", name: "Tienda", options: [
-        {name: "Sedes", key: "branchs"}, 
+        {name: "Sedes", key: "offices"}, 
         {name: "Usuarios", key: "users"},
         {name: "Bodegas", key: "warehouses"},
         {name: "Vendedores", key: "sellers"},
