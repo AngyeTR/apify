@@ -48,7 +48,7 @@ export function MyTable({ data }) {
       </NavbarSection>
     </Navbar>
     { 
-        !data.length && !headers.length ? <p>Cargando tabla...</p> : render()
+        !data.length && !headers.length ? <p>Cargando tabla...</p> : data.length ==0 ? <p>No se encontraron registros</p> :render()
         }
     </>)
 }

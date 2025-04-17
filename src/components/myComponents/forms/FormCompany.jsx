@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 import { edit, getByID,  getSegments } from '../../../services/API/api'
 import { MyLoader } from '../MyLoader'
 import { adaptCompanymodel } from '../../../utils/adaptDataModel'
-import { getBase64 } from '../../../utils/functions'
+import { getBase64, getUpdatedLocalData } from '../../../utils/functions'
 import { useLocalStorage } from '../../../hooks/useLocalStorage'
 
 export function FormCompany(props) {
@@ -21,7 +21,7 @@ export function FormCompany(props) {
     const [colorPrimary, setColorPrimary] = useState("");
     const [colorSecondary, setColorSecondary] = useState("");
     const [segments, setSegments] = useState(null)
-    const [stored] = useLocalStorage("data")
+    const [stored, setStored] = useLocalStorage("data", null)
 
     const upLoadImage = async (value)=> 
       {const url = URL.createObjectURL(value)
@@ -42,6 +42,9 @@ export function FormCompany(props) {
       dataSet[name] = value
       name == "principalColor" ? setColorPrimary(value): name == "secondaryColor" && setColorSecondary(value)
       };
+   const updateCompany=  async ( data)=>{
+        const info =  getUpdatedLocalData(stored, data)
+        await setStored(info)}
 
     const handleSave= async()=>{
       setloading(true)
@@ -49,6 +52,7 @@ export function FormCompany(props) {
       const cleanData = await adaptCompanymodel(dataSet, props.origin, segment, base64)
       const res = await edit("Companies", cleanData)
       setloading(false)
+      res?.isValid  && await updateCompany(cleanData) 
       res?.isValid ? props.handleClick() : setError(res?.errorMessages[0])
     }
   return (

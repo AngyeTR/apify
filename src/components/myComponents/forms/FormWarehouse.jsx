@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { Switch } from '../../switch'
 import { Field, Label } from '../../fieldset'
+import { Combobox, ComboboxLabel, ComboboxOption } from '../../combobox'
 import { Heading } from '../../heading'
 import { Input } from '../../input'
 import { Button } from '../../button'
@@ -13,7 +14,7 @@ import { adaptWarehouseModel } from '../../../utils/adaptDataModel'
 
 export function FormWarehouse(props) {
   useEffect(() => { props.origin == "editor" ?  getByID("Warehouses", props.id).then(res => setModel(res)) : setModel(warehouseModel)
-    console.log(model)
+    props.origin == "editor" &&  getByID("Warehouses",props.id).then(res => setSalesPoint(res.isPublic)) 
   }, []);
     const [countries, setCountries] = useState([]);
     const [error, setError] = useState(null);
@@ -39,14 +40,13 @@ export function FormWarehouse(props) {
         getCountries().then((res) => {setCountries(res)});
         country && getStates(country.id).then((res) => {setStates(res)});
         state && getCities(state.id).then((res) => {setCities(res)});
+        console.log(selectedCity)
       }, [, country, state]);
 
     const handleSave= async ()=>{
       setloading(true)
       setError(null)
-      const cleanData = adaptWarehouseModel(dataSet, props.origin, selectedCity, isActive)
-      // let officeRes =  null 
-      // salesPoint ? (officeRes = props.origin == "editor" ? await edit("offices", cleanData) : await post("offices", cleanData)):  officeRes.isValid = true  
+      const cleanData = adaptWarehouseModel(dataSet, props.origin, selectedCity, isActive, salesPoint)
       const res = props.origin == "editor" ? await edit("Warehouses", cleanData) : await post("Warehouses", cleanData) 
       setloading(false)
       res?.isValid ? props.handleClick() : setError(res?.errorMessages[0])
@@ -67,16 +67,28 @@ export function FormWarehouse(props) {
         <option value="">Selecciona una opcion</option>
         {countries?.map((country)=> <option value={JSON.stringify(country)} key={country.name}>{country.name}</option>)}
       </Select>
+      <Field>
+      <Label>Pais</Label>
+    </Field>
       <Label>Estado/ Departamento*</Label>
         <Select name="state" onChange={(e)=> setState(JSON.parse(e.target.value))}>
         <option value="">Selecciona una opcion</option>
         {states?.map((state)=> <option value={JSON.stringify(state)} key={state.name}>{state.name}</option> )}
       </Select>
       <Label>Ciudad*</Label>
-      <Select name="idCity" onChange={(e)=> setSelectedCity(JSON.parse(e.target.value))}>
+      {/* <Select name="idCity" onChange={(e)=> setSelectedCity(JSON.parse(e.target.value))}>
         <option value="">Selecciona una opcion</option>
         { cities?.map((city)=> <option value={JSON.stringify(city)} key={city.name}>{city.name}</option> )}
-      </Select>
+      </Select> */}
+      <Combobox name="city" options={cities} displayValue={(city) => city?.name} 
+       onChange={(e)=> setSelectedCity(JSON.parse(e))} placeholder={selectedCity ? selectedCity.name : "Seleccionar ciudad&hellip;"}>
+        {(city) => (
+          <ComboboxOption value={JSON.stringify(city)}>
+            <ComboboxLabel>{city.name}</ComboboxLabel>
+          </ComboboxOption>
+        )}
+
+      </Combobox>
       <Label>Dirección*</Label>
       <Input  name="address" placeholder={dataSet?.address &&  dataSet?.address} onChange={handleChange}/>
       <Label>Teléfono*</Label>

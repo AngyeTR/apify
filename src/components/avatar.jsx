@@ -1,5 +1,6 @@
 import * as Headless from '@headlessui/react'
 import clsx from 'clsx'
+import { UserIcon} from '@heroicons/react/16/solid'
 import React, { forwardRef } from 'react'
 import { TouchTarget } from './button'
 import { Link } from './link'
@@ -30,7 +31,7 @@ export function Avatar({ src = null, square = false, initials, alt = '', classNa
           </text>
         </svg>
       )}
-      {src && <img className="size-full" src={src} alt={alt} />}
+      {src ?(src.length >0 && <img className="size-full" src={src} alt={alt} />) : <UserIcon/>}
     </span>
   )
 }

@@ -6,33 +6,49 @@ import logo from "../../assets/logo.png"
 import { MySideBarItem } from './MySideBarItem'
 import { useLocalStorage } from '../../hooks/useLocalStorage'
 import { deleteToken } from '../../services/cookies'
+import { Description } from '../fieldset'
+import { useEffect, useState } from 'react'
+import { getUpdatedLocalData, hexToRgba } from '../../utils/functions'
+import { getByID } from '../../services/API/api'
+import { useNavigate } from 'react-router-dom'
 
 export const MySideBar = ()=>{
-  const user = useLocalStorage("data")?.[0]
+  const [user, setUser] = useLocalStorage("data", null)
+  const [tempData, setTempData] = useState(null)
+  const nav = useNavigate()
   const mods = useLocalStorage("alteredModules")?.[0]
+  const companies = [{id: 1, name: "Delegada1"}, {id: 2, name: "Delegada2"}, {id: 3, name: "Delegada3", }, {id: 4, name: "Delegada4"}]
+  const changeCompany=async (id)=>{
+    console.log(id)
+    const newData = await getByID("Companies",id).then(res => getUpdatedLocalData(user,res))
+    await new Promise(resolve => setTimeout(resolve, 1000));
 
-  const status = new Date() >= new Date(user.subscription.startDate) && new Date() <= new Date(user.subscription.endDate) ? "Active" : "Inactive"
-    const  logOut=()=>{
-      window.localStorage.clear()
-      deleteToken()}
-
+    console.log(newData)
+    setUser(newData)
+    console.log( user)
+    nav(0)
+  }
+  const color = user.company.principalColor ? hexToRgba(user.company.principalColor, 0.2): null
+  const  logOut=()=>{
+    window.localStorage.clear()
+    deleteToken()}
     return (
-    <Sidebar>
+    <Sidebar style={{backgroundColor: color}}>
       <SidebarHeader>
         <Dropdown>
           <DropdownButton as={SidebarItem} className="mb-2.5">
-            <Avatar src={user.company.urlLogo? user.company.urlLogo:  logo} />
-            <SidebarLabel>{user.company.name}</SidebarLabel>
+            <Avatar src={user.company.urlLogo} className="bg-zinc-50"/>
+            <SidebarLabel className="text-2xl font-bold">{user.company.name}</SidebarLabel>
             <ChevronDownIcon />
           </DropdownButton>
           <DropdownMenu className="min-w-64" anchor="bottom start">
-            <DropdownItem >
-              <DropdownLabel>Plan: {user.subscription.type}</DropdownLabel>
-            </DropdownItem>
-            <DropdownDivider />
-            <DropdownItem >
-              <DropdownLabel>Status: {status}</DropdownLabel>
-            </DropdownItem>
+          <DropdownItem >
+            <DropdownLabel onClick={()=> changeCompany(user.user.company.id)}>{user.user.company.name}<Description >Tu cuenta principal</Description></DropdownLabel></DropdownItem>
+            {companies.map(company => {return (
+                <DropdownItem >
+                  <DropdownDivider />
+                  <DropdownLabel onClick={()=> changeCompany(company.id)}>{company.name}</DropdownLabel>
+                </DropdownItem>)})}
           </DropdownMenu>
         </Dropdown>
       </SidebarHeader>
@@ -47,7 +63,7 @@ export const MySideBar = ()=>{
         <Dropdown>
           <DropdownButton as={SidebarItem}>
             <span className="flex min-w-0 items-center gap-3">
-              <Avatar src={user.user.avatar ? user.user.avatar: user.company.urlLogo ? user.company.urlLogo:  logo} className="size-10 w-8 h-8" square alt="" />
+              <Avatar src={user.user.avatar} className="size-10 w-8 h-8" square alt="" />
               <span className="min-w-0">
                 <span className="block truncate text-sm/5 font-medium text-zinc-950 dark:text-white">{user.user.firstName}</span>
                 <span className="block truncate text-xs/5 font-normal text-zinc-500 dark:text-zinc-400">
@@ -58,10 +74,6 @@ export const MySideBar = ()=>{
             <ChevronUpIcon />
           </DropdownButton>
           <DropdownMenu className="min-w-64" anchor="top start">
-            <DropdownItem href="/my-profile">
-              <UserIcon />
-              <DropdownLabel>My profile</DropdownLabel>
-            </DropdownItem>
             <DropdownDivider />
             <DropdownItem href="/login">
               <ArrowRightStartOnRectangleIcon />

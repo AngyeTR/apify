@@ -16,7 +16,8 @@ export const adjustLoginData = (data)=>{
             email: data.user?.email,
             isActive: data.user?.isActive,
             id: data.user?.id,
-            avatar: data.user?.avatar},
+            avatar: data.user?.avatar,
+            company: {id:data.company.id, name: data.company.name}},
         subscription: {
             id: data.suscription?.id,
             type: data.suscription?.suscriptionType.name,
@@ -24,6 +25,7 @@ export const adjustLoginData = (data)=>{
             maxWarehouse: data.suscription?.suscriptionType.maxWarehouse,
             endDate: data.suscription?.detail[0].endDate,
             startDate: data.suscription?.detail[0].startDate,},
+        delegated: [],
         implementation: {
             implementationStep: data.implementation?.implementationStep,
             success:  data.implementation?.success},
@@ -102,11 +104,19 @@ export const getIsTable = (name)=>{
     return dictionary.includes(name)
 }
 export const getUpdatedLocalData = (data, newData)=>{
+    data.company.id = newData.id
     data.company.idSegment = newData.idSegment
     data.company.name = newData.name
     data.company.principalColor = newData.principalColor
     data.company.secondaryColor = newData.secondaryColor
     data.company.urlLogo = newData.urlLogo
+    return data
+}
+export const getUpdatedLocalUser = (data, newData)=>{
+    data.user.lastname = newData.lastname
+    data.user.name= newData.firstName
+    data.user.fullname = newData.fullname
+    data.user.avatar = newData.avatar
     return data
 }
 
@@ -119,3 +129,13 @@ export const validateEmail = (value) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(value) ? null : "El email no tiene un formato válido"
   };
+
+  export const  hexToRgba= (code, alpha = 1) => {
+    code = code.replace(/^#/, '');
+    if (code.length === 3) {code = code.split('').map(char => char + char).join('')}
+    const bigint = parseInt(code, 16);
+    const r = (bigint >> 16) & 255;
+    const g = (bigint >> 8) & 255;
+    const b = bigint & 255;
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+  }

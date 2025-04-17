@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { Field, Label } from '../../fieldset'
+import { Switch } from '../../switch'
 import { Heading } from '../../heading'
 import { Input } from '../../input'
 import { Button } from '../../button'
@@ -9,10 +10,14 @@ import { edit, getByID, getProfiles, post } from '../../../services/API/api'
 import { MyLoader } from '../MyLoader'
 import { userModel } from '../../../services/API/models'
 import { adaptUserModel } from '../../../utils/adaptDataModel'
-import { getBase64, validateEmail } from '../../../utils/functions'
+import { getBase64, getUpdatedLocalData, getUpdatedLocalUser, validateEmail } from '../../../utils/functions'
+import { useLocalStorage } from '../../../hooks/useLocalStorage'
 
 export function FormUser(props) {
-  useEffect(() => {props.origin == "editor" ?  getByID("Users",props.id).then(res => setModel(res)) : setModel(userModel)}, []);
+  useEffect(() => {
+    props.origin == "editor" ?  getByID("Users",props.id).then(res => setModel(res)) : setModel(userModel)
+    props.origin == "editor" &&  getByID("Users",props.id).then(res => setIsSeller(res.isSalesman)) 
+  }, []);
   const [loading, setloading] = useState(false)
   const [ model, setModel] = useState(null)
   const [ava, setAva] = useState(props.origin == "editor" ? true : false)
@@ -20,6 +25,7 @@ export function FormUser(props) {
   const [imgUrl, setImgUrl] = useState("")
   const [base64, setBase64] = useState("")
   const [error, setError] = useState(null)
+  const [stored, setStored] = useLocalStorage("data", null)
   const [profiles, setProfiles] = useState([])
   let dataSet = model
  
@@ -41,6 +47,10 @@ export function FormUser(props) {
       const dispo =  props.origin == "editor" ? true :((dataSet.idProfile && dataSet.firstName && dataSet.lastName && dataSet.email && dataSet.password) ? true : false) 
       setAva(dispo)
     };
+
+    const updateUser=  async ( data)=>{
+      const info =  getUpdatedLocalUser(stored, data)
+      await setStored(info)}
     
   const handleSave= async()=>{
         setloading(true)
@@ -49,12 +59,12 @@ export function FormUser(props) {
         if(verifyEmail) {setError(verifyEmail) 
           setloading(false)
         }else {
-        const cleanData = adaptUserModel(dataSet, props.origin, base64)
-        const sellerRes = {}
-        isSeller ? (sellerRes = props.origin == "editor" ? await edit("Users", cleanData) :  await post("Users", cleanData)) : sellerRes.isValid = true
-        const res = props.origin == "editor" ? await edit("Users", cleanData) :  await post("Users", cleanData)
+        const cleanData = await adaptUserModel(dataSet, props.origin, base64, isSeller)
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        const res =( props.origin == "editor") ? await edit("Users", cleanData) :  await post("Users", cleanData)
         setloading(false)
-        (res?.isValid && sellerRes.isValid )? props.handleClick() : setError(res?.errorMessages[0] ? res?.errorMessages[0] : sellerRes?.errorMessages[0] )}}
+        res?.isValid  && (props.id == stored.user.id && await updateUser(cleanData) ) 
+        res?.isValid ? props.handleClick() : setError(res?.errorMessages[0])} }
 
   return (
     <>

@@ -5,34 +5,39 @@ import { Button } from "../../components/button"
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { FormCompany } from '../../components/myComponents/forms/FormCompany'
-import { FormOffice } from '../../components/myComponents/forms/FormOffice'
 import { FormUser } from '../../components/myComponents/forms/FormUser'
 import { FormWarehouse } from '../../components/myComponents/forms/FormWarehouse'
 import { FormProduct } from '../../components/myComponents/forms/FormProduct'
-import { FormSalesman } from '../../components/myComponents/forms/FormSalesman'
 import { useLocalStorage } from '../../hooks/useLocalStorage'
 import { finishWizard, getByID,  updateWizard } from '../../services/API/api'
 import { getUpdatedLocalData } from '../../utils/functions'
 
 export const WizardPage = ()=> {
+  const [stored] = useLocalStorage("data")
   const [data, setData] = useLocalStorage("data", null)
-  const [currentStep, setCurrentStep]  = useState(4)
+  const [currentStep, setCurrentStep]  = useState(stored.implementation.implementationStep  )
   const nav = useNavigate()
 
-  const handleClick = async()=> {
-    // await updateWizard(currentStep)
-    // (currentStep == steps.length -1 )&& await finishWizard(currentStep)
-    setCurrentStep(currentStep +1)}
+  const handleClick = async()=> { 
+    (currentStep == steps.length -1 )? await finish(currentStep):  await update(currentStep)
+    (currentStep == steps.length -1 ) ? setCurrentStep(currentStep +1) : await finish(currentStep)}
   const steps = [{component: <FormCompany handleClick={handleClick} step={1} origin="wizard" /> }, 
     // {component: <FormOffice handleClick={handleClick} step={2} origin="wizard"/>},
-    {component: <FormUser handleClick={handleClick} step={2} origin="wizard" id={9}/> },
+    {component: <FormUser handleClick={handleClick} step={2} origin="wizard" /> },
     // {component: <FormSalesman handleClick={handleClick} step={4} origin="wizard"/>},
-    {component:  <FormWarehouse handleClick={handleClick} step={3} origin="wizard" id={1}/>},
+    {component:  <FormWarehouse handleClick={handleClick} step={3} origin="wizard" />},
     {component: < FormProduct handleClick={handleClick} step={4} origin="wizard"   />}]
   const render = (currentStep)=> {return steps[currentStep-1].component}
 
-  const finish= async()=>{
-    await finishWizard(currentStep)
+  const finish= async(step)=>{
+    await finishWizard(step)
+    const company =await  getByID("Companies", data.company.id).then((res) => {return res})
+    let newData = getUpdatedLocalData(data, company)
+    setData(newData)
+     nav("/")
+  }
+  const update= async(step)=>{
+    await updateWizard(step)
     const company =await  getByID("Companies", data.company.id).then((res) => {return res})
     let newData = getUpdatedLocalData(data, company)
     setData(newData)

@@ -18,7 +18,7 @@ import { useLocalStorage } from '../../../hooks/useLocalStorage'
 export function FormProduct(props) {
   const updateinitial = (data) => {
     setColors(data.colors)
-    setStatus(data.isActive)
+    setStatus(data.isActive) 
     setIsColors(data.isColors)
     setIsSizes(data.isSizes)
   }
@@ -94,7 +94,7 @@ export function FormProduct(props) {
       <><label className='mt-4'> Ingrese las tallas </label>
       <FormArrayItems ref={"size"} state={sizes} setState={setSizes}/></>}
       <Label >Precio</Label>
-      <Input  name="prices" type="number" onChange={handleChange}/>
+      <Input  name="price" type="number" onChange={handleChange}/>
       <Label className="mt-5 block">Stock</Label>
       {!warehouses ? <p> No se encontraron Bodegas asociadas a la compañía</p> : warehouses.map(warehouse => 
         <> <Label >Bodega - { warehouse.name} </Label>

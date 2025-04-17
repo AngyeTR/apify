@@ -50,7 +50,7 @@ export const getByID = async (query, id)=>{
 
 export const getByCompanyId = async (query, id)=>{
   const res = await api.get(`/${query}/GetByIdCompany/${id}`).then(response =>  response).catch(error => error);
-  return res.data.data
+  return res.data.data 
 }
 
 export const post = async (query, data)=>{
@@ -75,129 +75,7 @@ export const finishWizard = async (step)=>{
   return res
 }
 
-
-// export const editCompany = async (data)=>{
-//  const res = await api.patch(`/Companies/Update`, data).then(response =>  response.data).catch( error => error.response.data);
-//   return res
-// }
-
-// export const editUser = async (data)=>{
-//   const res = await api.patch(`/Users/Update`, data).then(response =>  response.data).catch( error => error.response.data);
-//    return res
-//  }
-
-
-// export const postUser = async (data)=>{
-//   const res = await api.post(`/Users/Add`, data).then(response =>  response.data).catch(error => {return error.response.data});
-//   return res
-// }
-
-// export const postWareHouse = async (data)=>{
-//   const res = await api.post(`/Warehouses/Add`, data).then(response =>  response.data).catch(error => {return error.response.data}); 
-//   return res
-// }
-
-// export const editWareHouse = async (data)=>{
-//   const res = await api.patch(`/Warehouses/Update`, data).then(response =>  response.data).catch(error => {return error.response.data}); 
-//   return res
-// }
-
-// export const getWarehouseByCompany = async(id)=>{
-//   const res = await api.get(`/Warehouses/GetByIdCompany/${id}`).then(response =>  response).catch(error => error);
-//   return res.data.data
-// }
-
-// export const getWarehouseById = async(id)=>{
-//   const res = await api.get(`/Warehouses/GetById/${id}`).then(response =>  response).catch(error => error);
-//   return res.data.data
-// }
-
-
-
-// export const getCompanyById = async(id)=>{
-//   const res = await api.get( `/Companies/GetById/${id}`).then(response =>  response).catch(error => error); 
-//   return res.data.data
-// }
-
-// export const getProductById = async(id)=>{
-//   const res = await api.get( `/Products/GetById/${id}`).then(response =>  {return response}).catch(error => error); 
-//   return res.data.data
-// }
-
-// export const getUserById = async(id)=>{
-//   const res = await api.get( `/Users/GetById/${id}`).then(response =>  {return response}).catch(error => error); 
-//   return res.data.data
-// }
-
-// export const getSalesmanById = async(id)=>{
-//   const res = await api.get( `/Salesman/GetById/${id}`).then(response =>  response).catch(error => error); 
-//   return res.data.data
-// }
-
-// export const getManufacturerByCompany = async(id)=>{
-//   const res = await api.get( `/Manufacturer/GetByIdCompany/${id}`).then(response =>  response).catch(error => error); 
-//   return res.data.data
-// }
-
-// export const postManufacturer = async (data)=>{
-//   const res = await api.post( `/Manufacturer/Add`, data).then(response =>  response.data).catch(error => {return error.response.data});
-//   return res
-// }
-
-// export const getCategoryByCompany = async(id)=>{
-//   const res = await api.get( `/Categories/GetByIdCompany/${id}` ).then(response =>  response).catch(error => error);
-//   return res.data.data
-// }
-
-// export const postCategory = async (data)=>{
-//  const res = await api.post(`/Categories/Add`, data ).then(response =>  response).catch(error => {return error.response});
-//   return res.data
-// }
-
-// export const postImage = async (data)=>{
-//   const res = await api.post(`/Utilities/AddImage`, data).then(response =>  response).catch(error => {return error.response}); 
-//   return res.data.data
-// }
-
-// export const postProduct = async (data)=>{
-//   const res = await api.post(`/Products/Add`, data).then(response =>  response.data).catch(error => {return error.response.data});
-//   return res
-// }
-
-// export const editProduct = async (data)=>{
-//   const res = await api.patch(`/Products/Update`, data).then(response =>  response.data).catch(error => {return error.response.data});
-//   return res
-// }
-
-// export const postSalesman = async (data)=>{
-//   const res = await api.post(`/Salesman/Add`, data).then(response =>  response.data).catch(error => {return error.response.data});
-//   return res
-// }
-
-// export const editSalesman = async (data)=>{
-//   const res = await api.patch(`/Salesman/Update`, data).then(response =>  response.data).catch(error => {return error.response.data});
-//   return res
-// }
-
-
-
-// export const postOffice = async (data)=>{
-//   const res = await api.post(`/Offices/Add`, data).then(response =>  response.data).catch(error => {return error.response.data}); 
-//   return res
-// }
-
-// export const editOffice = async (data)=>{
-//   const res = await api.patch(`/Offices/Update`, data).then(response =>  response.data).catch(error => {return error.response.data}); 
-//   return res
-// }
-
-// export const getOfficeByCompany = async(id)=>{
-//   const res = await api.get(`/Offices/GetByIdCompany/${id}`).then(response =>  response).catch(error => error);
-//   return res.data.data
-// }
-
-// export const getOfficeById = async(id)=>{
-//   const res = await api.get(`/Offices/GetById/${id}`).then(response =>  response).catch(error => error);
-//   return res.data.data
-// }
-
+export const postImage = async (data)=>{
+  const res = await api.post(`/Utilities/AddImage`, data).then(response =>  response).catch(error => {return error.response}); 
+  return res.data.data
+}

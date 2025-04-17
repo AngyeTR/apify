@@ -1,19 +1,19 @@
 
 import { getBase64 } from "./functions"
-import { post } from "../services/API/api"
+import { postImage } from "../services/API/api"
 
 const rawData = window.localStorage.getItem("data")
 const stored = JSON.parse(rawData)
 const date = new Date().toISOString();
 
-export const adaptWarehouseModel = (dataSet, origin, selectedCity, isActive) =>{
-  console.log(dataSet.createdBy)
+export const adaptWarehouseModel = (dataSet, origin, selectedCity, isActive, isPublic) =>{
    !dataSet.createdBy && (dataSet["createdBy"] = stored.user.email)
    dataSet.city && delete dataSet.city
    dataSet["modifiedBy"]= stored.user.email
    dataSet["idCompany"]= stored.company.id
    selectedCity && (dataSet["idCity"] = selectedCity.id)
    dataSet["isActive"] = isActive 
+   dataSet["isPublic"] = isPublic
    dataSet["isWizard"] = (origin == "wizard" ? true: false) 
    console.log(dataSet)
    return dataSet
@@ -24,7 +24,7 @@ export const adaptCompanymodel = async (dataSet, origin, segment, base64)=> {
   const getUrl =  async (value)=> 
     {try {
       const data ={name: `companyImage${Date.now()}`, "base64": value, "imageType": 1}
-        const url  = await post("Utilities", data).then(res => {return res})
+        const url  = await postImage(data).then(res => {return res})
         dataSet["urlLogo"] = url
       } catch (error) {console.log(error)}}
     if (base64) {await getUrl(base64)}else{ dataSet["urlLogo"] = stored.company.urlLogo}
@@ -37,11 +37,14 @@ export const adaptCompanymodel = async (dataSet, origin, segment, base64)=> {
     return dataSet
 }
 
-export const adaptUserModel = (dataSet, origin, base64) => {
+export const adaptUserModel = (dataSet, origin, base64, isSalesman) => {
+  console.log(base64)
   const getUrl = async (value)=> 
     {try {
+      console.log("trying")
       const data ={name: `companyImage${Date.now()}`, "base64": value, "imageType": 1}
-        const url  = await post("Utilities",data).then(res => {return res})
+        const url  = await postImage(data).then(res => {return res})
+        console.log(url)
         dataSet["avatar"] = url
       } catch (error) {console.log(error)}}
     base64 && getUrl(base64)
@@ -51,6 +54,8 @@ export const adaptUserModel = (dataSet, origin, base64) => {
         dataSet["modifiedDate"]= date
         dataSet["idCompany"]= stored.company.id
         dataSet["isWizard"] = (origin == "wizard" ? true: false) 
+        dataSet["isSalesman"] = isSalesman
+        console.log(dataSet)
         return dataSet
     }
 
@@ -73,7 +78,7 @@ export  const adaptProductModel =  (dataSet, origin, status,  manufacturer,  cat
         for (const image of images) {
             try {
                 const base64 = await getBase64(image.value)
-                const url = await post("Utilities",{name: `productImage${Date.now()}`, "base64": base64, "imageType": 2}).then(res => {return res})
+                const url = await postImage({name: `productImage${Date.now()}`, "base64": base64, "imageType": 2}).then(res => {return res})
                 dataSet["images"].push({url: url,  modifiedBy: stored.user.email, createdBy: stored.user.email })
               } catch (error) { console.error("Error al convertir:", error)}
             }; 
@@ -122,4 +127,3 @@ export const adaptImplementationModel = (step)=>{
    success: true
   }
 }
-    
