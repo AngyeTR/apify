@@ -33,7 +33,7 @@ export const MySideBar = ()=>{
     window.localStorage.clear()
     deleteToken()}
     return (
-    <Sidebar style={{backgroundColor: color}}>
+    <Sidebar >
       <SidebarHeader>
         <Dropdown>
           <DropdownButton as={SidebarItem} className="mb-2.5">

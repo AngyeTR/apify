@@ -11,7 +11,6 @@ import { getDataToShow } from "../../utils/functions";
 import { useRef } from "react";
 
 const Table  = ({data, headers}) => {
-  console.log("cinco")
   const params = useParams()
   const nav = useNavigate()
   const tableRef = useRef(null); 
@@ -34,7 +33,6 @@ export function MyTable({ data }) {
   const [newData, headers] = getDataToShow(data, params.option)
   const render = ()=> {
     if(newData.length > 0 && headers.length > 0 ){
-      console.log("cuatro")
       return (
         <Table  data={newData} headers={headers} />
       )}}

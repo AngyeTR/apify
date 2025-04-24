@@ -21,8 +21,7 @@ export const ModulePage =()=> {
         params.option ? ( getIsTable(params.option) && getByCompanyId(parameter, stored.company.id).then((res) => {setData(res)}) ) :
         (firstOption ?  nav(`/${params.module}/${firstOption}`): nav("/not-found"))
     }, [,params])
-
-    console.log(data)
+console.log(data)
     
     return (
         <MyLayout >  
