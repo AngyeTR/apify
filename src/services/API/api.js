@@ -44,12 +44,17 @@ export  const  getProfiles  = async()=>{
 }
 
 export const getByID = async (query, id)=>{
-  const res = await api.get(`/${query}/GetById/${id}`).then(response =>  response).catch(error => error);
-  return res.data.data
+  const res = await api.get(`/${query}/GetById/${id}`).then(response =>  response).catch(error => error.response);
+  return res.data
 }
 
 export const getByCompanyId = async (query, id)=>{
   const res = await api.get(`/${query}/GetByIdCompany/${id}`).then(response =>  response).catch(error => error);
+  return res.data 
+}
+
+export const getByDelegateId = async ( id)=>{
+  const res = await api.get(`/Delegates/GetByidDelegate/${id}`).then(response =>  response).catch(error => error);
   return res.data.data 
 }
 

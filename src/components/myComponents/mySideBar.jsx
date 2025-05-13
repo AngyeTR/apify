@@ -9,26 +9,23 @@ import { deleteToken } from '../../services/cookies'
 import { Description } from '../fieldset'
 import { useEffect, useState } from 'react'
 import { getUpdatedLocalData, hexToRgba } from '../../utils/functions'
-import { getByID } from '../../services/API/api'
+import { getByDelegateId, getByID } from '../../services/API/api'
 import { useNavigate } from 'react-router-dom'
 
 export const MySideBar = ()=>{
   const [user, setUser] = useLocalStorage("data", null)
   const [tempData, setTempData] = useState(null)
+  const [companies, setCompanies] = useState([])
   const nav = useNavigate()
   const mods = useLocalStorage("alteredModules")?.[0]
-  const companies = [{id: 1, name: "Delegada1"}, {id: 2, name: "Delegada2"}, {id: 3, name: "Delegada3", }, {id: 4, name: "Delegada4"}]
+  useEffect(() => {getByDelegateId(1).then((res) => setTempData(res))}, []);
+   useEffect(() => {tempData?.map(item=> getByID("Companies", item.idCompany).then(res => setCompanies(prev => [...prev, res]))) }, [tempData]);
   const changeCompany=async (id)=>{
-    console.log(id)
     const newData = await getByID("Companies",id).then(res => getUpdatedLocalData(user,res))
     await new Promise(resolve => setTimeout(resolve, 1000));
-
-    console.log(newData)
     setUser(newData)
-    console.log( user)
     nav(0)
   }
-  const color = user.company.principalColor ? hexToRgba(user.company.principalColor, 0.2): null
   const  logOut=()=>{
     window.localStorage.clear()
     deleteToken()}

@@ -54,7 +54,7 @@ export function FormOffice(props) {
     <Field>
       <Label>Nombre*</Label>
       <Input name="name" placeholder={dataSet?.name && dataSet.name} onChange={handleChange} />
-      <Label className="block my-4">Punto de venta Activo <Switch checked={isActive} onChange={setIsActive} /> </Label>
+      <Label className="block my-4">Punto de venta Activo <Switch checked={isActive} onChange={setIsActive}/> </Label>
       <Label>Pais*</Label>
       <Select name="country" onChange={(e)=> setCountry(JSON.parse(e.target.value))}>
         <option value="">Selecciona una opcion</option>

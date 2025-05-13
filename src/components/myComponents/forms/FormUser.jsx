@@ -25,7 +25,7 @@ export function FormUser(props) {
   const [imgUrl, setImgUrl] = useState("")
   const [base64, setBase64] = useState("")
   const [error, setError] = useState(null)
-  const [stored, setStored] = useLocalStorage("data", null)
+  const [stored, setStored] = useLocalStorage("data", null) 
   const [profiles, setProfiles] = useState([])
   let dataSet = model
  
@@ -57,7 +57,7 @@ export function FormUser(props) {
         setError(null)
          const verifyEmail = validateEmail(dataSet.email)
         if(verifyEmail) {setError(verifyEmail) 
-          setloading(false)
+          setloading(false) 
         }else {
         const cleanData = await adaptUserModel(dataSet, props.origin, base64, isSeller)
         await new Promise(resolve => setTimeout(resolve, 2000));

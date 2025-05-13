@@ -112,7 +112,7 @@ export const getUpdatedLocalData = (data, newData)=>{
     data.company.urlLogo = newData.urlLogo
     return data
 }
-export const getUpdatedLocalUser = (data, newData)=>{
+export const getUpdatedLocalUser = (data, newData)=>{ 
     data.user.lastname = newData.lastname
     data.user.name= newData.firstName
     data.user.fullname = newData.fullname
