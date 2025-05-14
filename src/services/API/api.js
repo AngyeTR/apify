@@ -14,57 +14,57 @@ const api = axios.create({
 );
 
 export const getCountries = async () => {
-  const response = await api.get("/Countries/Get").then(response =>  response).catch(error => error);
-  return response.data.data;
+  const res = await api.get("/Countries/Get").then(response =>  response.data).catch(error => {return error.response.data});
+  return res
 };
 
 export  const  getStates  = async(id)=>{
-  const res = await api.get(`/States/GetByIdCountry/${id}`).then(response =>  response).catch(error => error);
-  return res.data.data
+  const res = await api.get(`/States/GetByIdCountry/${id}`).then(response =>  response.data).catch(error => {return error.response.data});
+  return res
 }
 
 export  const  getCities  = async(id)=>{
-  const res = await api.get(`/Cities/GetByIdState/${id}`).then(response =>  response).catch(error => error);
-  return res.data.data
+  const res = await api.get(`/Cities/GetByIdState/${id}`).then(response =>  response.data).catch(error => {return error.response.data});
+  return res
 }
 
 export const getLogin = async (email, password)=> {
-  const res = await api.post(`/login/login`,  { email: email, password: password } ).then(response =>  response.data).catch(error => error.response.data);
+  const res = await api.post(`/login/login`,  { email: email, password: password } ).then(response =>  response.data).catch(error => error);
   return res
 }
 
 export  const  getSegments  = async()=>{
-  const res = await api.get(`/Segments/Get`).then(response =>  response).catch(error => error);
-  return res.data
+  const res = await api.get(`/Segments/Get`).then(response =>  response.data).catch(error => {return error.response.data});
+  return res
 }
 
 export  const  getProfiles  = async()=>{
-  const res = await api.get(`/Profiles/Get`).then(response =>  response).catch(error => error);
-  return res.data
+  const res = await api.get(`/Profiles/Get`).then(response =>  response.data).catch(error => {return error.response.data});
+  return res
 }
 
 export const getByID = async (query, id)=>{
-  const res = await api.get(`/${query}/GetById/${id}`).then(response =>  response).catch(error => error.response);
-  return res.data
+  const res = await api.get(`/${query}/GetById/${id}`).then(response =>  response.data).catch(error => {return error.response.data});
+  return res
 }
 
 export const getByCompanyId = async (query, id)=>{
-  const res = await api.get(`/${query}/GetByIdCompany/${id}`).then(response =>  response).catch(error => error);
-  return res.data 
+  const res = await api.get(`/${query}/GetByIdCompany/${id}`).then(response =>  response.data).catch(error => {return error.response.data});
+  return res
 }
 
 export const getByDelegateId = async ( id)=>{
-  const res = await api.get(`/Delegates/GetByidDelegate/${id}`).then(response =>  response).catch(error => error);
-  return res.data.data 
+  const res = await api.get(`/Delegates/GetByidDelegate/${id}`).then(response =>  response.data).catch(error => {return error.response.data});
+  return res
 }
 
 export const post = async (query, data)=>{
-  const res = await api.post(`/${query}/Add`, data).then(response =>  response.data).catch(error => {return error.response.data}); 
+  const res = await api.post(`/${query}/Add`, data).then(response =>  response.data).catch(error => {return error.response.data});
   return res
 }
 
 export const edit = async (query, data)=>{
-  const res = await api.patch(`/${query}/Update`, data).then(response =>  response.data).catch(error => {return error.response.data}); 
+  const res = await api.patch(`/${query}/Update`, data).then(response =>  response.data).catch(error => {return error.response.data});
   return res
 }
 
@@ -81,6 +81,6 @@ export const finishWizard = async (step)=>{
 }
 
 export const postImage = async (data)=>{
-  const res = await api.post(`/Utilities/AddImage`, data).then(response =>  response).catch(error => {return error.response}); 
-  return res.data.data
+  const res = await api.post(`/Utilities/AddImage`, data).then(response =>  response.data).catch(error => {return error.response.data});
+  return res
 }

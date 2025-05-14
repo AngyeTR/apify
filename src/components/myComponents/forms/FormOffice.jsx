@@ -11,7 +11,7 @@ import { officeModel } from '../../../services/API/models'
 import { adaptWarehouseModel } from '../../../utils/adaptDataModel'
 
 export function FormOffice(props) {
-  useEffect(() => { props.origin == "editor" ?  getByID("Offices", props.id).then(res => setModel(res)) : setModel(officeModel)}, []);
+  useEffect(() => { props.origin == "editor" ?  getByID("Offices", props.id).then(res => setModel(res.data)) : setModel(officeModel)}, []);
     const [countries, setCountries] = useState([]);
     const [error, setError] = useState(null);
     const [loading, setloading] = useState(false)
@@ -32,9 +32,9 @@ export function FormOffice(props) {
     };
 
    useEffect(() => {
-        getCountries().then((res) => {setCountries(res)});
-        country && getStates(country.id).then((res) => {setStates(res)});
-        state && getCities(state.id).then((res) => {setCities(res)});
+        getCountries().then((res) => {setCountries(res.data)});
+        country && getStates(country.id).then((res) => {setStates(res.data)});
+        state && getCities(state.id).then((res) => {setCities(res.data)});
       }, [, country, state]);
 
     const handleSave= async ()=>{
@@ -43,6 +43,7 @@ export function FormOffice(props) {
       const cleanData = adaptWarehouseModel(dataSet, props.origin, selectedCity, isActive)
       const res = props.origin == "editor" ? await edit("Offices", cleanData) : await post("Offices", cleanData) 
       setloading(false)
+      console.log(res)
       res?.isValid ? props.handleClick() : setError(res?.errorMessages[0])
     }
 

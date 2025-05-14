@@ -15,8 +15,8 @@ import { useLocalStorage } from '../../../hooks/useLocalStorage'
 
 export function FormUser(props) {
   useEffect(() => {
-    props.origin == "editor" ?  getByID("Users",props.id).then(res => setModel(res)) : setModel(userModel)
-    props.origin == "editor" &&  getByID("Users",props.id).then(res => setIsSeller(res.isSalesman)) 
+    props.origin == "editor" ?  getByID("Users",props.id).then(res => setModel(res.data)) : setModel(userModel)
+    props.origin == "editor" &&  getByID("Users",props.id).then(res => setIsSeller(res.data.isSalesman)) 
   }, []);
   const [loading, setloading] = useState(false)
   const [ model, setModel] = useState(null)
@@ -63,8 +63,9 @@ export function FormUser(props) {
         await new Promise(resolve => setTimeout(resolve, 2000));
         const res =( props.origin == "editor") ? await edit("Users", cleanData) :  await post("Users", cleanData)
         setloading(false)
+        console.log(res)
         res?.isValid  && (props.id == stored.user.id && await updateUser(cleanData) ) 
-        res?.isValid ? props.handleClick() : setError(res?.errorMessages[0])} }
+        res?.isValid ? props.handleClick() : setError(res?.errorMessages ? res?.errorMessages[0] : "Por favor revise que cada campo sea correcto")} }
 
   return (
     <>
@@ -90,7 +91,7 @@ export function FormUser(props) {
       <input accept="image/*" type="file" multiple className='w-50 my-2 mx-2 h-8 bg-white shadow-sm border border-gray-400  rounded-md'
      onChange={(e)=> upLoadImage(e.target.files[0])} />
       <img   className={` ${imgUrl ? "h-30 visible" : "invisible"}`} src={imgUrl} alt=""/>
-      <p className={`text-red-600 pt-5 ${error ? "visible" : "invisible"}`}>Ups! Algo salió mal: {error}</p>   
+      {error && <p className={`text-red-600 pt-5`}>Ups! Algo salió mal: {error}</p> }  
     <Button onClick={handleSave} className="my-10 mr-2" 
     disabled={!ava}>
       {loading ? <MyLoader /> : "Guardar"}</Button>     

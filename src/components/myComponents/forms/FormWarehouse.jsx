@@ -13,8 +13,8 @@ import { warehouseModel } from '../../../services/API/models'
 import { adaptWarehouseModel } from '../../../utils/adaptDataModel'
 
 export function FormWarehouse(props) {
-  useEffect(() => { props.origin == "editor" ?  getByID("Warehouses", props.id).then(res => setModel(res)) : setModel(warehouseModel)
-    props.origin == "editor" &&  getByID("Warehouses",props.id).then(res => setSalesPoint(res.isPublic)) 
+  useEffect(() => { props.origin == "editor" ?  getByID("Warehouses", props.id).then(res => setModel(res.data)) : setModel(warehouseModel)
+    props.origin == "editor" &&  getByID("Warehouses",props.id).then(res => setSalesPoint(res.data.isPublic)) 
   }, []);
     const [countries, setCountries] = useState([]);
     const [error, setError] = useState(null);
@@ -37,9 +37,9 @@ export function FormWarehouse(props) {
     };
 
    useEffect(() => {
-        getCountries().then((res) => {setCountries(res)});
-        country && getStates(country.id).then((res) => {setStates(res)});
-        state && getCities(state.id).then((res) => {setCities(res)});
+        getCountries().then((res) => {setCountries(res.data)});
+        country && getStates(country.id).then((res) => {setStates(res.data)});
+        state && getCities(state.id).then((res) => {setCities(res.data)});
         console.log(selectedCity)
       }, [, country, state]);
 
@@ -49,7 +49,7 @@ export function FormWarehouse(props) {
       const cleanData = adaptWarehouseModel(dataSet, props.origin, selectedCity, isActive, salesPoint)
       const res = props.origin == "editor" ? await edit("Warehouses", cleanData) : await post("Warehouses", cleanData) 
       setloading(false)
-      res?.isValid ? props.handleClick() : setError(res?.errorMessages[0])
+      res?.isValid ? props.handleClick() : setError(res?.errorMessages ? res?.errorMessages[0] : " Por favor revise que los campos sean correctos")
     }
 
   return (

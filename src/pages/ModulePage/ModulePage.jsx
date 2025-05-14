@@ -18,10 +18,9 @@ export const ModulePage =()=> {
     const firstOption= getTranslate(modules[name]?.options[0]?.toLowerCase())
     
     useEffect(() => {
-        params.option ? ( getIsTable(params.option) && getByCompanyId(parameter, stored.company.id).then((res) => {setData(res)}) ) :
+        params.option ? ( getIsTable(params.option) && getByCompanyId(parameter, stored.company.id).then((res) => {setData(res.data)}) ) :
         (firstOption ?  nav(`/${params.module}/${firstOption}`): nav("/not-found"))
     }, [,params])
-console.log(data)
     
     return (
         <MyLayout >  

@@ -13,8 +13,8 @@ import { validateEmail } from '../../../utils/functions'
 
 export function FormSalesman(props) {
   useEffect(() => {
-    props.origin == "editor" ?  getByID("Salesman", props.id).then(res => setModel(res)) : setModel(salesModel)
-    props.origin == "editor" &&  getByID("Salesman",props.id).then(res => setIsActive(res.isActive))
+    props.origin == "editor" ?  getByID("Salesman", props.id).then(res => setModel(res.data)) : setModel(salesModel)
+    props.origin == "editor" &&  getByID("Salesman",props.id).then(res => setIsActive(res.data.isActive))
    }, [ ]);
   const [model, setModel] = useState(null)
   const [loading, setloading] = useState(false)

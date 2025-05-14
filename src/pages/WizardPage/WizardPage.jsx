@@ -31,14 +31,14 @@ export const WizardPage = ()=> {
 
   const finish= async(step)=>{
     await finishWizard(step)
-    const company =await  getByID("Companies", data.company.id).then((res) => {return res})
+    const company =await  getByID("Companies", data.company.id).then((res) =>  res.data)
     let newData = getUpdatedLocalData(data, company)
     setData(newData)
      nav("/")
   }
   const update= async(step)=>{
     await updateWizard(step)
-    const company =await  getByID("Companies", data.company.id).then((res) => {return res})
+    const company =await  getByID("Companies", data.company.id).then((res) => res.data)
     let newData = getUpdatedLocalData(data, company)
     setData(newData)
      nav("/")

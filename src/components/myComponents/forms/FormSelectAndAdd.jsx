@@ -12,8 +12,8 @@ export const FormSelectAndAdd = ({ref,  state, setState})=>{
     let newOption = ""
 
      useEffect(() => {
-        ref == "manufacturer" ? getByCompanyId("Manufacturer", stored.company.id).then((res) => {setInternalState(res)}):
-          getByCompanyId("Categories", stored.company.id).then((res) => {setInternalState(res)})
+        ref == "manufacturer" ? getByCompanyId("Manufacturer", stored.company.id).then((res) => {setInternalState(res.data)}):
+          getByCompanyId("Categories", stored.company.id).then((res) => {setInternalState(res.data)})
         }, [ ]);
 
     const handleChange=(value)=>{

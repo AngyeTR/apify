@@ -38,7 +38,7 @@ export function LoginForm() {
     setError(null)
     nav(!response.implementation.success && response.user.idProfile ==1  ? "/wizard" : "/" )
     nav(0)
-    }   else setError(response.response.message);
+    }   else setError(response?.response?.message ? response.response.message : "Error de red" );
     setLoading(false)    
   }
 

@@ -35,7 +35,7 @@ export function FormCompany(props) {
     let dataSet = model
     useEffect(() => {
       getSegments().then((res) => {setSegments(res.data)})
-      getByID("Companies", stored.company.id).then((res) => {setModel(res)})}, [imgUrl]);
+      getByID("Companies", stored.company.id).then((res) => {setModel(res.data)})}, [imgUrl]);
     
     const handleChange = (e) => {
       const { name, value } = e.target;
@@ -52,8 +52,8 @@ export function FormCompany(props) {
       const cleanData = await adaptCompanymodel(dataSet, props.origin, segment, base64)
       const res = await edit("Companies", cleanData)
       setloading(false)
-      res?.isValid  && await updateCompany(cleanData) 
-      res?.isValid ? props.handleClick() : setError(res?.errorMessages[0])
+      res.data?.isValid  && await updateCompany(cleanData) 
+      res.data?.isValid ? props.handleClick() : setError("Por favor revise que todos los campos sean correctos")
     }
   return (
     <>

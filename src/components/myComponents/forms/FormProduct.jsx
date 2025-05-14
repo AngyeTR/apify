@@ -23,8 +23,8 @@ export function FormProduct(props) {
     setIsSizes(data.isSizes)
   }
   useEffect(() => {
-    props.origin == "editor" ?  getByID("Products",props.id).then(res => setmodel(res)) : setmodel(productModel)
-    props.origin == "editor" &&  getByID("Products",props.id).then(res => updateinitial(res)) 
+    props.origin == "editor" ?  getByID("Products",props.id).then(res => setmodel(res.data)) : setmodel(productModel)
+    props.origin == "editor" &&  getByID("Products",props.id).then(res => updateinitial(res.data)) 
    }, [ ]);
 
     const [loading, setloading] = useState(false)
@@ -52,7 +52,7 @@ export function FormProduct(props) {
       setAva(dispo)};
 
     useEffect(() => {
-      getByCompanyId("Products", stored.company.id).then((res) => {setWarehouses(res)})
+      getByCompanyId("Products", stored.company.id).then((res) => {setWarehouses(res.data)})
       images?.length >= 3 ? setButtonDisabled(true) : setButtonDisabled(false)
       console.log(colors)
     }, [ ,isColors, isSizes, colors, sizes, stock, images, manufacturer, category ]);
@@ -64,6 +64,7 @@ export function FormProduct(props) {
           const data = await adaptProductModel(dataSet, props.origin, status, manufacturer,  category, isColors, isSizes, colors, sizes, stock, images)
           await new Promise(resolve => setTimeout(resolve, 3000));
           const res = props.origin == "editor" ? await edit("Products",data) :  await post("Products",data)
+          console.log(res)
           res?.isValid ? props.handleClick() : setError(res?.errorMessages[0])
         } catch (error) {setError("Error")}
         setloading(false) 
