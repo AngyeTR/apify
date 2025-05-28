@@ -5,6 +5,7 @@ import { FormPage } from "../pages/FormPage.jsx/FormPage"
 import { UploadPage } from "../pages/UploadPage.jsx/UploadPage"
 import { DelegatesPage } from "../pages/DelegatesPage/DelegatesPage"
 import { HomePage} from "../pages/HomePage/HomePage"
+import { StoreManagerPage } from "../pages/StoreManagerPage/StoreManagerPage"
 
 const dashboardRoutes =[
       <Route path="/dashboard/wizard" element={<WizardPage/>} />,
@@ -15,6 +16,7 @@ const dashboardRoutes =[
       <Route path="/dashboard/:module" element={<ModulePage />  } />,
       <Route path="/dashboard/upload" element={<UploadPage />  } />,
       <Route path="/dashboard/delegates" element={<DelegatesPage />  } />,
+      <Route path="/dashboard/storemanager" element={<StoreManagerPage /> } />,
       <Route path="/*" element={<h1>No se encontraron resultados</h1>  } />,
 ]
 

@@ -9,7 +9,7 @@ export function MyNavBar() {
   const params = useParams()
   const opts = mods[getModuleId(params.module)?.name]?.options
   const handleClick = (option)=>{
-    window.location.href = `/${params.module}/${getTranslate(option.toLowerCase())}`; 
+    window.location.href = `/dashboard/${params.module}/${getTranslate(option.toLowerCase())}`; 
   }
     return (
       <Navbar>

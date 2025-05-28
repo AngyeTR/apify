@@ -1,58 +1,56 @@
 import { TableHead, TableHeader, TableRow, Table, TableBody, TableCell } from "../../../../shared/components/uikit/table"
-import { HiOutlineCheck , HiOutlinePencil  } from "react-icons/hi";
+import { HiOutlineCheck , HiOutlinePencil, HiOutlineTrash  } from "react-icons/hi";
 import { Button } from "../../../../shared/components/uikit/button"
-import { getByID } from "../../../../shared/services/API/api"
+import { Select} from "../../../../shared/components/uikit/select"
+import { getByID, edit as update } from "../../../../shared/services/API/api"
 import {  useState, useEffect } from "react"
+import { useNavigate } from "react-router-dom";
 
-export const MyDelegatesTable = ({profiles, data})=> {
-    const headers = [{name:"Nombre", key:"name"}, {name: "Email", key:"email"}, {name: "Invitación", key: "idProfile"}, {name: "Estado", key:"isActive"}]
+export const MyDelegatesTable = ({ data})=> {
+    const nav = useNavigate()
+    const headers = [{name:"Nombre", key:"name"}, {name: "Email", key:"email"}, {name: "Invitación", key: "idProfile"},]
     const [ edit, setEdit] = useState(null)
+    const [ newStatus, setNewStatus] = useState(null)
     const [delegates, setDelegates] = useState([])
-    const handleChange=(id, value)=>{
-        let newItem = edit
-        newItem[id] = value
-        setEdit(newItem)}
-    const saveChange = ()=>{
-        console.log("saving", edit)
-    }
+    const saveChange = async()=>{
+        edit.status = parseInt(newStatus)
+        const res = await update("Delegates", edit).then(res=> res)
+        res.isValid  && nav(0)   }
 
-        const data1 = [{email: "a@a.com", idDelegate:10, idProfile:1, isActive:true, name:"Delegado1", id:1},
-            {email: "a@abc.com", idDelegate:9, idProfile:2, isActive:false, name:"Delegado1", id:2},
-            {email: "a@abcde.com", idDelegate:11, idProfile:1, isActive:true, name:"Delegado1", id:3},]
+    const getInvitationStatus = (status) =>{
+        const options = {1: "Abierta", 2:"Enviada", 3:"Aprobada", 4:"Revocada", 5:"Rechazada"}
+        return options[status] }
 
-    useEffect(() => {data1?.map(item=> getByID("Users", item.idDelegate).then(res => setDelegates(prev => [...prev, {...item, ["fullname"]: res.data.fullname, ["idProfile"]: res.data.idProfile, ["email"]: res.data.email}]))) }, []);
-
+    useEffect(() => {data.map(item=> getByID("Users", item.idUser).then(res => setDelegates(prev => [...prev, {...item, ["fullname"]: res.data.fullname, ["email"]: res.data.email , ["status"]: item.status}])))  }, [data]);
     
-console.log(delegates)
     return ( 
-    <Table className="w-full">
+    <Table className="w-full z-0">
         <TableHead>
+            {console.log(delegates)}
             <TableRow>
-            {headers.map(header => <TableHeader>{header.name}</TableHeader>)}
-                <TableHeader>Cambios</TableHeader>
+            {headers.map(header => <TableHeader key={header.name}>{header.name}</TableHeader>)}
+                <TableHeader>Acciones</TableHeader>
             </TableRow>
         </TableHead>
-        <TableBody>
-            {delegates?.map(item=> console.log(item))}
-        {delegates?.map((item) => (<TableRow >
-            <TableCell className="font-medium">{item.fullname}</TableCell>
+        <TableBody className="z-0">
+        {delegates?.map((item) => (<TableRow key={item.id}>
+            <TableCell className="font-medium z-0">{item.fullname}</TableCell>
             <TableCell className="font-medium">{item.email}</TableCell>
             <TableCell className="font-medium">
-            {edit?.id == item.id ? <select  defaultValue={item.idProfile} name="idProfile" onChange={(e)=>handleChange("idProfile" , parseInt(e.target.value))} className="group relative w-20 m-2 p-1 border border-zinc-400 rounded-lg">
-            { profiles?.map((profile)=> <option value={profile.id}>{profile.name}</option>)}</select> 
-            : profiles?.filter((profile)=>profile.id == item.idProfile)[0].name}
+            {edit?.id == item.id ? <div className="w-[150px]"><Select onChange={e=> setNewStatus(e.target.value)}>
+                {console.log(edit)}
+                <option value={0} >Seleccione</option>
+                <option value={2} >Re-enviar</option>
+                <option value={4} >Revocar</option>
+            </Select></div>: 
+             <span>{getInvitationStatus(item.status)}</span>} 
             </TableCell>
             <TableCell className="font-medium">
-            {edit?.id == item.id ? <select  defaultValue={item.idProfile} name="isActive" onChange={(e)=>handleChange("isActive" , e.target.value == "true")} className="group relative w-20 m-2 p-1 border border-zinc-400 rounded-lg">
-            <option value={true}>Activo</option><option value={false}>Inactivo</option></select> 
-            : item.isActive ? "Activo" : "Inactivo"}         
+            {edit?.id == item.id ? <><Button color="blue" onClick={saveChange} disabled={!newStatus || newStatus == 0}>Guardar</Button>
+            <Button color="red"  onClick={()=>{setEdit(null); setNewStatus(null)}}>Cancelar</Button></> : 
+             <Button color="blue" onClick={()=>setEdit(item)}><HiOutlinePencil  className="size-4"/></Button>}
             </TableCell>
-            <TableCell className="font-medium">
-            {edit?.id == item.id ? <Button onClick={()=>saveChange()}><HiOutlineCheck className="size-4"/></Button> : 
-            //  <Button onClick={()=>console.log(item)}><HiOutlinePencil className="size-4"/></Button>}
-             <Button onClick={()=>setEdit(item)}><HiOutlinePencil className="size-4"/></Button>}
-            </TableCell>
-        </TableRow>))}
+        </TableRow>))}  
       </TableBody>
     </Table>
     )}

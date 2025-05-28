@@ -33,6 +33,21 @@ export const getLogin = async (email, password)=> {
   return res
 }
 
+export const getLoginCustomer = async (email, password)=> {
+  const res = await api.post(`Login/LoginCustomer`,  { email: email, password: password } ).then(response =>  response.data.response).catch(error => error.response.data.response);
+  return res
+}
+
+export const getByCustomerId = async (query, id)=>{
+  const res = await api.get(`/${query}/GetByIdCustomer/${id}`).then(response =>  response).catch(error => error);
+  return res.data.data
+}
+
+export const  getByEmail = async (email) => {
+  const res = await api.get(`Users/GetByEmail/${email}`).then(response =>  response.data).catch(error => error.response.data);
+  return res
+}
+
 export  const  getSegments  = async()=>{
   const res = await api.get(`/Segments/Get`).then(response =>  response.data).catch(error => {return error.response.data});
   return res
@@ -68,6 +83,11 @@ export const edit = async (query, data)=>{
   return res
 }
 
+export const cloneLayout = async ( data)=>{
+  const res = await api.post(`/Layouts/clone`, data).then(response =>  response.data).catch(error => {return error.response.data});
+  return res
+}
+
 export const updateWizard = async (step)=>{
   const data = adaptImplementationModel(step)
   const res = await api.patch(`/Implementation/Update`, data).then(response =>  response.data).catch(error => {return error.response.data});
@@ -100,5 +120,20 @@ export const postFolder = async (data)=>{
 
 export const postFile = async (data)=>{
   const res = await api.post(`/Libraries/AddFile`, data).then(response =>  response).catch(error => {return error.response}); 
+  return res.data
+}
+
+export const getFavorites = async (idCompany, idUser)=>{
+  const res = await api.get(`/Products/GetByIdCompanyCustomer${idCompany}/${idUser}`).then(response =>  response).catch(error => {return error.response}); 
+  return res.data
+}
+
+export const markFavorite = async (data) => {
+  const res = await api.post(`/Products/MarkFavorite`, data).then(response =>  response).catch(error => {return error.response}); 
+  return res.data
+}
+
+export const unMarkFavorite = async (data) => {
+  const res = await api.post(`/Products/UnmarkFavorite`, data).then(response =>  response).catch(error => {return error.response}); 
   return res.data
 }

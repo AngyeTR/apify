@@ -7,6 +7,8 @@ import { Input } from "../../../shared/components/uikit/input"
 import { Field } from "../../../shared/components/uikit/fieldset"
 import { postFolder } from "../../../shared/services/API/api"
 import { useNavigate } from "react-router-dom"
+import { HiOutlineHome } from "react-icons/hi";
+
 
 export const CollectionsList = ({collection, setCollection, data})=> {
     const user = {email: "angie.rodriguez@tambora.co", companyId: 1}
@@ -28,10 +30,12 @@ export const CollectionsList = ({collection, setCollection, data})=> {
             } catch (error) {setError("algo salió mal. Intenta de nuevo") }     }
 
     return ( 
-        <div  className="border border-zinc-400 w-full m-1 rounded-lg p-1 pt-2">
+        <div  className="border border-zinc-400 w-full m-1 rounded-lg p-1 pt-2 bg-zinc-100">
+            <Button className="mb-3 m-1" onClick={()=>nav("/designer")}> volver <HiOutlineHome className="size-4 self-center"/></Button>
         <Heading >Colecciones</Heading>
+        {/* <Button onClick={()=>nav("/designer/")} className="mt-5" color="light"><HiOutlineHome className="size-6 justify-self-start" /></Button> */}
     <div className="mt-5  m-1">
-    {data && data.map(col => <div className={` ${col?.id == collection?.id && "border border-zinc-500 rounded-lg"} mt-2`}><h3 onClick={()=> setCollection(col)} className=" font-medium my-0 py-0 hover:underline mt-1" key={col.name}>{col.name}</h3> <span className="text-[10px] my-0 py-0 ">- {col.files.length} archivos</span></div> 
+    {data && data.map(col => <div key={col.id} className={` ${col?.id == collection?.id && "border border-zinc-500 rounded-lg"} mt-2`}><h3 onClick={()=> setCollection(col)} className=" font-medium my-0 py-0 hover:underline mt-1" key={col.name}>{col.name}</h3> <span className="text-[10px] my-0 py-0 ">- {col.files.length} archivos</span></div> 
 )}</div>
     <Button onClick={()=>setEditor(true)}>Añadir Colección</Button>
     {editor && 

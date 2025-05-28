@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Button } from '../../../../shared/components/uikit/button'
 
  function  getURL(value){ 
@@ -11,9 +11,8 @@ export const FormArrayItems = ({ref, state, setState, disabled})=>{
     console.log(state)
 
     const ColorInput =()=>{
-        const [colorName, setColorName] = useState("")
+       const [colorName, setColorName] = useState("")
         const [colorCode, setColorCode] = useState("")
-        setState(state)
         return(
             <>
             <input type="color" value={colorCode} className='w-15  my-2 mx-2' name={ref}  onChange={(e)=> setColorCode(e.target.value)} />
@@ -34,7 +33,7 @@ export const FormArrayItems = ({ref, state, setState, disabled})=>{
             <>
             <input accept="image/*" type="file" multiple className='w-50 my-2 mx-2 h-8 bg-white shadow-sm border border-gray-400  rounded-md'
              name='size'  onChange={(e)=> setVariable(e.target.files[0])} />
-            <Button disabled={disabled} onClick={()=> setState([...state, {value:variable}])}>Añadir</Button>
+            <Button disabled={disabled} onClick={()=> setState(state.length == 0 ? [{value:variable}] : [...state, {value:variable}])}>Añadir</Button>
             <div className="w-xs md:w-lg lg:w-xl flex  my-2 overflow-hidden ">
             { state?.map((stat)=> 
             // console.log(stat.value)

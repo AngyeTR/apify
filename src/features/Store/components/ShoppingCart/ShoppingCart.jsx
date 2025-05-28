@@ -2,38 +2,71 @@ import { Button } from "../../../../shared/components/uikit/button"
 import { Input } from "../../../../shared/components/uikit/input"
 import { HiOutlineTrash } from "react-icons/hi";
 import logo from "../../../../assets/gallery-icon.png" 
+import { useEffect, useState } from "react";
+import { getByCompanyId, getByCustomerId, getByID } from "../../../../shared/services/API/api"
+import { HiOutlineShoppingCart } from "react-icons/hi";
+import { useNavigate } from "react-router-dom";
+import { getStoreUser } from "../../../../shared/services/cookies";
+import { useLocalStorage } from "../../../../shared/hooks/useLocalStorage";
+import { filtercarts } from "../../utils/functions";
+import { useCart } from "../../hooks/UseCart";
 
+export const ShoppingCart = ()=> {
+  const [cart, setCart] = useLocalStorage("cart", null)
+  const [products, setProducts] = useState([])
+  const [stored] = useLocalStorage("data")
+  const { createCart,updateCart,updateQuantity,removeProduct,}  = useCart()
 
-export const ShoppingCart = ({data})=> {
-    let items = [{name: "Producto 1", id:1, size:"S", color:"Azul", price:25, quantity:1, url:"https://tailwindcss.com/plus-assets/img/ecommerce-images/shopping-cart-page-01-product-01.jpg"},
-        {name: "Producto 2", id:2, price:35, quantity:2, url:null},
-        {name: "Producto 3", id:3, size:"S", color:"Rojo", price:25, quantity:1, url:null},
-    ]
-    data && (items = data)
-    const  subtotal = data ? 0 : items.reduce((sum, item) => sum + (item.price * item.quantity), 0)
-    const shipping = 0
-    const total = subtotal + shipping
-    console.log(subtotal, total)
-    return (
-        <div className="bg-white">
+  const nav = useNavigate()
+  const storeUserId = getStoreUser()
+
+  useEffect(()=>{getByCompanyId("PreOrders", stored.user.company.id).then(res=> saveCart(res.data))},[])
+
+const saveCart = async (data)=>{
+  setCart(filtercarts(data, storeUserId))
+  const getProduct = async(id)=> {await getByID("Products", id).then(res=> setProducts(prev=> ([...prev, res.data])))}
+  cart.lines.length >= 0  && cart.lines.map(item =>  getProduct(item.idProduct))
+}
+    
+  const  subtotal = (!cart || cart.lines == []) ? 0 : cart.lines.reduce((sum, item) => sum + (item.price * item.quantity), 0)
+  const shipping = 0
+  const total = subtotal + shipping
+
+  const manageChanges = async (type, productId, quantity) =>{
+    if(type == "quantity"){
+      updateQuantity(cart, productId, quantity).then(res=>console.log(res))
+    }else if (type == "delete"){
+      await removeProduct(cart, productId).then(res=> console.log(res))
+      nav(0)
+    }
+  }
+
+  return (
+  <div className="bg-white">
   <div className="mx-auto max-w-2xl px-4 pt-1 pb-24 sm:px-6 lg:max-w-7xl lg:px-8">
     <h1 className="text-3xl font-bold tracking-tight text-zinc-900 sm:text-4xl">Orden</h1>
+    {cart.lines.length == 0 ? <div className="justify-items-center my-10">
+            <HiOutlineShoppingCart className="size-16  my-5"/>
+            <h1 className="text-xl"> Aún no hay artículos en el carrito</h1>
+            <Button className="my-3" onClick={()=> nav("/")}>Ir de compras</Button>
+          </div> 
+          : 
     <form className="mt-8 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16">
       <section aria-labelledby="cart-heading" className="lg:col-span-7">
         <ul role="list" className="divide-y divide-zinc-200 border-t border-b border-zinc-200">
-          {items.map((item)=>{
+          
+          {cart.lines.map((item, index)=>{
             return (
-                <li className="flex py-6 sm:py-10" key={item.id}>
+                <li className="flex py-2 sm:py-3" key={item.id}>
             <div className="shrink-0">
-              <img src={item.url ? item.url: logo} alt={item.name} className="size-12 rounded-md object-cover sm:size-24"/>
+              <img src={products[index]?.images?.[0] ? products[index]?.images?.[0].url : logo} alt={item.productName} className="size-20 rounded-md object-cover"/>
             </div>
-
             <div className="ml-4 flex flex-1 flex-col justify-between sm:ml-6">
               <div className="relative pr-9 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:pr-0">
                 <div>
                   <div className="flex justify-between">
                     <h3 className="text-sm">
-                      <a href="#" className="font-medium text-zinc-700 hover:text-zinc-800">{item.name}</a>
+                      <a href="#" className="font-medium text-zinc-700 hover:text-zinc-800">{item.productName}</a>
                     </h3>
                   </div>
                   <div className="mt-1 flex text-sm">
@@ -45,8 +78,8 @@ export const ShoppingCart = ({data})=> {
 
                 <div className="mt-4 sm:mt-0 sm:pr-9">
                   <div className="grid w-full max-w-30 grid-cols-2">
-                    <Input placeholder={1} defaultValue={item.quantity} type="number"/>
-                    <HiOutlineTrash className="size-6 mx-1 self-center"/>
+                    <Input placeholder={1} defaultValue={item.quantity} type="number" onChange={(e)=>manageChanges("quantity", item.idProduct, e.target.value)}/>
+                    <HiOutlineTrash className="size-6 mx-1 self-center" onClick={()=>manageChanges("delete", item.idProduct)}/>
                   </div>
                 </div>
               </div>
@@ -90,7 +123,7 @@ export const ShoppingCart = ({data})=> {
           <Button type="submit" className="w-full rounded-md border border-transparent bg-indigo-600 px-4 py-3 text-base font-medium text-white shadow-xs hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-zinc-50 focus:outline-hidden">Proceder a Pagar</Button>
         </div>
       </section>
-    </form>
+    </form>}
   </div>
 </div>
     )

@@ -1,7 +1,10 @@
-import { LoginForm } from "../components/LoginForm/LOginForm"
+import { LoginForm } from "../components/LoginForm/LoginForm"
+import {Layout} from "../pages/Layout"
 
 export const LoginPage=()=>{
     return (
-        <LoginForm/>
+        <Layout>
+            <LoginForm/>
+        </Layout>
     )
 }

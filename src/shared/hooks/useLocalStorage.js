@@ -18,5 +18,11 @@ export function useLocalStorage(key, initialValue){
             
         }
     }
-    return [storedValue, setValue]
+     const removeValue = () => {
+    try {
+      window.localStorage.removeItem(key);
+      setStoredValue(initialValue); 
+    } catch (error) {console.log(error);}
+  };
+    return [storedValue, setValue, removeValue]
 }

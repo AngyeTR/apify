@@ -3,15 +3,16 @@ import { hexToRgba } from "../../../../shared/utils/utils"
 import { getByCompanyId } from "../../../../shared/services/API/api"
 import { NavLink } from "react-router-dom"
 import logo from "../../../../assets/gallery-icon.png"
+import { useLocalStorage } from "../../../../shared/hooks/useLocalStorage"
 
 const color = hexToRgba("#ff0000", 0.2)
 
 export const CategoriesContainer = ()=> {
     const [categories, setCategories] = useState(null)
-    useEffect(()=>{getByCompanyId("Categories", 1).then(res=>setCategories(res.data))},[])
-    console.log(categories)
+    const [stored]  = useLocalStorage("data")
+
+    useEffect(()=>{getByCompanyId("Categories", stored.company.id).then(res=>setCategories(res.data))},[])
     let category = categories?.filter(cat=> cat.id == 1)[0]
-    console.log(category?.name)
     const recommended = [
         {id: 1, name: "Producto recomendado", url:null,  category: 1},
         {id: 2, name: "Producto recomendado 2", url:"https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-02-edition-01.jpg",  category: 2},

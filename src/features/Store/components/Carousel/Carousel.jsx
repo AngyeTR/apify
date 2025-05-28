@@ -5,11 +5,11 @@ import logo from "../../../../assets/gallery-icon.png"
 
 export const Carousel = ({type, data}) => {
     let items = [
-        {url:"https://images.unsplash.com/photo-1497436072909-60f360e1d4b1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2560&q=80", name:"Producto Prueba", id: 1, colors: [{colorCode: "#db1f1f", nombre: "Rojo"}, {colorCode: "#0000ff", nombre: "Azul"}],
+        {url:"https://images.unsplash.com/photo-1497436072909-60f360e1d4b1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2560&q=80", name:"Prueba2", id: 31, colors: [{colorCode: "#db1f1f", nombre: "Rojo"}, {colorCode: "#0000ff", nombre: "Azul"}],
       sizes: ["XS", "S", "M", "L"], score: 3.9, price:25, reviews: 120, isColors:true, isSizes:true},
-      {url: null, name:"Producto Prueba", id: 1, colors: [{colorCode: "#db1f1f", nombre: "Rojo"}, {colorCode: "#0000ff", nombre: "Azul"}],
+      {url: null, name:"Prueba2", id: 33, colors: [{colorCode: "#db1f1f", nombre: "Rojo"}, {colorCode: "#0000ff", nombre: "Azul"}],
       sizes: ["XS", "S", "M", "L"], score: 3.2, price:50, reviews: 10, isColors:false, isSizes:true},
-      {url:"https://wallpapers.com/images/high/autumn-streets-full-screen-hd-desktop-4pkhsz8q9vwm3g4y.webp", name:"Producto Prueba", id: 1, colors: [{colorCode: "#db1f1f", nombre: "Rojo"}, {colorCode: "#0000ff", nombre: "Azul"}],
+      {url:"https://wallpapers.com/images/high/autumn-streets-full-screen-hd-desktop-4pkhsz8q9vwm3g4y.webp", name:"Prueba", id: 37, colors: [{colorCode: "#db1f1f", nombre: "Rojo"}, {colorCode: "#0000ff", nombre: "Azul"}],
       sizes: ["XS", "S", "M", "L"], score: 4.1, price:540, reviews: 1100,  isColors:false, isSizes:false}
         ]
     data && (items = data)

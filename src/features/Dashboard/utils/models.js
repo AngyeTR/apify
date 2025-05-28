@@ -45,7 +45,8 @@ export const userModel = {
     idProfile: null,
     email: "",
     password: "",
-    avatar: ""
+     avatar: "",
+    isSalesman: true
     }
 
 export const companyModel = {
@@ -101,4 +102,14 @@ export const officeModel = {
     contactName: "",
     latitude: "",
     longitude: "",
+}
+
+export const delegateModel = {
+    isActive: true,
+    createdBy:	null,
+    modifiedBy:	null,
+    idCompany: 0,
+    idUser: 0,
+    startDelegation: "",
+    endDelegation: ""
 }

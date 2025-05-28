@@ -24,7 +24,7 @@ export const ButtonWidget = ({content, id, edit, editable, style})=>{
         </div>
         {editor && 
         <Modal>
-            <Field className="w-md bg-zinc-50 p-5 m-3 rounded-lg shadow-xl border border-zinc-200">
+            <Field className="w-md bg-zinc-50 p-5 m-3 rounded-lg shadow-xl border border-zinc-200 justify-items-center">
             <Label >Botón</Label>
             <input  onChange={e=> (setVariable(prev => ({...prev, ["label"] : e.target.value})))}  placeholder="Ingrese Texto del Botón" className="block bg-white border border-zinc-600 rounded-lg my-2 px-1 w-sm text-sm py-1"/>
             <input  onChange={e=> setVariable(prev => ({...prev, ["url"] : e.target.value}))} placeholder="Ingrese la URL del botón" className="block my-2 bg-white border border-zinc-600 rounded-lg px-1 w-sm text-sm py-1"/>

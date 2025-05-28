@@ -15,20 +15,15 @@ import { validateEmail, getBase64, } from "../../../../shared/utils/utils"
 import { useLocalStorage } from '../../../../shared/hooks/useLocalStorage'
 
 export function FormUser(props) {
-  useEffect(() => {
-    props.origin == "editor" ?  getByID("Users",props.id).then(res => setModel(res.data)) : setModel(userModel)
-    props.origin == "editor" &&  getByID("Users",props.id).then(res => setIsSeller(res.data.isSalesman)) 
-  }, []);
+  useEffect(() => {props.origin == "editor" ?  getByID("Users",props.id).then(res => setDataSet(res.data)) : setDataSet(userModel)}, []);
   const [loading, setloading] = useState(false)
-  const [ model, setModel] = useState(null)
+  const [dataSet, setDataSet] = useState(null)
   const [ava, setAva] = useState(props.origin == "editor" ? true : false)
-  const [isSeller, setIsSeller] = useState(false)
   const [imgUrl, setImgUrl] = useState("")
   const [base64, setBase64] = useState("")
   const [error, setError] = useState(null)
   const [stored, setStored] = useLocalStorage("data", null) 
   const [profiles, setProfiles] = useState([])
-  let dataSet = model
  
   useEffect(() => {getProfiles().then((res) => {setProfiles(res.data)})}, [ , imgUrl]);
 
@@ -44,7 +39,7 @@ export function FormUser(props) {
         
     const handleChange = (e) => {
       const { name, value } = e.target;
-      dataSet[name] = value
+      setDataSet(prev=>({...prev, [name]: value}))
       const dispo =  props.origin == "editor" ? true :((dataSet.idProfile && dataSet.firstName && dataSet.lastName && dataSet.email && dataSet.password) ? true : false) 
       setAva(dispo)
     };
@@ -60,7 +55,7 @@ export function FormUser(props) {
         if(verifyEmail) {setError(verifyEmail) 
           setloading(false) 
         }else {
-        const cleanData = await adaptUserModel(dataSet, props.origin, base64, isSeller)
+        const cleanData = await adaptUserModel(dataSet, props.origin, base64)
         await new Promise(resolve => setTimeout(resolve, 2000));
         const res =( props.origin == "editor") ? await edit("Users", cleanData) :  await post("Users", cleanData)
         setloading(false)
@@ -83,7 +78,7 @@ export function FormUser(props) {
         <option value="">Selecciona una opcion</option>
         { profiles?.map((profile)=> <option value={profile.id}>{profile.name}</option>)}
       </Select>
-      <Label className="block my-4">Este usuario también es vendedor<Switch checked={isSeller} onChange={setIsSeller} /> </Label>
+      <Label className="block my-4">Este usuario también es vendedor<Switch checked={dataSet?.isSalesman} onChange={()=> setDataSet(prev=>({...prev,  isSalesman: !prev.isSalesman}))} /> </Label>
       <Label>Email*</Label>
       <Input type="email" name="email"  onChange={handleChange} id="email" placeholder={dataSet?.email && dataSet.email}/>
       <Label>Contraseña*</Label>
@@ -91,7 +86,7 @@ export function FormUser(props) {
       <Label>Avatar</Label>
       <input accept="image/*" type="file" multiple className='w-50 my-2 mx-2 h-8 bg-white shadow-sm border border-gray-400  rounded-md'
      onChange={(e)=> upLoadImage(e.target.files[0])} />
-      <img   className={` ${imgUrl ? "h-30 visible" : "invisible"}`} src={imgUrl} alt=""/>
+     {imgUrl && <img   className="h-30" src={imgUrl} alt=""/>}
       {error && <p className={`text-red-600 pt-5`}>Ups! Algo salió mal: {error}</p> }  
     <Button onClick={handleSave} className="my-10 mr-2" 
     disabled={!ava}>

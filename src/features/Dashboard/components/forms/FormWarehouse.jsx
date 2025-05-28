@@ -13,40 +13,36 @@ import { warehouseModel } from "../../utils/models"
 import { adaptWarehouseModel } from '../../utils/adaptDataModel'
 
 export function FormWarehouse(props) {
-  useEffect(() => { props.origin == "editor" ?  getByID("Warehouses", props.id).then(res => setModel(res.data)) : setModel(warehouseModel)
+  useEffect(() => { props.origin == "editor" ?  getByID("Warehouses", props.id).then(res => setDataSet(res.data)) : setDataSet(warehouseModel)
     props.origin == "editor" &&  getByID("Warehouses",props.id).then(res => setSalesPoint(res.data.isPublic)) 
   }, []);
-    const [countries, setCountries] = useState([]);
+    
     const [error, setError] = useState(null);
     const [loading, setloading] = useState(false)
-    const [model, setModel] = useState(null)
-    const [isActive, setIsActive] = useState(false)
-    const [salesPoint, setSalesPoint] = useState(false)
+    const [dataSet, setDataSet] = useState(null)
     const [ava, setAva] = useState(props.origin == "editor" ? true : false)
-    const [country, setCountry] = useState(null);
-    const [states, setStates] = useState(null)
-    const [state, setState] = useState("");
-    const [cities, setCities] = useState(null)
+    const [location, setLocation] = useState(null)
     const [selectedCity, setSelectedCity] = useState(null)
-    let dataSet = model
+
     const handleChange = (e) => {
       const { name, value } = e.target;
-      dataSet[name] = value
+      setDataSet(prev=>({...prev, [name]: value}))
       const dispo = props.origin == "editor" ? true : ((selectedCity  && dataSet.name && dataSet.cellphone && dataSet.address && dataSet.contactName) ? true : false) 
       setAva(dispo)
     };
 
    useEffect(() => {
-        getCountries().then((res) => {setCountries(res.data)});
-        country && getStates(country.id).then((res) => {setStates(res.data)});
-        state && getCities(state.id).then((res) => {setCities(res.data)});
-        console.log(selectedCity)
-      }, [, country, state]);
+        getCountries().then((res) => setLocation(prev=> ({...prev, "countries": res.data})));
+        location?.country && getStates(location.country.id).then((res) => setLocation(prev=> ({...prev, "states": res.data})));
+        location?.state && getCities(location.state.id).then((res) => setLocation(prev=> ({...prev, "cities": res.data})));
+        location?.state && getCities(location.state.id).then((res) =>console.log(res) );
+      }, [ location?.country, location?.state ]);
+
 
     const handleSave= async ()=>{
       setloading(true)
       setError(null)
-      const cleanData = adaptWarehouseModel(dataSet, props.origin, selectedCity, isActive, salesPoint)
+      const cleanData = adaptWarehouseModel(dataSet, props.origin, selectedCity)
       const res = props.origin == "editor" ? await edit("Warehouses", cleanData) : await post("Warehouses", cleanData) 
       setloading(false)
       res?.isValid ? props.handleClick() : setError(res?.errorMessages ? res?.errorMessages[0] : " Por favor revise que los campos sean correctos")
@@ -58,29 +54,23 @@ export function FormWarehouse(props) {
       <Heading>Información de la Bodega</Heading>
     </div>
     <Field>
-      <Label>Nombre*</Label>
+       <Label>Nombre*</Label>
       <Input name="name" placeholder={dataSet?.name && dataSet.name} onChange={handleChange} />
-      <Label className="block my-4">Esta bodega también es punto de atención al público <Switch checked={salesPoint} onChange={setSalesPoint} /> </Label>
-      <Label className="block my-4">Bodega Activa <Switch checked={isActive} onChange={setIsActive} /> </Label>
+      <Label className="block my-4">Esta bodega también es punto de atención al público <Switch checked={dataSet?.isPublic} onChange={()=> setDataSet(prev=>({...prev,  isPublic: !prev.isPublic}))}/> </Label>
+      <Label className="block my-4">Bodega Activa <Switch checked={dataSet?.isActive} onChange={()=> setDataSet(prev=>({...prev,  isActive: !prev.isActive}))}/></Label>
       <Label>Pais*</Label>
-      <Select name="country" onChange={(e)=> setCountry(JSON.parse(e.target.value))}>
+      <Select name="country" onChange={(e)=> setLocation(prev => ({...prev, "country": JSON.parse(e.target.value)}))}>
         <option value="">Selecciona una opcion</option>
-        {countries?.map((country)=> <option value={JSON.stringify(country)} key={country.name}>{country.name}</option>)}
+        {location?.countries?.map((country)=> <option value={JSON.stringify(country)} key={country.name}>{country.name}</option>)}
       </Select>
-      <Field>
-      <Label>Pais</Label>
-    </Field>
       <Label>Estado/ Departamento*</Label>
-        <Select name="state" onChange={(e)=> setState(JSON.parse(e.target.value))}>
+         <Select name="state" onChange={(e)=> setLocation(prev => ({...prev, "state": JSON.parse(e.target.value)}))}>
         <option value="">Selecciona una opcion</option>
-        {states?.map((state)=> <option value={JSON.stringify(state)} key={state.name}>{state.name}</option> )}
+        {location?.states?.map((state)=> <option value={JSON.stringify(state)} key={state.name}>{state.name}</option> )}
       </Select>
       <Label>Ciudad*</Label>
-      {/* <Select name="idCity" onChange={(e)=> setSelectedCity(JSON.parse(e.target.value))}>
-        <option value="">Selecciona una opcion</option>
-        { cities?.map((city)=> <option value={JSON.stringify(city)} key={city.name}>{city.name}</option> )}
-      </Select> */}
-      <Combobox name="city" options={cities} displayValue={(city) => city?.name} 
+      
+      <Combobox name="city" options={location?.cities ? location.cities : []} displayValue={(city) => city?.name} 
        onChange={(e)=> setSelectedCity(JSON.parse(e))} placeholder={selectedCity ? selectedCity.name : "Seleccionar ciudad&hellip;"}>
         {(city) => (
           <ComboboxOption value={JSON.stringify(city)}>

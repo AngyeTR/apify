@@ -23,7 +23,7 @@ export const TitleWidget = ({content, id, edit, editable, style})=>{
     </div>
     {editor && 
     <Modal>
-       <Field className="w-md bg-zinc-50 p-5 m-3 rounded-lg shadow-xl border border-zinc-200">
+       <Field className="w-md bg-zinc-50 p-5 m-3 rounded-lg shadow-xl border border-zinc-200 justify-items-center">
         <Label >Título</Label>
         <Input name="url" placeholder="Ingrese el Título" onChange={e=> setVariable(e.target.value)}/>
         <TextController styles={styles} setStyles={setStyles}/>

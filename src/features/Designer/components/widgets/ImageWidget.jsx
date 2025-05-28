@@ -27,7 +27,7 @@ export const ImageWidget = ({content, id, edit, editable})=>{
         </div>    
         {editor  && (
        <Modal> 
-        <Field className="w-md bg-zinc-50 p-5 m-3 rounded-lg shadow-xl border border-zinc-200">
+        <Field className="w-md bg-zinc-50 p-5 m-3 rounded-lg shadow-xl border border-zinc-200 justify-items-center">
             <Label >Imagen</Label>
             <p>Seleccionar desde las Colecciones guardadas  <Switch checked={internalOrigin} onChange={setInternalOrigin}/> </p>
             {!internalOrigin ? <Input name="url" placeholder="Ingrese URL de la imagen" onChange={e=> setVariable(e.target.value)}/>

@@ -11,24 +11,21 @@ import { edit, getByID, post } from "../../../../shared/services/API/api"
 import { validateEmail } from "../../../../shared/utils/utils"
 
 export function FormSalesman(props) {
-  useEffect(() => {
-    props.origin == "editor" ?  getByID("Salesman", props.id).then(res => setModel(res.data)) : setModel(salesModel)
+   useEffect(() => {
+    props.origin == "editor" ?  getByID("Salesman", props.id).then(res => setDataSet(res.data)) : setDataSet(salesModel)
     props.origin == "editor" &&  getByID("Salesman",props.id).then(res => setIsActive(res.data.isActive))
    }, [ ]);
-  const [model, setModel] = useState(null)
+  const [dataSet, setDataSet] = useState(null)
   const [loading, setloading] = useState(false)
   const [ava, setAva] = useState(props.origin == "editor" ? true : false)
   const [error, setError] = useState(null)
   const [isActive, setIsActive] = useState(false)
-  let dataSet = model
-  console.log(dataSet)
        
-    const handleChange = (e) => {
-      const { name, value } = e.target;
-      dataSet[name] = value
-      const dispo =  props.origin == "editor" ? true :((dataSet.name && dataSet.lastName && dataSet.email ) ? true : false) 
-      setAva(dispo)
-    };
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setDataSet(prev => ({...prev, [name]: value}))
+    const dispo =  props.origin == "editor" ? true :((dataSet.name && dataSet.lastName && dataSet.email ) ? true : false) 
+    setAva(dispo)};
     
   const handleSave= async()=>{
         setloading(true)

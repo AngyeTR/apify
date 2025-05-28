@@ -17,12 +17,13 @@ export const HighlightsContainer = ()=> {
         <div className="relative box-content h-60 overflow-x-auto py-2 ">
           {/* <div className={`grid grid-cols-${categories.length} px-6 w-full overflow-hidden rounded-lg p-2 hover:opacity-75`}>   */}
           <div className=" flex-row absolute flex space-x-8 px-4 sm:px-6 lg:px-8 xl:relative xl:grid xl:grid-cols-5 xl:gap-x-8 xl:space-x-0 xl:px-0">  
+            {console.log(categories)}
             {categories?.map((cat, index) => {
-              const url = cat.image ? cat.image : logo 
+              const url = cat.avatar ? cat.avatar : logo 
               return (
               <NavLink key={index} to={`/store/category/${cat.id}`} className="mx-1 relative flex h-60 w-40 flex-col overflow-hidden rounded-lg p-6 hover:opacity-75 xl:w-auto">
               <span aria-hidden="true" className="absolute inset-0">
-                <img src={logo} alt="" className="size-full object-cover"/>
+                <img src={url} alt="" className="size-full object-cover"/>
               </span>
               <span aria-hidden="true" className="absolute inset-x-0 bottom-0 h-2/3 bg-linear-to-t from-zinc-800 opacity-50"></span>
               <span className="relative mt-auto text-center text-xl font-bold text-white">{cat.name}</span>

@@ -1,23 +1,59 @@
 import { useEffect, useState, useRef } from "react"
-import { getByID } from "../../../../shared/services/API/api"
-import { useParams } from "react-router-dom"
+import { getByID, markFavorite, unMarkFavorite } from "../../../../shared/services/API/api"
+import { useNavigate, useParams } from "react-router-dom"
 import { Carousel } from "../Carousel/Carousel"
 import { Stars } from "../Stars/Stars"
 import { Button } from "../../../../shared/components/uikit/button"
 import { HiOutlineHeart, HiHeart } from "react-icons/hi";
 import { Fieldset } from "../../../../shared/components/uikit/fieldset"
 import { Reviews } from "./Reviews"
+import { useLocalStorage } from "../../../../shared/hooks/useLocalStorage"
+import { getStoreUser } from "../../../../shared/services/cookies"
+import { useCart } from "../../hooks/UseCart"
+import { adaptFavoriteModel } from "../../utils/adaptModels"
+import { favoriteModel } from "../../utils/models"
 
 export const ProductView = ()=>{
     const [product, setProduct] = useState(null)
     const sizes = ["XS", "S", "M"]
     const params = useParams()
     const reviewsRef = useRef(null);
+    const [favorites, setFavorites] = useLocalStorage("favorites", null)
     const [isFavorite, setIsFavorite] = useState(false)
+    const storeUser = getStoreUser()
+    const nav = useNavigate()
+    const [cart, setCart, removeCart] = useLocalStorage("cart")
+    const { createCart,updateCart,updateQuantity,removeProduct,}  = useCart()
+    const handleAdd = async ()=> {
+      if(storeUser){
+        cart.lines.length > 0 ? await updateCart(cart, product, storeUser) : await createCart(product, storeUser)
+        nav(0)} 
+      else {nav("/store/temporary")}}
+
+
+    const handleFav = async (e)=>{
+      e.preventDefault()
+      const cleanData = adaptFavoriteModel(favoriteModel, storeUser, params.prod)
+      if(isFavorite == true){
+        const res = await unMarkFavorite(cleanData).then(res=> res)
+        const newFavs = favorites.filter(item=> item != params.prod)
+        res.isValid && setFavorites(newFavs)
+        res.isValid && setIsFavorite(false)
+      }else {
+        const res = await markFavorite(cleanData).then(res=> res)
+        const newFavs = [...favorites]
+        newFavs.push(parseInt(params.prod))
+        res.isValid && setFavorites(newFavs)
+        res.isValid && setIsFavorite(true)
+      }
+    }
+
     const scrollToReviews = () => {reviewsRef.current?.scrollIntoView({ behavior: "smooth" })}
-    useEffect(()=>{getByID("Products", params.prod).then(res=> setProduct(res))
-      console.log(isFavorite)
-    },[ , params, isFavorite])
+
+    useEffect(()=>{getByID("Products", params.prod).then(res=> setProduct(res.data))
+      setIsFavorite(favorites.includes(parseInt(params.prod)))
+    },[ , params])
+
     return (
     <div className="mx-auto max-w-2xl lg:max-w-none">
       <div className="md:grid md:grid-cols-2 md:items-start md:gap-x-8">
@@ -56,8 +92,8 @@ export const ProductView = ()=>{
              </div>
            </Fieldset>} 
             <div className="mt-10 flex">
-              <Button type="submit" className="flex max-w-xs flex-1 items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-zinc-50 focus:outline-hidden sm:w-full">Añadir al carrito</Button>
-              <button onClick={()=> setIsFavorite(isFavorite? false : true)} type="button" className="ml-4 flex items-center justify-center rounded-md px-3 py-3 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-500">
+              <Button onClick={handleAdd} className="flex max-w-xs flex-1 items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-zinc-50 focus:outline-hidden sm:w-full">Añadir al carrito</Button>
+              <button onClick={e=> handleFav(e)} type="button" className="ml-4 flex items-center justify-center rounded-md px-3 py-3 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-500">
                 {isFavorite ? <HiHeart className="size-6" />  : <HiOutlineHeart  className="size-6"/> } 
               </button>
             </div>

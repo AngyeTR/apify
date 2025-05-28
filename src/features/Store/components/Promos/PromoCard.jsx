@@ -3,8 +3,26 @@ import { hexToRgba } from "../../../../shared/utils/utils"
 import { Stars } from "../Stars/Stars"
 import { Fieldset, Legend } from "../../../../shared/components/uikit/fieldset"
 import logo from "../../../../assets/gallery-icon.png"
+import { useLocalStorage } from "../../../../shared/hooks/useLocalStorage"
+import { useNavigate } from "react-router-dom"
+import { getStoreUser } from "../../../../shared/services/cookies"
+import { useCart } from "../../hooks/UseCart"
 
 export const PromoCard = ({data})=>{
+  console.log(data)
+  const storeUser = getStoreUser()
+  const nav = useNavigate()
+  const [cart, setCart, removeCart] = useLocalStorage("cart")
+  const { createCart,updateCart,updateQuantity,removeProduct,}  = useCart()
+  const handleAdd = async ()=> {
+    if(storeUser){
+      cart ? await updateCart(cart, data, storeUser).then(res=> console.log(res)) : await createCart(data, storeUser).then(res=> console.log(res))
+      // nav(0)
+      } 
+      else {nav("/store/temporary")}   
+      }
+
+
     return (  
       <div className=" w-300 transform text-left text-base transition xs:my-4 xs:max-w-2xl md:px-4 xs:max-w-4xl relative flex flex-col overflow-hidden rounded-lg p-6 hover:opacity-75 xs:w-auto">
         <div className="relative flex w-full items-center overflow-hidden bg-white px-4 pt-14 pb-8 shadow-2xl xs:px-6 xs:pt-8 xs:p-6 lg:p-8">
@@ -53,7 +71,7 @@ export const PromoCard = ({data})=>{
                       )})}
                     </div></>}
 
-                  <Button className="mt-4" onClick={()=>console.log(data.name)}>Añadir al carrito</Button>
+                  <Button className="mt-4" onClick={handleAdd}>Añadir al carrito</Button>
              </Fieldset>
             </div>
           </div>

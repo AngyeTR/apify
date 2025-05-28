@@ -47,8 +47,8 @@ export function LoginForm() {
       <Field className="grid w-full max-w-sm grid-cols-1 gap-8">
       <img className="mx-auto h-16 rounded-md w-auto bg-gray-400 px-20" src={logo} alt="Your Company"/>
       <Heading>Iniciar sesión</Heading>
-      <Field>
-          <Label className="my-0">Email</Label>
+      <Field className="bg-blue-100">
+          <Label className="my-0 bg-amber-300">Email</Label>
           <Input type="email" className="my-0" name="email" disabled={loading} required onChange={(e)=> setUser(e.target.value)}/>
           <Label className="my-0 py-0">Contraseña</Label>
           <Input type="password" id="password" className="my-0 py-0" name="password" disabled={loading} required  onChange={(e)=> setPassword(e.target.value)}/>

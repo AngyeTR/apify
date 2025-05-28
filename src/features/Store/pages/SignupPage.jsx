@@ -1,5 +1,6 @@
 import { RegistrationForm } from "../components/LoginForm/RegistrationForm"
+import { Layout } from "../pages/Layout"
 
 export const SignupPage = ()=>{
-    return (<RegistrationForm />)
+    return (<Layout><RegistrationForm /></Layout> )
 }

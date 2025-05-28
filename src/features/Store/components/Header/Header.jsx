@@ -1,12 +1,14 @@
-import { NavLink, useParams } from "react-router-dom"
+import { NavLink, useNavigate, useParams } from "react-router-dom"
 import { HiOutlineX, HiChevronDown, HiOutlineShoppingCart, HiOutlineSearch, HiOutlineUser, HiOutlineMenu   } from "react-icons/hi";
 import { useEffect, useState } from "react"
 import { getByCompanyId } from "../../../../shared/services/API/api.js"
 import { useLocalStorage } from "../../../../shared/hooks/useLocalStorage"
 import { Text } from "../../../../shared/components/uikit/text.jsx";
+import { deleteStoreUser, getStoreUser } from "../../../../shared/services/cookies.js";
 
 const CurrencySelector = ({type})=> {
   const options = ["CAD", "USD", "AUD", "EUR", "GBP"]
+
   return (
     <form>
     <div className="-ml-2 inline-grid grid-cols-1">
@@ -17,7 +19,7 @@ const CurrencySelector = ({type})=> {
     </div>
   </form>)}
 
-const MobileMenu = ({ open, close, data})=>{
+const MobileMenu = ({ open, close, data, storeUser, logOut, stored})=>{
   return open && (
     <div className="relative z-40 lg:hidden" role="dialog" aria-modal="true">
     <div className="fixed inset-0 bg-black/25" aria-hidden="true"></div>
@@ -31,16 +33,18 @@ const MobileMenu = ({ open, close, data})=>{
         {/* <!-- Links --> */}
     <div className="space-y-6 border-t border-zinc-200 px-4 py-6">
       <NavLink to="/store" className="flex lg:hidden items-center  justify-center">
-          <Text className="justify-self-center" >Tiendas Nombre</Text>
+          <Text className="justify-self-center" >{stored.company.name}</Text>
         </NavLink>
       <h3 className="underline">Categorías</h3>
       <div className="flow-root"><NavLink className="-m-2 p-2 font-medium text-zinc-900"  to="/store/category/0">Todos</NavLink></div>
       { data?.map((cat) =>   <div className="flow-root">    <NavLink  to={`/store/category/${cat.id}`}>{cat.name}</NavLink></div>)}
     </div>
         <div className="space-y-6 border-t border-zinc-200 px-4 py-6">
-            <NavLink to="/store/signup" className="-m-2 block p-2 font-medium text-zinc-900">Crear cuenta</NavLink>
-            <NavLink to="/store/login" className="-m-2 block p-2 font-medium text-zinc-900">Ingresar</NavLink>
-        </div>
+           { storeUser  ? <div className="-m-2 block p-2 font-medium  text-zinc-900" onClick={logOut}>Cerrar sesión</div>
+           : <><NavLink to="/store/signup" className="-m-2 block p-2 font-medium text-zinc-900">Crear cuenta</NavLink>
+            <NavLink to="/store/login" className="-m-2 block p-2 font-medium text-zinc-900">Ingresar</NavLink></>
+            }
+            </div>
       </div>
     </div>
   </div>
@@ -48,24 +52,38 @@ const MobileMenu = ({ open, close, data})=>{
 
 export const  Header= ()=> {
   let [showSidebar, setShowSidebar] = useState(false)
+ const [cart, setCart, removeCart] = useLocalStorage("cart")
+  // const [data, setData] = useState(null)
+  const [stored] = useLocalStorage("data")
   const [data, setData] = useLocalStorage("categories", null)
-  useEffect(()=>{getByCompanyId("Categories", 1).then(res => setData(res.data))},[ , showSidebar ])
+  const nav = useNavigate()
+  const storeUser = getStoreUser()
+  useEffect(()=>{
+    getByCompanyId("Categories", stored.company.id).then(res => setData(res.data))},[ , showSidebar ])
   const params = useParams()
+
+   const logOut = ()=>{
+    deleteStoreUser()
+    removeCart()
+    nav("/store")
+  }
   return (
 <>
-  <MobileMenu open={showSidebar} close={() => setShowSidebar(false)} data= {data}/>
+  <MobileMenu open={showSidebar} close={() => setShowSidebar(false)} data= {data} storeUser={storeUser} logOut={logOut} stored={stored}/>
   <header className="relative">
     <nav aria-label="Top">
       {/* <!-- Top navigation --> */}
       <div className="bg-zinc-900">
         <div className="mx-auto flex h-10 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-          <CurrencySelector type="dark"/>
+          <CurrencySelector type="dark" />
           <p className="flex-1 text-center text-sm font-medium text-white lg:flex-none">Get free delivery on orders over $100</p>
-          <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
+          {storeUser ?<div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6"> <div onClick={logOut} className="text-sm font-medium text-white hover:text-zinc-100">Cerrar Sesión</div> </div>
+           :<div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
             <NavLink to ="/store/signup" className="text-sm font-medium text-white hover:text-zinc-100">Crear cuenta</NavLink>
             <span className="h-6 w-px bg-zinc-600" aria-hidden="true"></span>
             <NavLink to="/store/login" className="text-sm font-medium text-white hover:text-zinc-100">Ingresar</NavLink>
           </div>
+         }
         </div>
       </div>
 
@@ -75,8 +93,8 @@ export const  Header= ()=> {
           <div className="border-b border-zinc-200">
             <div className="flex h-16 items-center justify-between">
                 <NavLink to="/store" className="hidden lg:flex  w-xs items-baseline">
-                  <img className="h-8 w-auto " src="https://static.wixstatic.com/media/87407a_eff577b9b02c43a3aa41bc18c09b9da4~mv2.png/v1/fill/w_393,h_203,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/87407a_eff577b9b02c43a3aa41bc18c09b9da4~mv2.png" alt=""/>
-                  <Text className="" >Tienda Nombre</Text>
+                  <img className="h-8 w-auto " src={stored.company.urlLogo ?  stored.company.urlLogo : "https://static.wixstatic.com/media/87407a_eff577b9b02c43a3aa41bc18c09b9da4~mv2.png/v1/fill/w_393,h_203,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/87407a_eff577b9b02c43a3aa41bc18c09b9da4~mv2.png"} alt=""/>
+                  <Text className="" >{stored.company.name}</Text>
                 </NavLink>
               <div className="hidden h-full lg:flex flex-col w-full">
                 <div className="ml-8 ">
@@ -91,23 +109,20 @@ export const  Header= ()=> {
                 <button type="button" className="-ml-2 rounded-md bg-white p-2 text-zinc-400">
                   <HiOutlineMenu className="size-6" onClick={()=>setShowSidebar(true)}/>
                 </button>
-                <NavLink to="/" className="flex lg:hidden items-center mx-1">
+                <div onClick={()=>nav("/store/")} className="flex lg:hidden items-center mx-1">
                 <img src="https://static.wixstatic.com/media/87407a_eff577b9b02c43a3aa41bc18c09b9da4~mv2.png/v1/fill/w_393,h_203,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/87407a_eff577b9b02c43a3aa41bc18c09b9da4~mv2.png" alt="" className="h-8 w-auto"/>
-              </NavLink>
+              </div>
               </div>
               <div className="flex flex-1 items-center justify-end">
-                <div className="flex items-center lg:ml-8">
-                      {params.cat && <input  className="w-30 md:w-40  group relative  m-2 p-1 border border-zinc-400 rounded-lg" placeholder="Buscar..."/>}
-                      <NavLink to="/store">
-                        <HiOutlineUser  className="size-6 hover:text-zinc-700 cursor-pointer mx-2"/>
-                      </NavLink>
-
+                  {storeUser && <div className="flex items-center lg:ml-8">
+                  {params.cat && <input  className="w-30 md:w-40  group relative  m-2 p-1 border border-zinc-400 rounded-lg" placeholder="Buscar..."/>}
+                  <HiOutlineUser  className="size-6 hover:text-zinc-700 cursor-pointer mx-2" onClick={()=>nav("/store/profile")}/>
                   <span className="mx-4 h-6 w-px bg-zinc-200 lg:mx-6" aria-hidden="true"></span>
-                  <NavLink to="/store/cart" className="group -m-2 flex items-center p-2">
+                  <div onClick={()=>nav("/store/cart")} className="group -m-2 flex items-center p-2">
                     <HiOutlineShoppingCart className="size-6" />
-                    <span className="ml-2 font-medium text-md text-zinc-700 group-hover:text-zinc-800">0</span>
-                  </NavLink>
-                </div>
+                    <span className="ml-2 font-medium text-md text-zinc-700 group-hover:text-zinc-800">{cart ? cart.lines.length : 0}</span>
+                  </div>
+                </div>}
               </div>
             </div>
           </div>

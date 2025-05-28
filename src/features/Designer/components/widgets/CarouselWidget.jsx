@@ -54,7 +54,7 @@ export const CarouselWidget = ({content, id, edit, editable}) => {
     </div>}
     {editor  && (
            <Modal > 
-            <Field className="w-md bg-zinc-50 p-5 m-3 rounded-lg shadow-xl border border-zinc-200 max-h-[70vh] overflow-scroll">
+            <Field className="justify-items-center w-md bg-zinc-50 p-5 m-3 rounded-lg shadow-xl border border-zinc-200 max-h-[70vh] overflow-scroll">
                 <Label >Carusel</Label>
                 <div className='border border-zinc-200 p-2 rounded-lg'>
                     <Label>Primera Imagen</Label>

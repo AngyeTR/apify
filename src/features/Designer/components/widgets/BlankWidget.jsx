@@ -20,7 +20,7 @@ export const BlankWidget = ({id, edit, editable, style})=>{
     </div>
     {editor && 
     <Modal >
-      <Field className="w-md bg-zinc-50 p-5 m-3 rounded-lg shadow-xl border border-zinc-200">
+      <Field className="w-md bg-zinc-50 p-5 m-3 rounded-lg shadow-xl border border-zinc-200 justify-items-center">
         <Label >Espacio vacío</Label>
         <Input onChange={e=> setStyles(prev => ({...prev, ["backgroundImage"] : e.target.value  }))}  type="text" placeholder="URL fondo" className="mx-1 my-1  rounded-sm border border-zinc-200" />
         <div className="flex justify-center"><p className="text-zinc-700">Color de fondo: </p><input onChange={e=> (setStyles(prev => ({...prev, ["backgroundColor"] : e.target.value})))}  type="color" className="w-[20px]" /></div>

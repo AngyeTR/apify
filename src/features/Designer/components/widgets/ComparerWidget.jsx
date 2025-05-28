@@ -45,7 +45,7 @@ export const ComparerWidget = ({ content, id, edit, editable }) => {
     </div>
     {editor && 
     <Modal> 
-       <Field className="w-md bg-zinc-50 p-5 m-3 rounded-lg shadow-xl max-h-[70vh] overflow-scroll border border-zinc-200">
+       <Field className="justify-items-center w-md bg-zinc-50 p-5 m-3 rounded-lg shadow-xl max-h-[70vh] overflow-scroll border border-zinc-200">
         <Label >Comparador</Label>
         <div className='border border-zinc-200 p-2 rounded-lg'>
           <Label>Imagen de la izquierda</Label>

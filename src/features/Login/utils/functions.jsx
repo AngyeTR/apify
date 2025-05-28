@@ -52,7 +52,7 @@ export const getTranslate= (name)=>{
         usuarios: "users",
         campañas: "campaigns",
         diseñador: "designers",
-        marketing: "marketing",
+        marketing: "marketing", 
         configuración: "settings",
         vendedores: "salesman", 
         "not-found": "not-found"

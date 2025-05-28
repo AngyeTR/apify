@@ -1,30 +1,35 @@
+
+import { useNavigate, useParams } from "react-router-dom"
 import { useState, useEffect } from "react"
-import { useNavigate } from "react-router-dom"
-import { GridContainer } from "../components/GridContainer"
-import { Button } from "../../../shared/components/uikit/button"
+import { LayoutsTable } from "../components/LayoutsTable"
+import { Divider} from "../../../shared/components/uikit/divider"
+import { getByCompanyId } from "../../../shared/services/API/api";
+import { useLocalStorage } from "../../../shared/hooks/useLocalStorage";
+import { DesignerManager } from "../components/DesignerManager";
+import { MyLayout} from "../../Dashboard/components/myComponents/MyLayout"
 
 export const HomePage = ()=>{
+    const [layouts, setLayouts] = useState(null)
+    const [products, setProducts] = useState(null)
+    const [stored] = useLocalStorage("data")
     const nav = useNavigate()
-    const [layout, setLayout] = useState(null) 
-    const [color, setColor] = useState({backgroundColor: "#ffffff"}) 
+    const tab = document.getElementById("myTable")
+    const params = useParams()
     
-    const navigate= ()=>{
-        nav("/designer/editor")
-        nav(0)}  
-    useEffect(() => {
-        const savedLayout = localStorage.getItem("grid-layout");
-        const savedColor = localStorage.getItem("grid-color")
-        console.log(savedColor)
-        savedColor && setColor(JSON.parse(savedColor))
-        if (savedLayout) {
-            const layout = JSON.parse(savedLayout);
-            layout.forEach((item) => {
-            setLayout(layout)})
-            }}, []);
+    useEffect(() => { 
+        getByCompanyId("Layouts", stored.user.company.id).then(res => setLayouts(res.data))
+        getByCompanyId("Products", stored.user.company.id).then(res => setProducts(res.data))
+    }, [, params]);
     return (
-        <div className="w-[90vw]  justify-self-center mt-5" >
-            <GridContainer canEdit={false} items={layout} layoutColor={color}/>
-            <Button className="mt-2" onClick={navigate}>Editar</Button>
-        </div>
+        <MyLayout >
+        {(layouts && products) && <div className="w-full  mt-5" >
+            <DesignerManager products={products} layouts={layouts}/>
+            <Divider />
+            <LayoutsTable lay={layouts} prod={products}/>
+        </div>}
+
+
+        </MyLayout>
+      
     )
 }

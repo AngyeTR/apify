@@ -2,12 +2,14 @@ import { useState, useEffect } from "react"
 import { HiOutlineFilm } from "react-icons/hi";
 import { Select } from "../../../shared/components/uikit/select"
 import { getByCompanyId } from "../../../shared/services/API/api";
+import { useLocalStorage } from "../../../shared/hooks/useLocalStorage";
 
 export const CollectionSelector = ({variable, setVariable, type})=> {
-    const [collection, setCollection] = useState(null)
+    const [collection, setCollection] = useState(null) 
     const [data, setData] = useState(null)
+    const [stored] = useLocalStorage("data")
     console.log(collection)
-    useEffect(() => {getByCompanyId(1).then((res) => setData(res));}, []);
+    useEffect(() => {getByCompanyId("Libraries", stored.company.id).then((res) => setData(res.data));}, []);
 
     const renderList =()=>{ 
         const items = data.filter(item=> item?.name == collection)

@@ -22,7 +22,7 @@ export const PaymentButtonWidget = ({ id, edit, editable, style})=>{
         </div>
           {editor  && (
             <Modal> 
-            <Field className="w-md bg-zinc-50 p-5 m-3 rounded-lg shadow-xl border border-zinc-200">
+            <Field className="w-md bg-zinc-50 p-5 m-3 rounded-lg shadow-xl border border-zinc-200 justify-items-center">
                 <Label >Botón de pago</Label>
                 <TextController styles={styles} setStyles={setStyles}/>
                 <Button type="submit" className="mx-1 my-2" onClick={save}>Guardar</Button>

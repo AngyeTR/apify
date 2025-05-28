@@ -45,12 +45,12 @@ export function LoginForm() {
 
   return (
     <AuthLayout>
-      <Field className="grid w-full max-w-sm grid-cols-1 gap-8">
+      <Field className="grid w-full max-w-md grid-cols-1 gap-8 justify-items-center">
       <img className="mx-auto h-16 rounded-md w-auto bg-gray-400 px-20" src={logo} alt="Your Company"/>
       <Heading>Iniciar sesión</Heading>
-      <Field>
-          <Label className="my-0">Email</Label>
-          <Input type="email" className="my-0" name="email" disabled={loading} required onChange={(e)=> setUser(e.target.value)}/>
+      <Field className="w-sm">
+          <Label className="my-0 ">Email</Label>
+          <Input type="email" className="my-0 " name="email" disabled={loading} required onChange={(e)=> setUser(e.target.value)}/>
           <Label className="my-0 py-0">Contraseña</Label>
           <Input type="password" id="password" className="my-0 py-0" name="password" disabled={loading} required  onChange={(e)=> setPassword(e.target.value)}/>
         </Field>
