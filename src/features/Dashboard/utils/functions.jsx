@@ -87,7 +87,7 @@ export const getDataToShow = (data, name) => {
 
 export const getIsTable = (name)=>{
     const dictionary = ["products", "warehouses", "users", "salesman", "offices"]
-    return dictionary.includes(name)
+    return dictionary?.includes(name)
 }
 export const getUpdatedLocalData = (data, newData)=>{
     data.company.id = newData.id

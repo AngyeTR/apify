@@ -51,7 +51,7 @@ export const ProductView = ()=>{
     const scrollToReviews = () => {reviewsRef.current?.scrollIntoView({ behavior: "smooth" })}
 
     useEffect(()=>{getByID("Products", params.prod).then(res=> setProduct(res.data))
-      setIsFavorite(favorites.includes(parseInt(params.prod)))
+      storeUser && setIsFavorite(favorites?.includes(parseInt(params.prod)))
     },[ , params])
 
     return (
@@ -93,9 +93,9 @@ export const ProductView = ()=>{
            </Fieldset>} 
             <div className="mt-10 flex">
               <Button onClick={handleAdd} className="flex max-w-xs flex-1 items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-zinc-50 focus:outline-hidden sm:w-full">Añadir al carrito</Button>
-              <button onClick={e=> handleFav(e)} type="button" className="ml-4 flex items-center justify-center rounded-md px-3 py-3 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-500">
+              {storeUser && <button onClick={e=> handleFav(e)} type="button" className="ml-4 flex items-center justify-center rounded-md px-3 py-3 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-500">
                 {isFavorite ? <HiHeart className="size-6" />  : <HiOutlineHeart  className="size-6"/> } 
-              </button>
+              </button>}
             </div>
           </form>
         </div>

@@ -22,7 +22,7 @@ export const MyFileUploader=()=>{
 
     useEffect(()=>{
         const type = file ? file?.split(".")[file?.split(".").length - 1 ] : null;
-        ENABLED_TYPES.includes(type?.toLowerCase()) ? setEnabled("enabled") : (type != null ? setEnabled("error") : setEnabled(null))
+        ENABLED_TYPES?.includes(type?.toLowerCase()) ? setEnabled("enabled") : (type != null ? setEnabled("error") : setEnabled(null))
         console.log( file, enabled, uploadType) 
     },[file, uploadType])
    
