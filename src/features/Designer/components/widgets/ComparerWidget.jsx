@@ -6,6 +6,7 @@ import { Field, Label } from "../../../../shared/components/uikit/fieldset"
 import { Modal } from '../Modal';
 import { Switch} from "../../../../shared/components/uikit/switch"
 import { CollectionSelector } from "../CollectionSelector";
+import { Heading } from '../../../../shared/components/uikit/heading';
 
 export const ComparerWidget = ({ content, id, edit, editable }) => {
   console.log(content)
@@ -45,15 +46,15 @@ export const ComparerWidget = ({ content, id, edit, editable }) => {
     </div>
     {editor && 
     <Modal> 
-       <Field className="justify-items-center w-md bg-zinc-50 p-5 m-3 rounded-lg shadow-xl max-h-[70vh] overflow-scroll border border-zinc-200">
-        <Label >Comparador</Label>
-        <div className='border border-zinc-200 p-2 rounded-lg'>
+       <Field className="w-[90vw] h-[90vh] justify-items-center bg-zinc-50 p-5 m-3 rounded-lg shadow-xl  overflow-scroll border border-zinc-200">
+        <Heading >Comparador</Heading>
+        <div className='border border-zinc-200 p-2 rounded-lg m-1'>
           <Label>Imagen de la izquierda</Label>
           <p>Seleccionar desde las Colecciones guardadas  <Switch checked={leftInternalOrigin} onChange={setLeftInternalOrigin}/> </p>
           {!leftInternalOrigin ? <Input name="url" placeholder="Ingrese URL de la imagen" onChange={e=> setLeft(e.target.value)}/>
           :<CollectionSelector variable={left} setVariable={setLeft} type="image"/>}
         </div>
-        <div className='border border-zinc-200 p-2 rounded-lg'>
+        <div className='border border-zinc-200 p-2 rounded-lg m-1'>
           <Label>Imagen de la Derecha</Label>
           <p>Seleccionar desde las Colecciones guardadas  <Switch checked={rightInternalOrigin} onChange={setRightInternalOrigin}/> </p>
           {!rightInternalOrigin ? <Input name="url" placeholder="Ingrese URL de la imagen" onChange={e=> setRight(e.target.value)}/>

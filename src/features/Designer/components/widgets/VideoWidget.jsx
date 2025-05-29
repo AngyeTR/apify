@@ -6,6 +6,7 @@ import { Input } from "../../../../shared/components/uikit/input"
 import { Field, Label } from "../../../../shared/components/uikit/fieldset" 
 import { Modal } from "../Modal";
 import { CollectionSelector } from "../CollectionSelector";
+import { Heading } from "../../../../shared/components/uikit/heading";
  
 export const VideoWidget = ({content,  id, edit, editable})=>{
   const [editor, setEditor] = useState(false)
@@ -22,8 +23,8 @@ export const VideoWidget = ({content,  id, edit, editable})=>{
         <iframe src= {url} allow="autoplay; encrypted-media" allowFullScreen title="Video de presentación"className="w-[95%] h-[95%]"></iframe>
         {editor && 
         <Modal>
-          <Field   className="w-md bg-zinc-50 p-5 m-3 rounded-lg shadow-xl border border-zinc-200 justify-items-center">
-            <Label >Video</Label>
+          <Field   className="w-[90vw] h-[90vh] bg-zinc-50 p-5 m-3 rounded-lg shadow-xl border border-zinc-200 justify-items-center">
+            <Heading >Video</Heading>
             <p>Seleccionar desde las Colecciones guardadas  <Switch checked={internalOrigin} onChange={setInternalOrigin}/> </p>
             {!internalOrigin ?  <Input name="url" placeholder="Ingrese URL del video" onChange={e=> setVariable(e.target.value)}/>
             :<CollectionSelector variable={variable} setVariable={setVariable} type="video"/>} 

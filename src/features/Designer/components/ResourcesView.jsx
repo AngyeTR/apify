@@ -32,11 +32,17 @@ export const ResourcesView = ({collection, data})=> {
                 </Modal> }
                 {file && 
                 <Modal>
-                    <div className="h-fit w-fit bg-white rounded-lg">
+                    <div className="h-fit w-fit bg-white rounded-lg justify-items-center">
                         <p className="m-5">{file.name}</p>
                     {(file.fileType == 0 || file.fileType == 1) ? <img className="h-lg w-lg block border border-zinc-300 m-2" src={file.url}/> :
                     <iframe src= {file.url} allow="autoplay; encrypted-media" allowFullScreen title="Video de presentación"className="justify-self-center h-[400px] rounded-lg"></iframe>}
-                    <Button className="mx-1 my-2" onClick={()=> setFile(null)}>Cerrar</Button>
+                    <Button className="mx-1 my-2" onClick={()=> setFile(null)}>Eliminar</Button>
+                    <select className="border border-zinc-300 p-2 mx-1 rounded-lg" onChange={(e)=>console.log(e.target.value)}>
+                        <option value={null}>Mover a Colección</option>
+                        {data.map(col=><option value={parseInt(col.id)}>{col.name}</option>)}
+                    </select>
+                    <Button className="mx-1 my-2" onClick={()=> setFile(null)}>Mover</Button>
+                    <Button className="mx-1 my-2" color="red" onClick={()=> setFile(null)}>Cerrar</Button>
                     </div>
                 </Modal> }
         </>

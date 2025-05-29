@@ -22,7 +22,7 @@ export const HomePage = ()=>{
     }, [, params]);
     return (
         <MyLayout >
-        {(layouts && products) && <div className="w-full  mt-5" >
+        {(layouts && products) && <div className="w-full " >
             <DesignerManager products={products} layouts={layouts}/>
             <Divider />
             <LayoutsTable lay={layouts} prod={products}/>

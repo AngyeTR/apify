@@ -20,7 +20,7 @@ export const CollectionsList = ({collection, setCollection, data})=> {
         setEditor(false)
         setError(false)
     }
-
+console.log(data)
     const save= async()=>{
         try {
             console.log(dataSet)

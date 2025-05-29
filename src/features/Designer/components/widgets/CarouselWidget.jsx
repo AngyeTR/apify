@@ -8,6 +8,7 @@ import { Label } from "../../../../shared/components/uikit/fieldset";
 import { Modal } from "../Modal";
 import { Switch} from "../../../../shared/components/uikit/switch"
 import { CollectionSelector } from "../CollectionSelector";
+import { Heading } from "../../../../shared/components/uikit/heading";
 
 export const CarouselWidget = ({content, id, edit, editable}) => {
   const [editor, setEditor] = useState(false)
@@ -54,22 +55,22 @@ export const CarouselWidget = ({content, id, edit, editable}) => {
     </div>}
     {editor  && (
            <Modal > 
-            <Field className="justify-items-center w-md bg-zinc-50 p-5 m-3 rounded-lg shadow-xl border border-zinc-200 max-h-[70vh] overflow-scroll">
-                <Label >Carusel</Label>
-                <div className='border border-zinc-200 p-2 rounded-lg'>
+            <Field className="w-[90vw] h-[90vh] justify-items-center bg-zinc-50 p-5 m-3 rounded-lg shadow-xl border border-zinc-200 overflow-scroll">
+                <Heading >Carusel</Heading>
+                <div className='border border-zinc-200 p-2 rounded-lg m-2'>
                     <Label>Primera Imagen</Label>
                     <p>Seleccionar desde las Colecciones guardadas  <Switch checked={firstOrigin} onChange={setFirstOrigin}/> </p>
                     {!firstOrigin ? <Input name="url" placeholder="Ingrese URL de la imagen" onChange={e=> setFirst(e.target.value)}/>
                     :<CollectionSelector variable={first} setVariable={setFirst} type="image"/>}
                 </div>
-                <div className='border border-zinc-200 p-2 rounded-lg'>
-                    <Label>Segunda Imagen</Label>
+                <div className='border border-zinc-200 p-2 rounded-lg m-2'>
+                    <Heading>Segunda Imagen</Heading>
                     <p>Seleccionar desde las Colecciones guardadas  <Switch checked={secondOrigin} onChange={setSecondOrigin}/> </p>
                     {!secondOrigin ? <Input name="url" placeholder="Ingrese URL de la imagen" onChange={e=> setSecond(e.target.value)}/>
                     :<CollectionSelector variable={second} setVariable={setSecond} type="image"/>}
                 </div>
-                <div className='border border-zinc-200 p-2 rounded-lg'>
-                    <Label>Tercera Imagen</Label>
+                <div className='border border-zinc-200 p-2 rounded-lg m-2'>
+                    <Heading>Tercera Imagen</Heading>
                     <p>Seleccionar desde las Colecciones guardadas  <Switch checked={thirdOrigin} onChange={setThirdOrigin}/> </p>
                     {!thirdOrigin ? <Input name="url" placeholder="Ingrese URL de la imagen" onChange={e=> setThird(e.target.value)}/>
                     :<CollectionSelector variable={third} setVariable={setThird} type="image"/>}
