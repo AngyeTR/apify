@@ -13,4 +13,4 @@ const designerRoutes = [
       <Route key="designer-various" path='/designer/*' element={<HomePage/>} />
     ]
 
-export default designerRoutes
+export default designerRoutes 

@@ -7,6 +7,7 @@ import dashboardRoutes from "./features/Dashboard/routes/routes"
 import storeRoutes from "./features/Store/routes/routes"
 import designerRoutes from "./features/Designer/routes/routes"
 import { NotFoundPage } from "./shared/pages/NotFoundPage"
+import { ViewPageStatic } from "./features/Designer/Pages/ViewPageStatic"
 
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
   return (
     <Routes className="Rutas">
     <Route  path="/login" element={<LoginPage />} />
+    <Route  path="/prueba-de-carga" element={<ViewPageStatic />} />
     <Route  path="" element={token ? <Navigate replace to={"/dashboard"}/> :<Navigate replace to={"/login"}/>} />
     <Route path="*" element={token ? <NotFoundPage logged={true}/> : <Navigate replace to={"/login"}/>} />
     {token && dashboardRoutes}

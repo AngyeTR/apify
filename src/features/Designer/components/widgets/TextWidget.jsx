@@ -18,7 +18,7 @@ export const TextWidget = ({content,  id, edit, editable, style})=>{
 
   return (
     <>
-    <div className="w-sm rounded-lg self-center items-center"  >
+    <div className="w-full rounded-lg self-center items-center"  >
       {(!editor && editable )&& <button onClick={()=>setEditor(true)} className="absolute top-1 right-10 bg-blue-500 text-white px-2 py-1  h-6 text-[6px] rounded z-300 hover:border hover:border-zinc-500 cursor-pointer"><HiOutlinePencil className="size-4"/></button>}
       <Text className="p-2" style={styles ? styles : null}>{content ? content : "Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis aspernatur repudiandae aut eos fugiat, harum similique qui ratione fugit possimus maxime sit quia ullam id maiores! Asperiores iste provident ratione."}</Text>
     </div>

@@ -34,9 +34,9 @@ export const ViewPage = ()=>{
 
 
     return (
-        <div className="w-[90vw]  justify-self-center mt-5" >
+        <div className="w-[90vw]  justify-self-center" >
             <GridContainer canEdit={false} items={layout} layoutColor={color}/>
-            <Button className="mt-2" onClick={navigate}>Editar</Button>
+            {/* <Button className="mt-2" onClick={navigate}>Editar</Button> */}
         </div>
     )
 }
