@@ -6,7 +6,7 @@ import { getByCompanyId } from "../../../shared/services/API/api"
 import { useLocalStorage } from "../../../shared/hooks/useLocalStorage"
 
 export const ViewPage = ()=>{
-    useEffect(() => { getByCompanyId("Layouts", stored.user.company.id).then(res => setLayouts(res.data))}, []);
+    useEffect(() => { getByCompanyId("Layouts", stored.company.id).then(res => setLayouts(res.data))}, []);
     const params = useParams()
     const nav = useNavigate()
     const [layout, setLayout] = useState(null) 

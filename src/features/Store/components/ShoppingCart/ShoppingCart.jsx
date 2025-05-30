@@ -20,7 +20,7 @@ export const ShoppingCart = ()=> {
   const nav = useNavigate()
   const storeUserId = getStoreUser()
 
-  useEffect(()=>{getByCompanyId("PreOrders", stored.user.company.id).then(res=> saveCart(res.data))},[])
+  useEffect(()=>{getByCompanyId("PreOrders", stored.company.id).then(res=> saveCart(res.data))},[])
 
 const saveCart = async (data)=>{
   setCart(filtercarts(data, storeUserId))

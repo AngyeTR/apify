@@ -27,7 +27,7 @@ export const DesignerManager = ({products, layouts})=> {
 
     return (
         <div className="justify-items-start">
-            <Fieldset className="grid grid-cols-5 gap-1  w-full m-6 mt-0 max-w-xl">
+            <Fieldset className="grid  grid-cols-5 gap-1  w-full m-6 mt-0 max-w-xl">
             <Input className="col-span-2 h-fit mt-6 " placeholder=" Nombre del Layout" onChange={e=> setNewLayout(prev => ({...newLayout, "name": e.target.value}))}/>
             <Combobox name="product" options={products ? products : []} displayValue={(product) => product?.name} className="col-span-2"
                 onChange={e=> e && setNewLayout(prev=> ({...prev, "idProduct": parseInt(e.id), "idName": e.name}))}  placeholder={newLayout ? newLayout.idName :"Seleccionar Producto"}>
@@ -38,6 +38,7 @@ export const DesignerManager = ({products, layouts})=> {
             </Combobox>
             <Button className="h-fit mt-6 " onClick={create} disabled={!newLayout.idProduct || !newLayout.name}>{loading ? <Loader/> : "Crear" }</Button>
             {success && <p className="text-green-600"> Layout Creado</p>}
+            {products.length == 0 && <p className="w-lg">Aun no tienes Productos para vincular a un Layout</p>}
             </Fieldset>
              <Button onClick={()=>nav("/designer/resources")} className="h-fit mb-6 mx-6 justify-self-start justifyself-left">Ver recursos </Button>
             </div>

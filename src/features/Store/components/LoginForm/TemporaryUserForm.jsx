@@ -33,7 +33,7 @@ export const  TemporaryUserForm = ()=> {
         const res = await post("Customers", dataset).then(res => res)
         if (res.isValid) {
             await setStoreUser(res.data.id.toString()) 
-            await getByCompanyId("PreOrders", stored.user.company.id).then(response=> setCart(filtercarts(response.data, res.data.id)))
+            await getByCompanyId("PreOrders", stored.company.id).then(response=> setCart(filtercarts(response.data, res.data.id)))
             await getFavorites(stored.company.id, res.data.id).then(response => setFavorites(filterFavorites(response.data)))
             nav(-1)
         }else { setError(res?.errorMessages[0] ? res?.errorMessages[0] : " ")

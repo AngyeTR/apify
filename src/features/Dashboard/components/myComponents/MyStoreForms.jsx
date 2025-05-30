@@ -20,7 +20,7 @@ export const  MyStoreForms =()=> {
   const [imgUrl, setImgUrl] = useState("")
   const nav = useNavigate()
 
-  useEffect(() => {getByCompanyId("Categories", stored.user.company.id).then(res => setCategories(res.data))}, [ ]);
+  useEffect(() => {getByCompanyId("Categories", stored.company.id).then(res => setCategories(res.data))}, [ ]);
 
   const handleSave= async()=> {
     setloading(true)

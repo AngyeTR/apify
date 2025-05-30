@@ -35,7 +35,7 @@ export const RegistrationForm = ()=> {
         setDataset(prev => ({...prev, ["fullname"] : fullName}))
         const res = await post("Customers", dataset).then(res=> res)
         res.isValid ? setStoreUser(res.data.id) : setError("algo salió mal. Intenta de nuevo")
-        res.isValid && await getByCompanyId("PreOrders", stored.user.company.id).then(response=> setCart(filtercarts(response.data, res.data.id)))
+        res.isValid && await getByCompanyId("PreOrders", stored.company.id).then(response=> setCart(filtercarts(response.data, res.data.id)))
         res.isValid &&  await getFavorites(stored.company.id, res.data.id).then(response => setFavorites(filterFavorites(response.data)))
         res.isValid && nav(-1)
       }

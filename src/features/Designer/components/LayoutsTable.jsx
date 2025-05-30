@@ -73,7 +73,7 @@ export function LayoutsTable(props) {
 console.log(idToClone)
   return (
     <>
-    { !data?.length  ? <p>Cargando tabla.. </p> : data?.length ==0 ? <p>No se encontraron registros </p> :render()}
+    { !data  ? <p>Cargando tabla.. </p> : data?.length ==0 ? <p>No se encontraron registros </p> :render()}
     {idToClone && <Modal>
       <div className="bg-zinc-50 rounded-lg w-lg h-[70vh] py-10 justify-items-center"> 
         <Heading className="mb-5">Clonar Layout</Heading>

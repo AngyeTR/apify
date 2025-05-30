@@ -17,8 +17,8 @@ export const HomePage = ()=>{
     const params = useParams()
     
     useEffect(() => { 
-        getByCompanyId("Layouts", stored.user.company.id).then(res => setLayouts(res.data))
-        getByCompanyId("Products", stored.user.company.id).then(res => setProducts(res.data))
+        getByCompanyId("Layouts", stored.company.id).then(res => setLayouts(res.data))
+        getByCompanyId("Products", stored.company.id).then(res => setProducts(res.data))
     }, [, params]);
     return (
         <MyLayout >

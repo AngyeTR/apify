@@ -3,7 +3,7 @@ export const newLayoutModel = (stored) =>
 {
     return ({
     isActive: true,
-    idCompany: stored.user.company.id,
+    idCompany: stored.company.id,
     createdBy: stored.user.email,
     modifiedBy: stored.user.email,
     content: "[]",
