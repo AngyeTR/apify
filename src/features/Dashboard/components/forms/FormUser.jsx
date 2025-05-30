@@ -13,6 +13,8 @@ import { adaptUserModel } from '../../utils/adaptDataModel'
 import {  getUpdatedLocalUser  } from "../../utils/functions"
 import { validateEmail, getBase64, } from "../../../../shared/utils/utils"
 import { useLocalStorage } from '../../../../shared/hooks/useLocalStorage'
+import { Modal } from "../../../../shared/components/Modal"
+import { CollectionSelector } from '../../../Designer/components/CollectionSelector'
 
 export function FormUser(props) {
   useEffect(() => {props.origin == "editor" ?  getByID("Users",props.id).then(res => setDataSet(res.data)) : setDataSet(userModel)}, []);
@@ -22,6 +24,8 @@ export function FormUser(props) {
   const [imgUrl, setImgUrl] = useState("")
   const [base64, setBase64] = useState("")
   const [error, setError] = useState(null)
+    const [fileOrigin, setFileOrigin] = useState(null)
+    const [modalMode, setModalMode] = useState(null)
   const [stored, setStored] = useLocalStorage("data", null) 
   const [profiles, setProfiles] = useState([])
  
@@ -55,7 +59,7 @@ export function FormUser(props) {
         if(verifyEmail) {setError(verifyEmail) 
           setloading(false) 
         }else {
-        const cleanData = await adaptUserModel(dataSet, props.origin, base64)
+        const cleanData = await adaptUserModel(dataSet, props.origin, base64, fileOrigin)
         await new Promise(resolve => setTimeout(resolve, 2000));
         const res =( props.origin == "editor") ? await edit("Users", cleanData) :  await post("Users", cleanData)
         setloading(false)
@@ -83,15 +87,38 @@ export function FormUser(props) {
       <Input type="email" name="email"  onChange={handleChange} id="email" placeholder={dataSet?.email && dataSet.email}/>
       <Label>Contraseña*</Label>
       <Input type="password" name="password"  onChange={handleChange} id="password"/>
-      <Label>Avatar</Label>
-      <input accept="image/*" type="file" multiple className='w-50 my-2 mx-2 h-8 bg-white shadow-sm border border-gray-400  rounded-md'
-     onChange={(e)=> upLoadImage(e.target.files[0])} />
+      <Label className="block">Avatar</Label>
+      {/* <input accept="image/*" type="file" multiple className='w-50 my-2 mx-2 h-8 bg-white shadow-sm border border-gray-400  rounded-md'
+     onChange={(e)=> upLoadImage(e.target.files[0])} /> */}
+     <div>
+      <Button onClick={()=>setModalMode("external")}>Desde URL</Button>
+    <Button onClick={()=>setModalMode("local")}>Desde mi equipo</Button>
+    <Button onClick={()=>setModalMode("internal")}>Desde mis colecciones</Button>
+
+     </div>
+    
      {imgUrl && <img   className="h-30" src={imgUrl} alt=""/>}
       {error && <p className={`text-red-600 pt-5`}>Ups! Algo salió mal: {error}</p> }  
     <Button onClick={handleSave} className="my-10 mr-2" 
     disabled={!ava}>
       {loading ? <MyLoader /> : "Guardar"}</Button>     
     </Field>
+     {modalMode && <Modal>
+          <Field className="w-[90vw] h-[90vh] bg-zinc-50 p-5 m-3 rounded-lg shadow-xl border border-zinc-200 justify-items-center">
+            <Heading>Selector de Imagen</Heading>
+               {modalMode == "internal" ?  <CollectionSelector variable={base64} setVariable={setBase64} type="image"/> :
+               modalMode=="external" && <div className='w-xl h-[200px] py-10  justify- items-center m-10'>
+                <Label>Ingresar una URL de Imagen Externa</Label>
+                <Input onChange={(e)=>setBase64(e.target.value)} className="my-6" placeholder="URL de Imagen"/>
+               </div>}
+               {modalMode == "local" && <div className='w-xl h-[200px] py-10  justify- items-center m-10'>
+                <Label>Seleccionar un archivo desde el equipo</Label>
+                <Input accept="image/*" type="file" multiple className='w-50 my-2 mx-2 h-8 bg-white shadow-sm border border-gray-400  rounded-md'
+           onChange={(e)=> upLoadImage(e.target.files[0])} /> </div>}
+                <Button  className="mx-1 my-2" onClick={()=>{setFileOrigin(modalMode);modalMode != "local" && setImgUrl(base64); setModalMode(null)}}>Guardar</Button>
+                <Button className="mx-1 my-2" onClick={()=>{setModalMode(null); setBase64("")}}>Cancelar</Button>
+          </Field>
+          </Modal>}
     </>
   )
 }

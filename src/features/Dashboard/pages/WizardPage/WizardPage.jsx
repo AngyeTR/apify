@@ -15,19 +15,21 @@ import { getUpdatedLocalData } from '../../utils/functions'
 export const WizardPage = ()=> {
   const [stored] = useLocalStorage("data")
   const [data, setData] = useLocalStorage("data", null)
-  const [currentStep, setCurrentStep]  = useState(stored.implementation.implementationStep  )
+  // const [currentStep, setCurrentStep]  = useState(stored.implementation.implementationStep  )
+  const [currentStep, setCurrentStep]  = useState(4)
   const nav = useNavigate()
 
   const handleClick = async()=> { 
     (currentStep == steps.length -1 )? await finish(currentStep):  await update(currentStep)
     (currentStep == steps.length -1 ) ? setCurrentStep(currentStep +1) : await finish(currentStep)}
+
   const steps = [{component: <FormCompany handleClick={handleClick} step={1} origin="wizard" /> }, 
     // {component: <FormOffice handleClick={handleClick} step={2} origin="wizard"/>},
     {component: <FormUser handleClick={handleClick} step={2} origin="wizard" /> },
     // {component: <FormSalesman handleClick={handleClick} step={4} origin="wizard"/>},
     {component:  <FormWarehouse handleClick={handleClick} step={3} origin="wizard" />},
     {component: < FormProduct handleClick={handleClick} step={4} origin="wizard"   />}]
-  const render = (currentStep)=> {return steps[currentStep-1].component}
+    const render = (currentStep)=> {return steps[currentStep-1].component}
 
   const finish= async(step)=>{
     await finishWizard(step)

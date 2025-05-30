@@ -17,7 +17,7 @@ import { Modal } from './Modal';
 export const MySideBar = ()=>{
   const [user, setUser] = useLocalStorage("data", null)
   const [tempData, setTempData] = useState(null)
-  const [companies, setCompanies] = useState([])
+  const [companies, setCompanies] = useState([]) 
     const [notify, setNotify] = useState(false)
 
   const nav = useNavigate()

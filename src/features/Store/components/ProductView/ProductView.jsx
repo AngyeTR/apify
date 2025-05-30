@@ -26,8 +26,13 @@ export const ProductView = ()=>{
     const { createCart,updateCart,updateQuantity,removeProduct,}  = useCart()
     const handleAdd = async ()=> {
       if(storeUser){
-        cart.lines.length > 0 ? await updateCart(cart, product, storeUser) : await createCart(product, storeUser)
-        nav(0)} 
+        const exist = cart.lines.filter(item=>item.idProduct == product.id)
+        cart.lines.length > 0 ? (exist[0] ? updateQuantity(cart, product.id, exist[0].quantity+1) 
+        : await updateCart(cart, product, storeUser)  )
+        : await createCart(product, storeUser)
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        nav(0)
+      } 
       else {nav("/store/temporary")}}
 
 

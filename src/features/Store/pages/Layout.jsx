@@ -3,7 +3,7 @@ import { Header } from "../components/Header/Header"
 export const Layout = ({children})=>{
     return (
 <div className="bg-white">
-  <Header/>
+  <Header />
   <main className="mx-auto max-w-7xl sm:px-6 sm:pt-4 lg:px-8 w-[100vw] h-full">{children}</main>
   <footer className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="border-t border-white/10 py-12 md:flex md:items-center md:justify-between">

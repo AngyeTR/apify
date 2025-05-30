@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom"
+import { HiHeart } from "react-icons/hi";
 import { useLocalStorage } from "../../../../shared/hooks/useLocalStorage"
 import { Button } from "../../../../shared/components/uikit/button"
 import { Label} from "../../../../shared/components/uikit/fieldset"
@@ -41,6 +42,8 @@ export const Profile = ()=> {
     return (
     <div className="p-8 m-6 w-full max-w-md  justify-self-center rounded-lg border border-zinc-300 bg-zinc-50">
         <Heading className="mb-3"> Tu Cuenta  </Heading> 
+        <div className="flex justify-end items-center"><HiHeart className="text-red-600 size-5"/>
+        <p onClick={()=> nav("/store/favorites")} className="text-end text-red-600 hover:underline cursor-pointer">Ver Favoritos</p></div>
         <Field >
             <Label >Nombre : </Label> <Input  placeholder={storeUser?.firstName} disabled={!editor} className="block bg-white max-w-md"  onChange={(e)=> setEditor(prev=> ({...prev, ["firstName"] : e.target.value}))}/>
             <Label >Apellido : </Label> <Input  placeholder={storeUser?.lastName} disabled={!editor} className="max-w-md justify-self-center mb-3" onChange={e=> setEditor(prev=> ({...prev, ["lastName"] : e.target.value}))}/>

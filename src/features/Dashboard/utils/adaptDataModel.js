@@ -1,6 +1,7 @@
 
 import { getBase64 } from "../../../shared/utils/utils"
-import { postImage } from "../../../shared/services/API/api"
+import { getByCompanyId, postFile, postFolder, postImage } from "../../../shared/services/API/api"
+import { fileModel, libraryModel } from "./models";
 
 const rawData = window.localStorage.getItem("data")
 const stored = JSON.parse(rawData)
@@ -10,7 +11,6 @@ export const adaptWarehouseModel = (dataSet, origin, selectedCity,) =>{
    !dataSet.createdBy && (dataSet["createdBy"] = stored.user.email)
    dataSet.city && delete dataSet.city
    dataSet["modifiedBy"]= stored.user.email
-   dataSet["idCompany"]= stored.company.id
    selectedCity && (dataSet["idCity"] = selectedCity.id)
   //  dataSet["isActive"] = isActive 
   //  dataSet["isPublic"] = isPublic
@@ -19,56 +19,57 @@ export const adaptWarehouseModel = (dataSet, origin, selectedCity,) =>{
    return dataSet
 }
 
-export const adaptCompanymodel = async (dataSet, origin, base64)=> {
-  console.log(base64)
+export const adaptCompanymodel = async (dataSet, origin, base64, fileOrigin)=> {
   const getUrl =  async (value)=> 
     {try {
       const data ={name: `companyImage${Date.now()}`, "base64": value, "imageType": 1}
         const url  = await postImage(data).then(res => {return res.data})
         dataSet["urlLogo"] = url
       } catch (error) {console.log(error)}}
-    if (base64) {await getUrl(base64)}else{ dataSet["urlLogo"] = stored.company.urlLogo}
-    dataSet["modifiedBy"] = stored.user.email
+   
+    if (base64 && fileOrigin == "local" ) {await getUrl(base64)}
+    else if (base64 && fileOrigin != "local" ){dataSet["urlLogo"] = base64}
+    else{ dataSet["urlLogo"] = stored.company.urlLogo}
     !dataSet.createdBy && (dataSet["createdBy"]= stored.user.email)
-    dataSet["id"] = stored.company.id
     !dataSet.name && (dataSet["name"] = stored.company.name)
     dataSet["idSegment"]= parseInt(dataSet["idSegment"])
     dataSet["isWizard"] = (origin == "wizard" ? true: false) 
     return dataSet
 }
 
-export const adaptUserModel = (dataSet, origin, base64) => {
-  console.log(base64)
+export const adaptUserModel = (dataSet, origin, base64, fileOrigin) => {
   const getUrl = async (value)=> 
     {try {
       console.log("trying")
       const data ={name: `companyImage${Date.now()}`, "base64": value, "imageType": 1}
-        const url  = await postImage(data).then(res => res.data)
-        console.log(url)
-        dataSet["avatar"] = url
+      const url  = await postImage(data).then(res => res.data)
+      dataSet["avatar"] = url
+      const collections = await getByCompanyId("Libraries", 1).then(res => res.data)
+      const filtered = collections && collections.filter(col => col.name == "Default")
+      const collection = filtered[0] ? filtered[0] : null
+      !collection  ? await postFolder(libraryModel).then(res=>postFile(adaptFileModel(res.data.id,  `companyImage${Date.now()}`, url)).then(res=> console.log(res)))
+      :postFile(adaptFileModel(filtered[0].id,  `companyImage${Date.now()}`, url)).then(res=> console.log(res))
       } catch (error) {console.log(error)}}
-    base64 && getUrl(base64)
+
+    if(base64 && fileOrigin == "local"){getUrl(base64)}
+    else if(base64 && fileOrigin != "local"){dataSet["avatar"] = base64 }
         !dataSet.createdBy && (dataSet["createdBy"]= stored.user.email)
-        dataSet["modifiedBy"]= stored.user.email
         !dataSet.createdDate &&( dataSet["createdDate"] = date)
         dataSet["modifiedDate"]= date
-        dataSet["idCompany"]= stored.company.id
         dataSet["isWizard"] = (origin == "wizard" ? true: false) 
         // dataSet["isSalesman"] = isSalesman
+        console.log(dataSet)
         return dataSet
     }
 
 export  const adaptProductModel =  (dataSet, origin, stock) => {
     const modifyColor = (color)=> {
         color["createdBy"] = stored.user.email
-        color["modifiedBy"]= stored.user.email
         color["nombre"]= color.name
         color["colorCode"]= color.colorCode
         return color} 
     const modifyStock = (stock)=> {
         stock["createdBy"] = stored.user.email
-        stock["modifiedBy"]= stored.user.email
-        stock["idCompany"] = stored.company.id
         stock["transaction"] = 1
         stock["transactionDate"] = date
         return stock} 
@@ -101,7 +102,6 @@ console.log(dataSet)
       dataSet.isSizes && (dataSet["sizes"] = [])
       dataSet["isWizard"] = origin  == "wizard" ? true : false
       !dataSet.createdBy && (dataSet["createdBy"] = stored.user.email)
-      dataSet["modifiedBy"]= stored.user.email
       dataSet["idCompany"]= parseInt(stored.company.id)
       dataSet.colors != [] && (dataSet["colors"] = dataSet.colors.map((color) => modifyColor(color)))
       stock != [] && (dataSet["stock"] = stock.map(st => modifyStock(st)))
@@ -113,10 +113,8 @@ console.log(dataSet)
 
 export const adaptSalesmanModel = (dataSet, origin, isActive) => {
   !dataSet.createdBy && (dataSet["createdBy"] = stored.user.email)
-  dataSet["modifiedBy"]= stored.user.email
   !dataSet.createdDate && (dataSet["createdDate"] = date)
   dataSet["modifiedDate"]= date
-  dataSet["idCompany"]= stored.company.id
   dataSet["fullname"] = dataSet.name + " "+ dataSet.lastName
   dataSet["isActive"] = isActive
   dataSet["isWizard"] = origin  == "wizard" ? true : false
@@ -161,3 +159,17 @@ export const adaptCategoryModel = (dataSet, base64)=> {
     dataSet["modifiedBy"]= stored.user.email
     return dataSet
     }
+
+export const adaptFileModel =(idFolder, name, url)=>{
+  const file = fileModel
+  file.name = name
+  file.idFolder = idFolder
+  file.url = url
+  return file
+}
+
+export const adaptLibraryModel = (name) =>{
+  const library = libraryModel
+  library.name = name
+   return library
+}

@@ -115,7 +115,7 @@ export const  Header= ()=> {
               </div>
               <div className="flex flex-1 items-center justify-end">
                   {storeUser && <div className="flex items-center lg:ml-8">
-                  {params.cat && <input  className="w-30 md:w-40  group relative  m-2 p-1 border border-zinc-400 rounded-lg" placeholder="Buscar..."/>}
+                  {/* {params.cat && <input onChange={(e)=>setSearch(e.target.value)} className="w-30 md:w-40  group relative  m-2 p-1 border border-zinc-400 rounded-lg" placeholder="Buscar..."/>} */}
                   <HiOutlineUser  className="size-6 hover:text-zinc-700 cursor-pointer mx-2" onClick={()=>nav("/store/profile")}/>
                   <span className="mx-4 h-6 w-px bg-zinc-200 lg:mx-6" aria-hidden="true"></span>
                   <div onClick={()=>nav("/store/cart")} className="group -m-2 flex items-center p-2">

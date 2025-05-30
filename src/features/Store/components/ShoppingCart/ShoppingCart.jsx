@@ -2,7 +2,7 @@ import { Button } from "../../../../shared/components/uikit/button"
 import { Input } from "../../../../shared/components/uikit/input"
 import { HiOutlineTrash } from "react-icons/hi";
 import logo from "../../../../assets/gallery-icon.png" 
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { getByCompanyId, getByCustomerId, getByID } from "../../../../shared/services/API/api"
 import { HiOutlineShoppingCart } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
@@ -15,12 +15,13 @@ export const ShoppingCart = ()=> {
   const [cart, setCart] = useLocalStorage("cart", null)
   const [products, setProducts] = useState([])
   const [stored] = useLocalStorage("data")
+  const [idToDelete, setIdToDelete] = useState(null)
   const { createCart,updateCart,updateQuantity,removeProduct,}  = useCart()
 
   const nav = useNavigate()
   const storeUserId = getStoreUser()
 
-  useEffect(()=>{getByCompanyId("PreOrders", stored.company.id).then(res=> saveCart(res.data))},[])
+  useEffect(()=>{getByCompanyId("PreOrders", stored.company.id).then(res=> saveCart(res.data))},[ ])
 
 const saveCart = async (data)=>{
   setCart(filtercarts(data, storeUserId))
@@ -37,6 +38,7 @@ const saveCart = async (data)=>{
       updateQuantity(cart, productId, quantity).then(res=>console.log(res))
     }else if (type == "delete"){
       await removeProduct(cart, productId).then(res=> console.log(res))
+      await new Promise(resolve => setTimeout(resolve, 1000));
       nav(0)
     }
   }
@@ -79,7 +81,8 @@ const saveCart = async (data)=>{
                 <div className="mt-4 sm:mt-0 sm:pr-9">
                   <div className="grid w-full max-w-30 grid-cols-2">
                     <Input placeholder={1} defaultValue={item.quantity} type="number" onChange={(e)=>manageChanges("quantity", item.idProduct, e.target.value)}/>
-                    <HiOutlineTrash className="size-6 mx-1 self-center" onClick={()=>manageChanges("delete", item.idProduct)}/>
+                    {idToDelete == item.idProduct ? <p className="text-red-600 text-[12px] mx-2 hover:underline cursor-pointer" onClick={()=>manageChanges("delete", item.idProduct)}> Confirmar eliminación </p> 
+                    :<HiOutlineTrash className="size-6 mx-1 self-center" onClick={()=>setIdToDelete(item.idProduct)}/>}
                   </div>
                 </div>
               </div>

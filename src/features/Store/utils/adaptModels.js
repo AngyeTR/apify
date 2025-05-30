@@ -53,15 +53,13 @@ export const adaptAddingCartModel= (dataSet, product, userId) => {
       total: 0,
       idPreOrder: dataSet.id
     }]
-
     return dataSet
 }
 
 export const adaptquantityChangeCartModel= (dataSet, productId, quantity) => {
 const index = dataSet.lines.findIndex(item => item.idProduct == productId);
-  dataSet["lines"][index].quantity= quantity
-
-  return dataSet
+ dataSet["lines"][index].quantity= quantity
+  return dataSet 
 }
 
 export const adaptDeleteCartModel= (dataSet, productId) => {
