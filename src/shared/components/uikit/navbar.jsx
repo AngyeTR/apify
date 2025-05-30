@@ -48,7 +48,7 @@ export const NavbarItem = forwardRef(function NavbarItem(
     // Active
     'data-active:bg-zinc-950/5 data-active:*:data-[slot=icon]:fill-zinc-950',
     // Dark mode
-    'dark:text-white dark:*:data-[slot=icon]:fill-zinc-400',
+    '  dark:*:data-[slot=icon]:fill-zinc-400',
     'dark:data-hover:bg-white/5 dark:data-hover:*:data-[slot=icon]:fill-white',
     'dark:data-active:bg-white/5 dark:data-active:*:data-[slot=icon]:fill-white'
   )

@@ -38,7 +38,7 @@ export const MyFileUploader=()=>{
                 {uploadTypes.map((type)=> <option value={type.id} key={type.id}>{type.name}</option>)}
             </Select>
             <input type="file" onChange={(e)=> setFile(e.target.value)} 
-            className="relative block w-xs md:w-md border border-zinc-950/10 data-hover:border-zinc-950/20 dark:border-white/10 dark:data-hover:border-white/20     appearance-none rounded-lg px-[calc(--spacing(3.5)-1px)] py-[calc(--spacing(2.5)-1px)] sm:px-[calc(--spacing(3)-1px)] sm:py-[calc(--spacing(1.5)-1px)] text-base/6 text-zinc-950 placeholder:text-zinc-500 sm:text-sm/6 dark:text-white my-5"/>
+            className="relative block w-xs md:w-md border border-zinc-950/10 data-hover:border-zinc-950/20         appearance-none rounded-lg px-[calc(--spacing(3.5)-1px)] py-[calc(--spacing(2.5)-1px)] sm:px-[calc(--spacing(3)-1px)] sm:py-[calc(--spacing(1.5)-1px)] text-base/6 text-zinc-950 placeholder:text-zinc-500 sm:text-sm/6   my-5"/>
             {render()}
             <Button href={`./plantilla${uploadType}.xls`} download className="mr-3"  disabled={uploadType == null}>Descargar Plantilla</Button>
             <Button  onClick={e=> handleSubmit(e)} disabled={enabled != "enabled" || uploadType == null}>Enviar</Button>

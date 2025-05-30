@@ -68,7 +68,7 @@ export function SidebarSpacer({ className, ...props }) {
 
 export function SidebarHeading({ className, ...props }) {
   return (
-    <h3 {...props} className={clsx(className, 'mb-1 px-2 text-xs/6 font-medium text-zinc-500 dark:text-zinc-400')} />
+    <h3 {...props} className={clsx(className, 'mb-1 px-2 text-xs/6 font-medium text-zinc-500  ')} />
   )
 }
 
@@ -93,7 +93,7 @@ export const SidebarItem = forwardRef(function SidebarItem(
     // Current
     'data-current:*:data-[slot=icon]:fill-zinc-950',
     // Dark mode
-    'dark:text-white dark:*:data-[slot=icon]:fill-zinc-400',
+    '  dark:*:data-[slot=icon]:fill-zinc-400',
     'dark:data-hover:bg-white/5 dark:data-hover:*:data-[slot=icon]:fill-white',
     'dark:data-active:bg-white/5 dark:data-active:*:data-[slot=icon]:fill-white',
     'dark:data-current:*:data-[slot=icon]:fill-white'

@@ -39,9 +39,9 @@ export function Listbox({ className, placeholder, autoFocus, 'aria-label': ariaL
             // Horizontal padding
             'pr-[calc(--spacing(7)-1px)] pl-[calc(--spacing(3.5)-1px)] sm:pl-[calc(--spacing(3)-1px)]',
             // Typography
-            'text-left text-base/6 text-zinc-950 placeholder:text-zinc-500 sm:text-sm/6 dark:text-white forced-colors:text-[CanvasText]',
+            'text-left text-base/6 text-zinc-950 placeholder:text-zinc-500 sm:text-sm/6   forced-colors:text-[CanvasText]',
             // Border
-            'border border-zinc-950/10 group-data-active:border-zinc-950/20 group-data-hover:border-zinc-950/20 dark:border-white/10 dark:group-data-active:border-white/20 dark:group-data-hover:border-white/20',
+            'border border-zinc-950/10 group-data-active:border-zinc-950/20 group-data-hover:border-zinc-950/20   dark:group-data-active:border-white/20 dark:group-data-hover:border-white/20',
             // Background color
             'bg-transparent dark:bg-white/5',
             // Invalid state
@@ -77,7 +77,7 @@ export function Listbox({ className, placeholder, autoFocus, 'aria-label': ariaL
           // Popover background
           'bg-white/75 backdrop-blur-xl dark:bg-zinc-800/75',
           // Shadows
-          'shadow-lg ring-1 ring-zinc-950/10 dark:ring-white/10 dark:ring-inset',
+          'shadow-lg ring-1 ring-zinc-950/10   dark:ring-inset',
           // Transitions
           'transition-opacity duration-100 ease-in data-closed:data-leave:opacity-0 data-transition:pointer-events-none'
         )}
@@ -113,7 +113,7 @@ export function ListboxOption({ children, className, ...props }) {
               // Basic layout
               'group/option grid cursor-default grid-cols-[--spacing(5)_1fr] items-baseline gap-x-2 rounded-lg py-2.5 pr-3.5 pl-2 sm:grid-cols-[--spacing(4)_1fr] sm:py-1.5 sm:pr-3 sm:pl-1.5',
               // Typography
-              'text-base/6 text-zinc-950 sm:text-sm/6 dark:text-white forced-colors:text-[CanvasText]',
+              'text-base/6 text-zinc-950 sm:text-sm/6   forced-colors:text-[CanvasText]',
               // Focus
               'outline-hidden data-focus:bg-blue-500 data-focus:text-white',
               // Forced colors mode
@@ -148,7 +148,7 @@ export function ListboxDescription({ className, children, ...props }) {
       {...props}
       className={clsx(
         className,
-        'flex flex-1 overflow-hidden text-zinc-500 group-data-focus/option:text-white before:w-2 before:min-w-0 before:shrink dark:text-zinc-400'
+        'flex flex-1 overflow-hidden text-zinc-500 group-data-focus/option:text-white before:w-2 before:min-w-0 before:shrink  '
       )}
     >
       <span className="flex-1 truncate">{children}</span>

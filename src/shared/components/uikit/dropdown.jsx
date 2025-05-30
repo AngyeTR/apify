@@ -33,7 +33,7 @@ export function DropdownMenu({ anchor = 'bottom', className, ...props }) {
         // Popover background
         'bg-white/75 backdrop-blur-xl dark:bg-zinc-800/75',
         // Shadows
-        'shadow-lg ring-1 ring-zinc-950/10 dark:ring-white/10 dark:ring-inset',
+        'shadow-lg ring-1 ring-zinc-950/10   dark:ring-inset',
         // Define grid at the menu level if subgrid is supported
         'supports-[grid-template-columns:subgrid]:grid supports-[grid-template-columns:subgrid]:grid-cols-[auto_1fr_1.5rem_0.5rem_auto]',
         // Transitions
@@ -49,7 +49,7 @@ export function DropdownItem({ className, ...props }) {
     // Base styles
     'group cursor-default rounded-lg px-3.5 py-2.5 focus:outline-hidden sm:px-3 sm:py-1.5',
     // Text styles
-    'text-left text-base/6 text-zinc-950 sm:text-sm/6 dark:text-white forced-colors:text-[CanvasText]',
+    'text-left text-base/6 text-zinc-950 sm:text-sm/6   forced-colors:text-[CanvasText]',
     // Focus
     'data-focus:bg-blue-500 data-focus:text-white',
     // Disabled state
@@ -95,7 +95,7 @@ export function DropdownHeading({ className, ...props }) {
       {...props}
       className={clsx(
         className,
-        'col-span-full grid grid-cols-[1fr_auto] gap-x-12 px-3.5 pt-2 pb-1 text-sm/5 font-medium text-zinc-500 sm:px-3 sm:text-xs/5 dark:text-zinc-400'
+        'col-span-full grid grid-cols-[1fr_auto] gap-x-12 px-3.5 pt-2 pb-1 text-sm/5 font-medium text-zinc-500 sm:px-3 sm:text-xs/5  '
       )}
     />
   )
@@ -126,7 +126,7 @@ export function DropdownDescription({ className, ...props }) {
       {...props}
       className={clsx(
         className,
-        'col-span-2 col-start-2 row-start-2 text-sm/5 text-zinc-500 group-data-focus:text-white sm:text-xs/5 dark:text-zinc-400 forced-colors:group-data-focus:text-[HighlightText]'
+        'col-span-2 col-start-2 row-start-2 text-sm/5 text-zinc-500 group-data-focus:text-white sm:text-xs/5   forced-colors:group-data-focus:text-[HighlightText]'
       )}
     />
   )
