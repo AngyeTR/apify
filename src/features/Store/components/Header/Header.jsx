@@ -73,7 +73,7 @@ export const  Header= ()=> {
   <header className="relative">
     <nav aria-label="Top">
       {/* <!-- Top navigation --> */}
-      <div className="bg-zinc-900">
+      <div className="bg-zinc-900 w-[99vw] justify-self-center">
         <div className="mx-auto flex h-10 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <CurrencySelector type="dark" />
           <p className="flex-1 text-center text-sm font-medium text-white lg:flex-none">Get free delivery on orders over $100</p>
@@ -88,7 +88,7 @@ export const  Header= ()=> {
       </div>
 
       {/* <!-- Secondary navigation --> */}
-      <div className="bg-white">
+      <div className="bg-white w-[95vw]">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="border-b border-zinc-200">
             <div className="flex h-16 items-center justify-between">
