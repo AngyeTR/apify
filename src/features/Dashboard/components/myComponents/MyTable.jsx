@@ -34,7 +34,7 @@ export function MyTable({ data }) {
   const render = ()=> {
     if(newData.length > 0 && headers.length > 0 ){
       return (
-        <div className="w-[90vw] overflow-x-scroll">
+        <div className="w-[99%] overflow-x-scroll">
           <Table  data={newData} headers={headers} />
         </div>
         
