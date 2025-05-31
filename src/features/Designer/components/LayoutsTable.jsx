@@ -68,7 +68,9 @@ export function LayoutsTable(props) {
     console.log(data)
     if(data?.length > 0 && headers.length > 0 ){
       return (
+        <div className="w-[99%] overflow-x-scroll">
         <Table  data={data.reverse()} headers={headers} setIdToClone={setIdToClone}/>
+        </div>
       )}}
 console.log(idToClone)
   return (

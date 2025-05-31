@@ -58,8 +58,7 @@ export const  Header= ()=> {
   const [data, setData] = useLocalStorage("categories", null)
   const nav = useNavigate()
   const storeUser = getStoreUser()
-  useEffect(()=>{
-    getByCompanyId("Categories", stored.company.id).then(res => setData(res.data))},[ , showSidebar ])
+  useEffect(()=>{getByCompanyId("Categories", stored.company.id).then(res => setData(res.data))},[ , showSidebar ])
   const params = useParams()
 
    const logOut = ()=>{

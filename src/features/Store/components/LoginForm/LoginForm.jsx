@@ -43,14 +43,14 @@ export const LoginForm = ()=> {
 
     return (
     <AuthLayout >
-        <div className="flex-row sm:grid sm:grid-cols-2 sm:items-start sm:gap-x-8">
+        <div className="flex-row sm:grid sm:grid-cols-2 sm:items-start sm:gap-x-8 justify-items-center self-start">
         <div onClick={()=>nav("/store")}>
-        {stored?.company?.urlLogo ? <Avatar src={stored.company.urlLogo} className="size-24 sm:size-60 md:size-80 justify-self-center py-0"/>
-        :<Avatar src={logo} className="size-24 sm:size-60 md:size-80 justify-self-center py-0"/>}
+        {stored?.company?.urlLogo ? <Avatar src={stored.company.urlLogo} className="size-40 sm:size-60 md:size-80 justify-self-center py-0"/>
+        :<Avatar src={logo} className="size-24 sm:size-60 md:size-80 justify-self-center py-0 "/>}
         </div>
       <div className="grid w-full max-w-sm grid-cols-1 gap-3">
   
-      <Heading className="py-0">Iniciar sesión</Heading>
+      <Heading className="pt-1 justify-self-center">Iniciar sesión</Heading>
 
       <Field>
           <Input placeholder="Email" type="email" className="my-3" name="email" disabled={loading} required onChange={(e)=> setUser(e.target.value)}/>
@@ -59,7 +59,7 @@ export const LoginForm = ()=> {
         <Button type="submit" className="w-xs md:w-sm" onClick={handleClick} disabled={loading || !user || !password}>
         {loading ? <Loader /> :"Iniciar Sesión"}
         </Button>
-        <NavLink to="/signup" className="hover:underline text-zinc-800 text-sm">Aún no tengo una cuenta</NavLink>
+        <NavLink to="/store/signup" className="hover:underline text-zinc-800 text-sm">Aún no tengo una cuenta</NavLink>
         <p className={`text-red-700 text-sm my-5 ${error ? "visible": "invisible"}`}>Ups! Algo salió mal: {error}. Intenta de nuevo</p>
         </div></div>
       </AuthLayout>

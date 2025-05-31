@@ -46,14 +46,14 @@ export const  TemporaryUserForm = ()=> {
  
     return (
         <Layout>
-        <div className="flex-row sm:grid sm:grid-cols-2 sm:items-start sm:gap-x-8">
-                <div onClick={()=>nav("/store")}>
+        <div className="flex-row sm:grid md:grid-cols-2 sm:items-start sm:gap-x-1 justify-items-center w-[99vw] self-start">
+                <div onClick={()=>nav("/store")} >
                 {stored?.company?.urlLogo ? <Avatar src={stored.company.urlLogo} className="size-24 sm:size-60 md:size-80 justify-self-center py-0"/>
-                :<Avatar src={logo} className="size-24 sm:size-60 md:size-80 justify-self-center py-0"/>}
+                :<Avatar src={logo} className="size-30 sm:size-40 md:size-50 justify-self-center py-0"/>}
                 </div>
-               <Field className="grid w-full max-w-2xl gap-3 justify-items-center">
-      <Field className="w-full max-w-md justify-self-center border border-zinc-300 p-5 rounded-lg" >
-        <Heading className="py-0">Crear cuenta temporal</Heading>
+               <Field className="grid w-fit max-w-2xl gap-3 justify-items-center">
+      <Field className="w-full max-w-md justify-self-center  p-5 rounded-lg " >
+        <Heading className="py-0 pt-1 justify-self-center">Crear cuenta temporal</Heading>
         <Input placeholder="Nombre"  className="my-3 " name="name" disabled={loading} required onChange={e=> setDataset(prev => ({...prev, ["firstname"] : e.target.value}))}/>
         <Input placeholder="Apellido"  className="my-3 " name="lastname" disabled={loading} required onChange={e=> setDataset(prev => ({...prev, ["lastname"] : e.target.value}))}/>
         <Input placeholder="Teléfono" type="tel" className="my-3" name="phone" disabled={loading} required onChange={e=> setDataset(prev => ({...prev, ["cellphone"] : e.target.value}))}/>

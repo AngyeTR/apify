@@ -43,13 +43,13 @@ export const RegistrationForm = ()=> {
 
     return (
     <AuthLayout >
-      <div className="flex-row sm:grid sm:grid-cols-2 sm:items-start sm:gap-x-8">
+      <div className="flex-row sm:grid sm:grid-cols-2 sm:items-start sm:gap-x-8 justify-items-center self-start">
         <div onClick={()=>nav("/store")}>
-        {stored?.company?.urlLogo ? <Avatar src={stored.company.urlLogo} className="size-24 sm:size-60 md:size-80 justify-self-center py-0"/>
+        {stored?.company?.urlLogo ? <Avatar src={stored.company.urlLogo} className="size-30 sm:size-60 md:size-80 justify-self-center py-0"/>
         :<Avatar src={logo} className="size-24 sm:size-60 md:size-80 justify-self-center py-0"/>}
         </div>
       <Field className="grid w-full max-w-sm grid-cols-1 gap-3">
-      <Heading className="py-0">Crear Cuenta</Heading>
+      <Heading className="py-0 pt-1 justify-self-center">Crear Cuenta</Heading>
 
       <Field>
           <Input placeholder="Nombre" className="my-3" name="firstname" disabled={loading} required onChange={e=> setDataset(prev => ({...prev, ["firstName"] : e.target.value}))}/>
