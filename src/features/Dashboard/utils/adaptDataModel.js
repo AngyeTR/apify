@@ -8,9 +8,9 @@ const stored = JSON.parse(rawData)
 const date = new Date().toISOString();
 
 export const adaptWarehouseModel = (dataSet, origin, selectedCity,) =>{
-   !dataSet.createdBy && (dataSet["createdBy"] = stored?.user?.email)
+   !dataSet.createdBy && (dataSet["createdBy"] = stored.user.email)
    dataSet.city && delete dataSet.city
-   dataSet["modifiedBy"]= stored?.user?.email
+   dataSet["modifiedBy"]= stored.user.email
    selectedCity && (dataSet["idCity"] = selectedCity.id)
   //  dataSet["isActive"] = isActive 
   //  dataSet["isPublic"] = isPublic
@@ -30,7 +30,7 @@ export const adaptCompanymodel = async (dataSet, origin, base64, fileOrigin)=> {
     if (base64 && fileOrigin == "local" ) {await getUrl(base64)}
     else if (base64 && fileOrigin != "local" ){dataSet["urlLogo"] = base64}
     else{ dataSet["urlLogo"] = stored.company.urlLogo}
-    !dataSet.createdBy && (dataSet["createdBy"]= stored?.user?.email)
+    !dataSet.createdBy && (dataSet["createdBy"]= stored.user.email)
     !dataSet.name && (dataSet["name"] = stored.company.name)
     dataSet["idSegment"]= parseInt(dataSet["idSegment"])
     dataSet["isWizard"] = (origin == "wizard" ? true: false) 
@@ -53,7 +53,7 @@ export const adaptUserModel = (dataSet, origin, base64, fileOrigin) => {
 
     if(base64 && fileOrigin == "local"){getUrl(base64)}
     else if(base64 && fileOrigin != "local"){dataSet["avatar"] = base64 }
-        !dataSet.createdBy && (dataSet["createdBy"]= stored?.user?.email)
+        !dataSet.createdBy && (dataSet["createdBy"]= stored.user.email)
         !dataSet.createdDate &&( dataSet["createdDate"] = date)
         dataSet["modifiedDate"]= date
         dataSet["isWizard"] = (origin == "wizard" ? true: false) 
@@ -64,12 +64,12 @@ export const adaptUserModel = (dataSet, origin, base64, fileOrigin) => {
 
 export  const adaptProductModel =  (dataSet, origin, stock) => {
     const modifyColor = (color)=> {
-        color["createdBy"] = stored?.user?.email
+        color["createdBy"] = stored.user.email
         color["nombre"]= color.name
         color["colorCode"]= color.colorCode
         return color} 
     const modifyStock = (stock)=> {
-        stock["createdBy"] = stored?.user?.email
+        stock["createdBy"] = stored.user.email
         stock["transaction"] = 1
         stock["transactionDate"] = date
         return stock} 
@@ -80,7 +80,7 @@ export  const adaptProductModel =  (dataSet, origin, stock) => {
         //     try {
         //         const base64 = await getBase64(image.value)
         //         const url = await postImage({name: `productImage${Date.now()}`, "base64": base64, "imageType": 2}).then(res => {return res.data})
-        //         dataSet["images"].push({url: url,  modifiedBy: stored?.user?.email, createdBy: stored?.user?.email })
+        //         dataSet["images"].push({url: url,  modifiedBy: stored.user.email, createdBy: stored.user.email })
         //       } catch (error) { console.error("Error al convertir:", error)}
         //    console.log(dataSet.images, index)
         //     }; 
@@ -88,7 +88,7 @@ export  const adaptProductModel =  (dataSet, origin, stock) => {
           try {
             const base64 = await getBase64(images[i].value)
             const url = await postImage({name: `productImage${Date.now()}`, "base64": base64, "imageType": 2}).then(res => {return res.data})
-          dataSet["images"][i] = {url: url,  modifiedBy: stored?.user?.email, createdBy: stored?.user?.email }
+          dataSet["images"][i] = {url: url,  modifiedBy: stored.user.email, createdBy: stored.user.email }
 
             
           } catch (error) { console.error("Error al convertir:", error)}
@@ -101,7 +101,7 @@ console.log(dataSet)
       !dataSet.isColors && (dataSet["colors"] = [])
       dataSet.isSizes && (dataSet["sizes"] = [])
       dataSet["isWizard"] = origin  == "wizard" ? true : false
-      !dataSet.createdBy && (dataSet["createdBy"] = stored?.user?.email)
+      !dataSet.createdBy && (dataSet["createdBy"] = stored.user.email)
       dataSet["idCompany"]= parseInt(stored.company.id)
       dataSet.colors != [] && (dataSet["colors"] = dataSet.colors.map((color) => modifyColor(color)))
       stock != [] && (dataSet["stock"] = stock.map(st => modifyStock(st)))
@@ -112,7 +112,7 @@ console.log(dataSet)
 }
 
 export const adaptSalesmanModel = (dataSet, origin, isActive) => {
-  !dataSet.createdBy && (dataSet["createdBy"] = stored?.user?.email)
+  !dataSet.createdBy && (dataSet["createdBy"] = stored.user.email)
   !dataSet.createdDate && (dataSet["createdDate"] = date)
   dataSet["modifiedDate"]= date
   dataSet["fullname"] = dataSet.name + " "+ dataSet.lastName
@@ -124,8 +124,8 @@ export const adaptSalesmanModel = (dataSet, origin, isActive) => {
 export const adaptImplementationModel = (step)=>{
   return {
   isActive: true,
-  createdBy: stored?.user?.email,
-  modifiedBy: stored?.user?.email,
+  createdBy: stored.user.email,
+  modifiedBy: stored.user.email,
   idCompany: stored.company.id,
    implementationStep: step,
    initial: date,
@@ -137,9 +137,9 @@ export const adaptImplementationModel = (step)=>{
 export const adaptDelegateModel = (idUser)=> {
   return  {
     isActive: true,
-    createdBy:	stored?.user?.email,
-    modifiedBy:	stored?.user?.email,
-    idCompany: stored?.user?.company.id,
+    createdBy:	stored.user.email,
+    modifiedBy:	stored.user.email,
+    idCompany: stored.user.company.id,
     idUser: idUser,
     startDelegation: date,
     endDelegation: date
@@ -156,7 +156,7 @@ export const adaptCategoryModel = (dataSet, base64)=> {
       dataSet["avatar"] = url
       } catch (error) {console.log(error)}}
     base64 && getUrl(base64)
-    dataSet["modifiedBy"]= stored?.user?.email
+    dataSet["modifiedBy"]= stored.user.email
     return dataSet
     }
 
