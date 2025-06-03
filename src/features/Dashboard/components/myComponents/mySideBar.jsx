@@ -22,7 +22,7 @@ export const MySideBar = ()=>{
 
   const nav = useNavigate()
   const mods = useLocalStorage("alteredModules")?.[0]
-  useEffect(() => {getByDelegateId(user ?.user.id).then((res) => setTempData(res.data))}, []);
+  useEffect(() => {getByDelegateId(user?.user.id).then((res) => setTempData(res.data))}, []);
   useEffect(() => {tempData?.map(item=> getByID("Companies", item.idCompany).then(res => setCompanies(prev => [...prev, res.data]))) }, [tempData]);
   const changeCompany=async (id)=>{
     const newData = await getByID("Companies",id).then(res => getUpdatedLocalData(user,res.data))
@@ -47,7 +47,7 @@ export const MySideBar = ()=>{
           </DropdownButton>
           <DropdownMenu className="min-w-64" anchor="bottom start">
           <DropdownItem >
-            <DropdownLabel onClick={()=> changeCompany(user ?.user.company.id)}>{user?.user?.company?.name}<Description >Tu cuenta principal</Description></DropdownLabel></DropdownItem>
+            <DropdownLabel onClick={()=> changeCompany(user?.user.company.id)}>{user?.user?.company?.name}<Description >Tu cuenta principal</Description></DropdownLabel></DropdownItem>
               {companies.map((company, index) => tempData[index]?.status == 3 &&  (
                 <DropdownItem >
                   <DropdownDivider />
@@ -57,7 +57,7 @@ export const MySideBar = ()=>{
         </Dropdown>
       </SidebarHeader>
       <SidebarBody>
-      { user.company.id == user ?.user.company.id ? Object.keys(mods).map((module)=><MySideBarItem data={mods[module]} key={mods[module].id}/>) : <MySideBarItem data={mods["Marketing"]} key={mods["Marketing"].id}/>}
+      { user.company.id == user?.user.company.id ? Object.keys(mods).map((module)=><MySideBarItem data={mods[module]} key={mods[module].id}/>) : <MySideBarItem data={mods["Marketing"]} key={mods["Marketing"].id}/>}
         <SidebarSpacer />
         <SidebarSection>
           <SidebarLabel>Proximos Eventos</SidebarLabel>
@@ -67,11 +67,11 @@ export const MySideBar = ()=>{
         <Dropdown>
           <DropdownButton as={SidebarItem}>
             <span className="flex min-w-0 items-center gap-3">
-              <Avatar src={user ?.user.avatar} className="size-10 w-8 h-8" square alt="" />
+              <Avatar src={user?.user.avatar} className="size-10 w-8 h-8" square alt="" />
               <span className="min-w-0">
-                <span className="block truncate text-sm/5 font-medium text-zinc-950  ">{user ?.user.firstName}</span>
+                <span className="block truncate text-sm/5 font-medium text-zinc-950  ">{user?.user.firstName}</span>
                 <span className="block truncate text-xs/5 font-normal text-zinc-500  ">
-                  {user ?.user.email}
+                  {user?.user.email}
                 </span>
               </span>
             </span>

@@ -27,12 +27,12 @@ export const MyGeneralInfo = ()=>{
         <Button className="my-6" onClick={()=> nav(`/dashboard/${params.module}/edit/${params.option}/${stored.company.id}`)}>Editar</Button>
       </li>
       <li className="border-zinc-300 border bg-zinc-100 rounded-lg" >
-        <Avatar className="size-30 shadow-xl mt-4 bg-zinc-50" src={stored ?.user.avatar}/>
+        <Avatar className="size-30 shadow-xl mt-4 bg-zinc-50" src={stored?.user.avatar}/>
         <h3 className={`mt-6  font-semibold  tracking-tight `}>Información del Usuario</h3>
-        <p className="text-sm/6 text-gray-600">Nombre: {stored ?.user.fullname}</p>
-        <p className="text-sm/6 text-gray-600">Email: {stored ?.user.email}</p>
+        <p className="text-sm/6 text-gray-600">Nombre: {stored?.user.fullname}</p>
+        <p className="text-sm/6 text-gray-600">Email: {stored?.user.email}</p>
         <p className="text-sm/6 text-gray-600">Estado: {status}</p>
-        <Button className="my-6" onClick={()=> nav(`/dashboard/${params.module}/edit/users/${stored ?.user.id}`)}>Editar</Button>
+        <Button className="my-6" onClick={()=> nav(`/dashboard/${params.module}/edit/users/${stored?.user.id}`)}>Editar</Button>
       </li>
     </ul>
     <div className="mt-2 rounded-lg" >

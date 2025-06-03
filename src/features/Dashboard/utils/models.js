@@ -5,7 +5,7 @@ export const productModel=
 {
     isActive: true,
     createdBy:	null,
-    modifiedBy:	 stored ?.user.email,
+    modifiedBy:	 stored?.user.email,
     idCompany:  stored.company.id,
     idManufacturer: null,
     name: "",
@@ -24,7 +24,7 @@ export const productModel=
 export const warehouseModel = {
     isActive: true,
     createdBy:	null,
-    modifiedBy:	stored ?.user.email,
+    modifiedBy:	stored?.user.email,
     idCompany:  stored.company.id,
     name: "",
     idCity: null,
@@ -40,7 +40,7 @@ export const userModel = {
     createdDate:  "",
     modifiedDate: "",
     createdBy:	null,
-    modifiedBy:stored ?.user.email,
+    modifiedBy:stored?.user.email,
     idCompany:  stored.company.id,
     firstName: "",
     lastName: "",
@@ -57,7 +57,7 @@ export const companyModel = {
     createdDate:  "",
     createdBy:	null,
     modifiedBy:	null,
-    modifiedBy:	 stored ?.user.email,
+    modifiedBy:	 stored?.user.email,
     id:  stored.company.id,
     name: "",
     idSegment: 0,
@@ -68,7 +68,7 @@ export const companyModel = {
 
 export const manufacturerModel= {
     createdBy:	null,
-    modifiedBy:	stored ?.user.email,
+    modifiedBy:	stored?.user.email,
     idCompany:  stored.company.id,
     name: ""
   }
@@ -76,7 +76,7 @@ export const manufacturerModel= {
 export const  salesModel = {
     isActive: true,
     createdDate:  "",
-    modifiedBy:	 stored ?.user.email,
+    modifiedBy:	 stored?.user.email,
     idCompany:  stored.company.id,
     name: "",
     lastName: "",
@@ -87,7 +87,7 @@ export const  salesModel = {
 export const implementation = {
     isActive: true,
     createdBy:	null,
-    modifiedBy:	stored ?.user.email,
+    modifiedBy:	stored?.user.email,
     idCompany:  stored.company.id,
      implementationStep: 0,
      initial: "",
@@ -99,7 +99,7 @@ export const officeModel = {
     isActive: true,
     createdBy:	null,
     name: "",
-     modifiedBy:	stored ?.user.email,
+     modifiedBy:	stored?.user.email,
     idCompany:  stored.company.id,
     idCity: null,
     address: "",
@@ -112,7 +112,7 @@ export const officeModel = {
 export const delegateModel = {
     isActive: true,
     createdBy:	null,
-     modifiedBy: stored ?.user.email,
+     modifiedBy: stored?.user.email,
     idCompany:  stored.company.id,
     idUser: 0,
     startDelegation: "",
@@ -121,8 +121,8 @@ export const delegateModel = {
 
 export const  libraryModel = {
     isActive: true,
-    createdBy:	stored ?.user.email,
-    modifiedBy:	stored ?.user.email,
+    createdBy:	stored?.user.email,
+    modifiedBy:	stored?.user.email,
     idCompany:  stored.company.id,
     name: "Default",
     files: []
@@ -130,8 +130,8 @@ export const  libraryModel = {
 
 export const fileModel = {
     isActive: true,
-    createdBy:	stored ?.user.email,
-    modifiedBy:	stored ?.user.email,
+    createdBy:	stored?.user.email,
+    modifiedBy:	stored?.user.email,
     idCompany:  stored.company.id,
     idFolder: 0,
   name: "string",
