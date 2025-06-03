@@ -8,7 +8,7 @@ import { useLocalStorage } from "../../../../shared/hooks/useLocalStorage"
 export const OrderBound = ({setData})=>{
     const [ products, setProducts] = useState(null)
     const [ stored] = useLocalStorage("data")
-    useEffect(()=>{getByCompanyId("Peoducts", stored.company.id).then(res=>setProducts(res.data))},[])
+    useEffect(()=>{getByCompanyId("Peoducts", stored?.company.id).then(res=>setProducts(res.data))},[])
    return (
      <div>
         <Heading>Order Bound ( Gancho de Venta ) </Heading>

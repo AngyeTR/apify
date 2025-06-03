@@ -11,7 +11,7 @@ const paymentMethods = ["Efectivo Contraentrega", "Pago online",]
 export const TunnelStep = ({data, setData})=>{
     const [stored] = useLocalStorage("data")
     const [ products, setProducts] = useState(null)
-    useEffect(()=>{getByCompanyId("Products", stored.company.id).then(res=> setProducts(res.data))},[])
+    useEffect(()=>{getByCompanyId("Products", stored?.company.id).then(res=> setProducts(res.data))},[])
 
     const handlePaymentMethod = (name, value) =>
     {

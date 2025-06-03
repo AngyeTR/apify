@@ -8,7 +8,7 @@ import { Input } from "../../../shared/components/uikit/input";
 import { Button } from "../../../shared/components/uikit/button";
 
 export const EditorPage=()=>{
-    useEffect(() => { getByCompanyId("Layouts", stored.company.id).then(res => setLayouts(res.data))}, []);
+    useEffect(() => { getByCompanyId("Layouts", stored?.company.id).then(res => setLayouts(res.data))}, []);
     const params = useParams()
     // const nav = useNavigate()
     const [stored] = useLocalStorage("data")

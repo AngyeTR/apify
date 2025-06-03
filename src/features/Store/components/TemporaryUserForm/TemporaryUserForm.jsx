@@ -12,7 +12,7 @@ export const  TemporaryUserForm = ()=> {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
     const [stored] = useLocalStorage("data")
-    const [dataset, setDataset] = useState({isActive: true, createdBy: "System", modifiedBy: "System", idCompany: stored.company.id,
+    const [dataset, setDataset] = useState({isActive: true, createdBy: "System", modifiedBy: "System", idCompany: stored?.company.id,
         firstName: "Usuario", lastName: "Temporal",fullname: "Usuario Temporal", email : "noemail@noemail.com", password: "temporalPass2025.", dni: "none", address: "none",})
     
     const nav = useNavigate()

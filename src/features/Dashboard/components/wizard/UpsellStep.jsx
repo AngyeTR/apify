@@ -11,8 +11,8 @@ export const UpsellStep = ({data, setData})=>{
         const [ stored] = useLocalStorage("data")
     
     useEffect(()=>{
-        getByCompanyId("Products", stored.company.id).then(res=>setProducts(res.data))
-        getByCompanyId("Layouts", stored.company.id).then(res=>setLayouts(res.data))
+        getByCompanyId("Products", stored?.company.id).then(res=>setProducts(res.data))
+        getByCompanyId("Layouts", stored?.company.id).then(res=>setLayouts(res.data))
     },[])
    return (
      <div>

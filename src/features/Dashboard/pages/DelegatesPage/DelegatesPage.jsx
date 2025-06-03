@@ -13,7 +13,7 @@ export const DelegatesPage = ()=> {
     const [data, setData] = useState([])
 
     useEffect(() => {getProfiles().then((res) => {setProfiles(res.data)})
-    getByCompanyId("Delegates", stored.company.id).then((res) => setData(res.data))}, []); 
+    getByCompanyId("Delegates", stored?.company.id).then((res) => setData(res.data))}, []); 
 
     return (
         <MyLayout >

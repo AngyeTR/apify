@@ -10,8 +10,8 @@ export const DownsellStep = ({data, setData})=>{
     const [ layouts, setLayouts] = useState(null)
     const [ stored] = useLocalStorage("data")
     
-    useEffect(()=>{ getByCompanyId("Products", stored.company.id).then(res=>setProducts(res.data))
-        getByCompanyId("Layouts", stored.company.id).then(res=>setLayouts(res.data))},[])
+    useEffect(()=>{ getByCompanyId("Products", stored?.company.id).then(res=>setProducts(res.data))
+        getByCompanyId("Layouts", stored?.company.id).then(res=>setLayouts(res.data))},[])
    return (
      <div>
         <Heading>Order Bound ( Gancho de Venta ) </Heading>

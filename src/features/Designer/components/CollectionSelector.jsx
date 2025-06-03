@@ -9,7 +9,7 @@ export const CollectionSelector = ({variable, setVariable, type})=> {
     const [data, setData] = useState(null)
     const [stored] = useLocalStorage("data")
 
-    useEffect(() => {getByCompanyId("Libraries", stored.company.id).then((res) => setData(res.data));}, []);
+    useEffect(() => {getByCompanyId("Libraries", stored?.company.id).then((res) => setData(res.data));}, []);
 
     const renderList =()=>{ 
         const items = data.filter(item=> item?.name == collection)

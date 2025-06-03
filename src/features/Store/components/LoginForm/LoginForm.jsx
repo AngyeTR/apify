@@ -34,8 +34,8 @@ export const LoginForm = ()=> {
       const res = await getLoginCustomer(user, password).then(res=> res)
       if (res.isValid) {
         setStoreUser(res.data.id); 
-        await getByCompanyId("PreOrders", stored.company.id).then(response=> setCart(filtercarts(response.data, res.data.id)))
-        await getFavorites(stored.company.id, res.data.id).then(response => setFavorites(filterFavorites(response.data)))
+        await getByCompanyId("PreOrders", stored?.company.id).then(response=> setCart(filtercarts(response.data, res.data.id)))
+        await getFavorites(stored?.company.id, res.data.id).then(response => setFavorites(filterFavorites(response.data)))
         nav("/store")
       }else { setError(res?.message ? res?.message : " ")} 
       setLoading(false)}
@@ -45,7 +45,7 @@ export const LoginForm = ()=> {
     <AuthLayout >
         <div className="flex-row sm:grid sm:grid-cols-2 sm:items-start sm:gap-x-8 justify-items-center self-start">
         <div onClick={()=>nav("/store")}>
-        {stored?.company?.urlLogo ? <Avatar src={stored.company.urlLogo} className="size-40 sm:size-60 md:size-80 justify-self-center py-0"/>
+        {stored?.company?.urlLogo ? <Avatar src={stored?.company.urlLogo} className="size-40 sm:size-60 md:size-80 justify-self-center py-0"/>
         :<Avatar src={logo} className="size-24 sm:size-60 md:size-80 justify-self-center py-0 "/>}
         </div>
       <div className="grid w-full max-w-sm grid-cols-1 gap-3">

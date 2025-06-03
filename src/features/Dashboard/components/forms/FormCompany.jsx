@@ -36,7 +36,7 @@ export function FormCompany(props) {
        
      useEffect(() => {
     getSegments().then((res) => {setSegments(res.data)})
-    getByID("Companies", stored.company.id).then((res) => {setDataSet(res.data)})}, [imgUrl])
+    getByID("Companies", stored?.company.id).then((res) => {setDataSet(res.data)})}, [imgUrl])
     
   const handleChange = (e) => {
     const { name, value } = e.target;

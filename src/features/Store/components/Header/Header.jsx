@@ -33,7 +33,7 @@ const MobileMenu = ({ open, close, data, storeUser, logOut, stored})=>{
         {/* <!-- Links --> */}
     <div className="space-y-6 border-t border-zinc-200 px-4 py-6">
       <NavLink to="/store" className="flex lg:hidden items-center  justify-center">
-          <Text className="justify-self-center" >{stored.company.name}</Text>
+          <Text className="justify-self-center" >{stored?.company.name}</Text>
         </NavLink>
       <h3 className="underline">Categorías</h3>
       <div className="flow-root"><NavLink className="-m-2 p-2 font-medium text-zinc-900"  to="/store/category/0">Todos</NavLink></div>
@@ -58,7 +58,7 @@ export const  Header= ()=> {
   const [data, setData] = useLocalStorage("categories", null)
   const nav = useNavigate()
   const storeUser = getStoreUser()
-  useEffect(()=>{getByCompanyId("Categories", stored.company.id).then(res => setData(res.data))},[ , showSidebar ])
+  useEffect(()=>{getByCompanyId("Categories", stored?.company.id).then(res => setData(res.data))},[ , showSidebar ])
   const params = useParams()
 
    const logOut = ()=>{
@@ -92,8 +92,8 @@ export const  Header= ()=> {
           <div className="border-b border-zinc-200">
             <div className="flex h-16 items-center justify-between">
                 <NavLink to="/store" className="hidden lg:flex  w-xs items-baseline">
-                  <img className="h-8 w-auto " src={stored.company.urlLogo ?  stored.company.urlLogo : "https://static.wixstatic.com/media/87407a_eff577b9b02c43a3aa41bc18c09b9da4~mv2.png/v1/fill/w_393,h_203,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/87407a_eff577b9b02c43a3aa41bc18c09b9da4~mv2.png"} alt=""/>
-                  <Text className="" >{stored.company.name}</Text>
+                  <img className="h-8 w-auto " src={stored?.company.urlLogo ?  stored?.company.urlLogo : "https://static.wixstatic.com/media/87407a_eff577b9b02c43a3aa41bc18c09b9da4~mv2.png/v1/fill/w_393,h_203,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/87407a_eff577b9b02c43a3aa41bc18c09b9da4~mv2.png"} alt=""/>
+                  <Text className="" >{stored?.company.name}</Text>
                 </NavLink>
               <div className="hidden h-full lg:flex flex-col w-full">
                 <div className="ml-8 ">

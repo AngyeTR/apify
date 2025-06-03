@@ -25,7 +25,7 @@ export const ProductList =()=>{
     const params = useParams()
 
     useEffect(()=>{
-        getByCompanyId("Products", stored.company.id).then(res=> setProducts(res.data))
+        getByCompanyId("Products", stored?.company.id).then(res=> setProducts(res.data))
         let newData = filter(products, params.cat)
         setProductsToShow(newData)
     },[ , params])

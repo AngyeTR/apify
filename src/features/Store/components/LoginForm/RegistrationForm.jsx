@@ -21,7 +21,7 @@ export const RegistrationForm = ()=> {
   const [stored] = useLocalStorage("data")
   const [favorites, setFavorites] = useLocalStorage("favorites")
   const [cart, setCart] = useLocalStorage("cart", null)
-  const [dataset, setDataset] = useState({isActive: true, createdBy: "System", modifiedBy: "System", idCompany: stored.company.id})
+  const [dataset, setDataset] = useState({isActive: true, createdBy: "System", modifiedBy: "System", idCompany: stored?.company.id})
     
  
     const handleClick= async (e)=>{
@@ -35,8 +35,8 @@ export const RegistrationForm = ()=> {
         setDataset(prev => ({...prev, ["fullname"] : fullName}))
         const res = await post("Customers", dataset).then(res=> res)
         res.isValid ? setStoreUser(res.data.id) : setError("algo salió mal. Intenta de nuevo")
-        res.isValid && await getByCompanyId("PreOrders", stored.company.id).then(response=> setCart(filtercarts(response.data, res.data.id)))
-        res.isValid &&  await getFavorites(stored.company.id, res.data.id).then(response => setFavorites(filterFavorites(response.data)))
+        res.isValid && await getByCompanyId("PreOrders", stored?.company.id).then(response=> setCart(filtercarts(response.data, res.data.id)))
+        res.isValid &&  await getFavorites(stored?.company.id, res.data.id).then(response => setFavorites(filterFavorites(response.data)))
         res.isValid && nav(-1)
       }
       setLoading(false)}
@@ -45,7 +45,7 @@ export const RegistrationForm = ()=> {
     <AuthLayout >
       <div className="flex-row sm:grid sm:grid-cols-2 sm:items-start sm:gap-x-8 justify-items-center self-start">
         <div onClick={()=>nav("/store")}>
-        {stored?.company?.urlLogo ? <Avatar src={stored.company.urlLogo} className="size-30 sm:size-60 md:size-80 justify-self-center py-0"/>
+        {stored?.company?.urlLogo ? <Avatar src={stored?.company.urlLogo} className="size-30 sm:size-60 md:size-80 justify-self-center py-0"/>
         :<Avatar src={logo} className="size-24 sm:size-60 md:size-80 justify-self-center py-0"/>}
         </div>
       <Field className="grid w-full max-w-sm grid-cols-1 gap-3">

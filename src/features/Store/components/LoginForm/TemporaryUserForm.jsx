@@ -33,8 +33,8 @@ export const  TemporaryUserForm = ()=> {
         const res = await post("Customers", dataset).then(res => res)
         if (res.isValid) {
             await setStoreUser(res.data.id.toString()) 
-            await getByCompanyId("PreOrders", stored.company.id).then(response=> setCart(filtercarts(response.data, res.data.id)))
-            await getFavorites(stored.company.id, res.data.id).then(response => setFavorites(filterFavorites(response.data)))
+            await getByCompanyId("PreOrders", stored?.company.id).then(response=> setCart(filtercarts(response.data, res.data.id)))
+            await getFavorites(stored?.company.id, res.data.id).then(response => setFavorites(filterFavorites(response.data)))
             nav(-1)
         }else { setError(res?.errorMessages[0] ? res?.errorMessages[0] : " ")
             if(res?.errorMessages[0] == 'E-mail ya registrado' || res?.errorMessages[0] == "Celular ya registrado"){
@@ -48,7 +48,7 @@ export const  TemporaryUserForm = ()=> {
         <Layout>
         <div className="flex-row sm:grid md:grid-cols-2 sm:items-start sm:gap-x-1 justify-items-center w-[99vw] self-start">
                 <div onClick={()=>nav("/store")} >
-                {stored?.company?.urlLogo ? <Avatar src={stored.company.urlLogo} className="size-24 sm:size-60 md:size-80 justify-self-center py-0"/>
+                {stored?.company?.urlLogo ? <Avatar src={stored?.company.urlLogo} className="size-24 sm:size-60 md:size-80 justify-self-center py-0"/>
                 :<Avatar src={logo} className="size-30 sm:size-40 md:size-50 justify-self-center py-0"/>}
                 </div>
                <Field className="grid w-fit max-w-2xl gap-3 justify-items-center">

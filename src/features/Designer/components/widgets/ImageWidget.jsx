@@ -21,7 +21,7 @@ export const ImageWidget = ({content, id, edit, editable})=>{
         edit(id, variable)
         setEditor(false)}
     
-        useEffect(() => {getByCompanyId("Libraries", stored.company.id).then((res) => setData(res.data));}, []);
+        useEffect(() => {getByCompanyId("Libraries", stored?.company.id).then((res) => setData(res.data));}, []);
 
     return (
         <>

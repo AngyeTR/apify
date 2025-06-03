@@ -12,8 +12,8 @@ export const FormSelectAndAdd = ({ref,  state, setState})=>{
     let newOption = ""
 
      useEffect(() => {
-        ref == "manufacturer" ? getByCompanyId("Manufacturer", stored.company.id).then((res) => {setInternalState(res.data)}):
-          getByCompanyId("Categories", stored.company.id).then((res) => {setInternalState(res.data)})
+        ref == "manufacturer" ? getByCompanyId("Manufacturer", stored?.company.id).then((res) => {setInternalState(res.data)}):
+          getByCompanyId("Categories", stored?.company.id).then((res) => {setInternalState(res.data)})
         }, [ ]);
 
     const handleChange=(value)=>{
@@ -27,14 +27,14 @@ export const FormSelectAndAdd = ({ref,  state, setState})=>{
         console.log( stored)
     const body = {
         isActive: true,
-        createdBy: stored?.useremail,
-        modifiedBy: stored?.useremail,
-        idCompany: parseInt(stored.company.id), 
+        createdBy: stored?.user.email,
+        modifiedBy: stored?.user.email,
+        idCompany: parseInt(stored?.company.id), 
         name: newOption}
     let response = []
             try {
                 ref == "manufacturer" ? await post("Manufacturer", body) : await post("Categories", body)
-                response =  ref == "manufacturer" ? await getByCompanyId("Manufacturer", stored.company.id) : await getByCompanyId("Categories", stored.company.id)
+                response =  ref == "manufacturer" ? await getByCompanyId("Manufacturer", stored?.company.id) : await getByCompanyId("Categories", stored?.company.id)
                 setState(null)
                 setVariable("")
             } catch (error) {

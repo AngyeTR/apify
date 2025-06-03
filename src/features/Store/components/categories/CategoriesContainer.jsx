@@ -11,7 +11,7 @@ export const CategoriesContainer = ()=> {
     const [categories, setCategories] = useState(null)
     const [stored]  = useLocalStorage("data")
 
-    useEffect(()=>{getByCompanyId("Categories", stored.company.id).then(res=>setCategories(res.data))},[ ])
+    useEffect(()=>{getByCompanyId("Categories", stored?.company.id).then(res=>setCategories(res.data))},[ ])
     let category = categories?.filter(cat=> cat.id == 1)[0]
     const recommended = [
         {id: 1, name: "Producto recomendado", url:null,  category: 1},

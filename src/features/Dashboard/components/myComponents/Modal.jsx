@@ -15,7 +15,7 @@ export const Modal = ({invitations, setNotify})=> {
 
     const update =async (id, num)=>{
         id.status= num
-        id.modifiedBy = stored?.useremail
+        id.modifiedBy = stored?.user.email
         const res = await edit("Delegates", id).then(res=>res)
         res.isValid && nav(0)
     }

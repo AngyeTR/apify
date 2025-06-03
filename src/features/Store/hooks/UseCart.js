@@ -13,7 +13,7 @@ export function useCart(initialCart = null) {
   const storeUser = getStoreUser()
 
   const updateLocalCart = async() =>{
-    await getByCompanyId("PreOrders", stored.company.id).then(response=> setNewCart(filtercarts(response.data, storeUser))) 
+    await getByCompanyId("PreOrders", stored?.company.id).then(response=> setNewCart(filtercarts(response.data, storeUser))) 
   }
 
   const createCart = async (product, storeUser) => {

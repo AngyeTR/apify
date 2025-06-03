@@ -4,18 +4,18 @@ const date = new Date().toISOString();
 
 export const adaptNewCartModel= (dataSet, product, userId) => {
   console.log(dataSet)
-  dataSet["modifiedBy"]= stored?.useremail
-  dataSet["createdBy"]= stored?.useremail
-  dataSet["idCompany"]= stored.company.id
+  dataSet["modifiedBy"]= stored?.user.email
+  dataSet["createdBy"]= stored?.user.email
+  dataSet["idCompany"]= stored?.company.id
   dataSet["idCustomer"]= userId
   dataSet["docDate"]= date
   dataSet["app"]= 1
   dataSet["lines"]= [
     {
       isActive: true,
-      idCompany: stored.company.id,
-      createdBy: stored?.useremail,
-      modifiedBy: stored?.useremail,
+      idCompany: stored?.company.id,
+      createdBy: stored?.user.email,
+      modifiedBy: stored?.user.email,
       idCustomer: userId,
       idProduct: product.id,
       lineNum: 1,
@@ -37,9 +37,9 @@ export const adaptAddingCartModel= (dataSet, product, userId) => {
   dataSet["lines"]= [
     {
       isActive: true,
-      idCompany: stored.company.id,
-      createdBy: stored?.useremail,
-      modifiedBy: stored?.useremail,
+      idCompany: stored?.company.id,
+      createdBy: stored?.user.email,
+      modifiedBy: stored?.user.email,
       idCustomer: userId,
       idProduct: product.id,
       lineNum: dataSet.lines.length,
@@ -74,9 +74,9 @@ export const adaptDeleteCartModel= (dataSet, productId) => {
 }
 
 export const adaptFavoriteModel= (dataSet, userId, productId ) => {
-  dataSet["modifiedBy"]= stored?.useremail
-  dataSet["createdBy"]= stored?.useremail
-  dataSet["idCompany"]= stored.company.id
+  dataSet["modifiedBy"]= stored?.user.email
+  dataSet["createdBy"]= stored?.user.email
+  dataSet["idCompany"]= stored?.company.id
   dataSet["idCustomer"]= userId
   dataSet["idProduct"]= parseInt(productId)
   dataSet["startDate"] = date

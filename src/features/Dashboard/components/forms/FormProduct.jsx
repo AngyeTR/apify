@@ -37,7 +37,7 @@ export function FormProduct(props) {
       setAva(dispo)};
 
     useEffect(() => {
-      getByCompanyId("Warehouses", stored.company.id).then((res) => {setWarehouses(res.data)})
+      getByCompanyId("Warehouses", stored?.company.id).then((res) => {setWarehouses(res.data)})
       dataSet?.images?.length >= 3 ? setButtonDisabled(true) : setButtonDisabled(false)
       console.log(dataSet)
     }, [dataSet]);

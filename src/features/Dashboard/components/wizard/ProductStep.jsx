@@ -10,7 +10,7 @@ const colors = ["Azul", "Verde", "Rojo", "Amarillo", "Naranja"]
 export const ProductStep = ({data, setData})=>{
     const [stored] = useLocalStorage("data")
     const [layouts, setLayouts] = useState(null)
-    useEffect(()=>{getByCompanyId("Layouts", stored.company.id).then(res=> setLayouts(res.data))},[])
+    useEffect(()=>{getByCompanyId("Layouts", stored?.company.id).then(res=> setLayouts(res.data))},[])
    return (
      <div>
         <Heading>Producto</Heading>
