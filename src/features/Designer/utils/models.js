@@ -4,8 +4,8 @@ export const newLayoutModel = (stored) =>
     return ({
     isActive: true,
     idCompany: stored.company.id,
-    createdBy: stored.user.email,
-    modifiedBy: stored.user.email,
+    createdBy: stored?.useremail,
+    modifiedBy: stored?.useremail,
     content: "[]",
     styles: "[]"
 })
@@ -14,6 +14,6 @@ export const newLayoutModel = (stored) =>
 export const cloneLayoutModel = (stored) => {
     return ({
         isActive: true,
-    createdBy: stored.user.email,
-    modifiedBy: stored.user.email,})
+    createdBy: stored?.useremail,
+    modifiedBy: stored?.useremail,})
 }
