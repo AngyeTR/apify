@@ -34,14 +34,10 @@ export function MyTable({ data }) {
   const render = ()=> {
     if(newData.length > 0 && headers.length > 0 ){
       return (
-<<<<<<< HEAD
         <div className="w-[99%] overflow-x-scroll">
           <Table  data={newData} headers={headers} />
         </div>
-        
-=======
-        <Table  data={newData} headers={headers} />
->>>>>>> parent of d24e210 (fx: changed some responsive items)
+
       )}}
 
   return (
