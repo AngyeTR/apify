@@ -6,11 +6,9 @@ import { GridStack } from 'gridstack';
 import 'gridstack/dist/gridstack.min.css';
 import { useEffect } from "react";
 
-// En tu componente o lugar donde lo necesites
-useEffect(() => {
-  const grid = GridStack.init();
-  // Aquí puedes usar grid como necesites
-}, []);
+// useEffect(() => {
+//   const grid = GridStack.init();
+// }, []);
 
 createRoot(document.getElementById('root')).render(
   <Router>
