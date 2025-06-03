@@ -26,7 +26,7 @@ export const NewResourceForm = ({setEditor, data})=>{
             base64 = await getBase64(file).then(res => {return res})
             const data ={name: dataSet["name"], "base64": base64, "imageType": 2}
             const url  = await postImage(data).then(res => {return res})
-            dataSet["url"] = url
+            dataSet["url"] = url.data
             console.log(dataSet)
             const res  = await postFile(dataSet)
             console.log(res)
