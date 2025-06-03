@@ -4,6 +4,7 @@ import './index.css'
 import App from './App.jsx'
 import { GridStack } from 'gridstack';
 import 'gridstack/dist/gridstack.min.css';
+import { useEffect } from "react";
 
 // En tu componente o lugar donde lo necesites
 useEffect(() => {
