@@ -99,10 +99,10 @@ export const getUpdatedLocalData = (data, newData)=>{
     return data
 }
 export const getUpdatedLocalUser = (data, newData)=>{ 
-    data ?.user.lastname = newData.lastname
-    data ?.user.name= newData.firstName
-    data ?.user.fullname = newData.fullname
-    data ?.user.avatar = newData.avatar
+    data .user.lastname = newData.lastname
+    data .user.name= newData.firstName
+    data .user.fullname = newData.fullname
+    data .user.avatar = newData.avatar
     return data
 }
 

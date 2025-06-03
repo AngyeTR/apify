@@ -36,7 +36,7 @@ export function LoginForm() {
     await setMods(response.options)
     await setModules(adaptedModules)
     setError(null)
-    nav(!response.implementation.success && response ?.user.idProfile ==1  ? "/dashboard/wizard" : "/dashboard" )
+    nav(!response.implementation.success && response .user.idProfile ==1  ? "/dashboard/wizard" : "/dashboard" )
     nav(0)
     }   else setError(response?.response?.message ? response.response.message : "Error de red" );
     setLoading(false)    

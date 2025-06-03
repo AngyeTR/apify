@@ -27,8 +27,8 @@ export const FormSelectAndAdd = ({ref,  state, setState})=>{
         console.log( stored)
     const body = {
         isActive: true,
-        createdBy: stored ?.user.email,
-        modifiedBy: stored ?.user.email,
+        createdBy: stored .user.email,
+        modifiedBy: stored .user.email,
         idCompany: parseInt(stored.company.id), 
         name: newOption}
     let response = []
