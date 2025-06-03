@@ -3,7 +3,7 @@ import { GridStack } from 'gridstack';
 import { Field, Label } from '../../../shared/components/uikit/fieldset';
 import { HiOutlineTrash } from "react-icons/hi";
 import { useEffect, useRef, useState } from 'react'
-import { ImageWidget } from "../components/widgets/ImageWidget"
+import { ImageWidget } from "../components/widgets/ImageWidget" 
 import { TextWidget } from "../components/widgets/TextWidget"
 import { TitleWidget } from '../components/widgets/TitleWidget';
 import { ButtonWidget } from '../components/widgets/ButtonWidget';
@@ -37,7 +37,7 @@ export const GridContainer = ({canEdit, setItems, items, count, layoutColor, set
   }
 
   useEffect(()=>{
-    grid = GridStack.init({float: true, cellHeight: 50, column: 6, acceptWidgets: true, columnOpts:{breakpoints:[{w:480, c:1}, {w:690, c:6}, {w:1280, c:6}]},
+    const grid = GridStack.init({float: true, cellHeight: 50, column: 6, acceptWidgets: true, columnOpts:{breakpoints:[{w:480, c:1}, {w:690, c:6}, {w:1280, c:6}]},
       margin: 1, staticGrid: !canEdit, disableResize: !canEdit, disableDrag: !canEdit})
     return () => {grid.destroy(false)}
   },[ ,items])
