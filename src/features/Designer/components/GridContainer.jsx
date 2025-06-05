@@ -37,7 +37,7 @@ export const GridContainer = ({canEdit, setItems, items, count, layoutColor, set
   }
 
   useEffect(()=>{
-    const grid = GridStack.init({float: true, cellHeight: 50, column: 4, acceptWidgets: true, columnOpts:{breakpoints:[{w:480, c:1}, {w:690, c:3}, {w:1280, c:3}]},
+    const grid = GridStack.init({float: true, cellHeight: 50, column: 4, acceptWidgets: true, columnOpts:{breakpoints:[{w:480, c:1}, {w:690, c:2}, {w:1280, c:2}]},
       margin: 1, staticGrid: !canEdit, disableResize: !canEdit, disableDrag: !canEdit})
       setGrid(grid)
     return () => {grid.destroy(false)}
