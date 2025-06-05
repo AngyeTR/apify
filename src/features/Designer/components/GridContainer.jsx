@@ -19,6 +19,7 @@ export const GridContainer = ({canEdit, setItems, items, count, layoutColor, set
       backgroundPosition: 'center', repeat: "no-repeat",  backgroundBlendMode: 'multiply' }
   const itemsRef = useRef(new Map())
   const width = window.innerWidth;
+  console.log(width)
   const getMap = ()=>{return itemsRef.current}
   const [isModalOpen, setModalOpen] =  useState(true)
   const removeWidget = (id) => {setItems((prev) => prev.filter((w) => w.id !== id));
