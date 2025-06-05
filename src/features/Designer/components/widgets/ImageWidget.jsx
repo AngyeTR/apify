@@ -26,12 +26,12 @@ export const ImageWidget = ({content, id, edit, editable})=>{
     return (
         <>
         {/* <div className={` w-[100%] p-3  h-[98%] bg-[url(${url})] z-0 rounded-lg bg-center bg-no-repeat bg-cover`} */}
-        <div className="overflow-hidden h-[99%] bg-red-400  w-full md:bg-amber-300"
+        <div className="overflow-hidden h-[99%] bg-red-400  w-full md:bg-amber-300 place-content-center place-items-center"
 //         style={{ backgroundImage: `url('${url}')`,  backgroundRepeat: 'no-repeat',
 //   backgroundPosition: 'center center',
 //   backgroundSize: 'cover'}}
         >
-            <img src={url} className="w-full h-auto object-contain overflow-hidden hidden"/>
+            <img src={url} className=" h-auto object-contain w-[358px] md:w-[718px] overflow-hidden hidden"/>
         {(!editor && editable )&& <button onClick={()=>setEditor(true)} className="absolute top-1 right-10 bg-blue-500 text-white px-2 py-1  h-6 text-[6px] rounded z-50 hover:border hover:border-zinc-500 cursor-pointer"><HiOutlinePencil className="size-4"/></button>}
         </div>    
         {editor  && (
