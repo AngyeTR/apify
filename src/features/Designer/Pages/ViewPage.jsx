@@ -37,6 +37,7 @@ const [grid, setGrid] = useState()
         // <div className="w-[90vw] sm:w-[70vw] m-0 p-0  justify-self-center" >
         <div className="w-[400px] md:w-[800px] m-0 p-0 justify-self-center">
             {console.log(layout)}
+            console.log(color)
             <GridContainer canEdit={false} items={layout} layoutColor={color} setGrid={setGrid}/>
             {/* <Button className="mt-2" onClick={navigate}>Editar</Button> */}
         </div>
