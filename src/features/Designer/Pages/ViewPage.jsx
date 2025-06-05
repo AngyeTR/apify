@@ -13,7 +13,7 @@ export const ViewPage = ()=>{
     const [color, setColor] = useState({backgroundColor: "#ffffff"}) 
     const [ layouts, setLayouts] = useState(null)
     const [stored] = useLocalStorage("data")
-
+const [grid, setGrid] = useState()
     const navigate= ()=>{
         nav(`/designer/editor/${params.id}`)
         nav(0)}  
