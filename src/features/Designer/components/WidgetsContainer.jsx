@@ -13,7 +13,7 @@ export const WidgetsContainer =({setItems, items, count, setCount, layoutColor, 
     useEffect(()=>{ setNewItem({...item?.[0]})}, [item])
 
     const addWidget = async (type)=>{
-        setItems([...items,{id: `${type}-${count}`, h:"3" , w:"1", y:count, content:type == "container" ? [] : null, style:null}]);
+        setItems([...items,{id: `${type}-${count}`, h:"3" , w:"2", y:count, h:"1", content:type == "container" ? [] : null, style:null}]);
         await new Promise(resolve => setTimeout(resolve, 500));
         setCount(prev => prev+1)}  
 
