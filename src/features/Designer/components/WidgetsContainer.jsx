@@ -5,9 +5,9 @@ import { useNavigate } from "react-router-dom";
 import { Controller } from "./Controller";
 import { edit } from "../../../shared/services/API/api";
 
-export const WidgetsContainer =({setItems, items, count, setCount, layoutColor, item})=>{
+export const WidgetsContainer =({setItems, items, count, setCount, layoutColor, item, grid})=>{
     const [newItem, setNewItem] = useState(null)
-    const nav = useNavigate()
+    const nav = useNavigate() 
     const itemsRef = useRef(new Map())
     const getMap = ()=>{return itemsRef.current}
     useEffect(()=>{ setNewItem({...item?.[0]})}, [item])

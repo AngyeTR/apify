@@ -1,3 +1,4 @@
+import { useParams } from "react-router-dom"
 import { SidebarLayout } from "../../../../shared/components/uikit/sidebar-layout"
 import { MyNavBar } from "./MyNavBar"
 import { MySideBar } from "./mySideBar"

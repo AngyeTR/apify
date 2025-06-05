@@ -74,19 +74,22 @@ export const getTableHeaders = (name)=>{
     warehouses: [["Actions", "Activo","Nombre", "Dirección", "Teléfono", "Encargad@"], ["id" , "isActive","name", "address", "cellphone", "contactName"]],
     users: [["Actions", "Activo","Nombre", "Email", "Rol"], ["id" , "isActive","fullname", "email", "idProfile"]], 
     salesman: [["Actions","Activo","Nombre", "Email",], ["id" , "isActive","fullname", "email"]],
-    offices: [["Actions", "Activo","Nombre", "Dirección", "Teléfono", "Encargad@"], ["id" ,"isActive","name", "address", "cellphone", "contactName"]]}
+    offices: [["Actions", "Activo","Nombre", "Dirección", "Teléfono", "Encargad@"], ["id" ,"isActive","name", "address", "cellphone", "contactName"]],
+    campaigns: [["Acciones", "Nombre", "Fecha de Inicio", "Fecha de Fin", "Tuneles"], ["id", "name", "startDate", "endDate", "tunnels"]],
+    tunnels: [["Acciones", "Nombre", "Fecha de Inicio", "Fecha de Fin", "producto", "orderBound", "UpSell", "DonwSell"], ["id", "name", "startDate", "endDate", "tunnels"]]}
     return dictionary[name]
 }
 
 export const getDataToShow = (data, name) => {
-    const newData = []
+    let newData = []
     const keys = getTableHeaders(name)
-    data.map((item => newData.push(keys[1].map(key=> key == "isActive" ? (item["isActive"] ? "Activo" : "Inactivo") : item[key]))))
+     const campaignData = [[1, "Campaña 1", "2025-06-05T14:13", "2025-06-15T14:13", 2], [2, "Campaña 2", "2025-06-05T14:13", "2025-06-15T14:13", 6], [3, "Campaña 3", "2025-06-05T14:13", "2025-06-15T14:13", 20]]
+    name == "campaigns" ? newData = campaignData : name == "tunnels" ? newData = []: data.map((item => newData.push(keys[1].map(key=> key == "isActive" ? (item["isActive"] ? "Activo" : "Inactivo") : item[key]))))
     return [newData, keys[0]]
 }
 
 export const getIsTable = (name)=>{
-    const dictionary = ["products", "warehouses", "users", "salesman", "offices"]
+    const dictionary = ["products", "warehouses", "users", "salesman", "offices", "campaigns", "tunnels"]
     return dictionary?.includes(name)
 }
 export const getUpdatedLocalData = (data, newData)=>{

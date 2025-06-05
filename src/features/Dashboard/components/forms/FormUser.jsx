@@ -72,7 +72,7 @@ export function FormUser(props) {
     <div className="flex w-full flex-wrap items-end justify-between gap-4 border-b border-zinc-950/10 pb-6   my-5">
       <Heading>Información del Usuario</Heading>
     </div>
-    <Field>
+     <Field className="max-w-lg">
       <Label>Nombre de Usuario*</Label>
       <Input name="firstName" placeholder={dataSet?.firstName && dataSet.firstName} onChange={handleChange} id="name"/>
       <Label>Apellido de Usuario*</Label>

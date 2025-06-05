@@ -13,7 +13,7 @@ import { CarouselWidget } from '../components/widgets/CarouselWidget';
 import { BlankWidget } from '../components/widgets/BlankWidget';
 import { PaymentButtonWidget } from '../components/widgets/PaymentButtonWidget';
 
-export const GridContainer = ({canEdit, setItems, items, count, layoutColor, setLayoutColor})=> { 
+export const GridContainer = ({canEdit, setItems, items, count, layoutColor, setLayoutColor, setGrid})=> { 
   const styles = {backgroundColor: layoutColor["backgroundColor"],  
       backgroundImage: `url('${layoutColor["backgroundImage"]}')`,  backgroundSize: 'cover',
       backgroundPosition: 'center', repeat: "no-repeat",  backgroundBlendMode: 'multiply' }
@@ -39,8 +39,9 @@ export const GridContainer = ({canEdit, setItems, items, count, layoutColor, set
   useEffect(()=>{
     const grid = GridStack.init({float: true, cellHeight: 50, column: 6, acceptWidgets: true, columnOpts:{breakpoints:[{w:480, c:1}, {w:690, c:6}, {w:1280, c:6}]},
       margin: 1, staticGrid: !canEdit, disableResize: !canEdit, disableDrag: !canEdit})
+      setGrid(grid)
     return () => {grid.destroy(false)}
-  },[ ,items])
+  },[ ,items]) 
 
   const render=(item)=>{
     const type = item.id.split("-")[0]

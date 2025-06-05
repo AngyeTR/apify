@@ -11,16 +11,17 @@ export const DownsellStep = ({data, setData})=>{
     const [ stored] = useLocalStorage("data")
     
     useEffect(()=>{ getByCompanyId("Products", stored?.company.id).then(res=>setProducts(res.data))
-        getByCompanyId("Layouts", stored?.company.id).then(res=>setLayouts(res.data))},[])
+        getByCompanyId("Layouts", stored?.company.id).then(res=>setLayouts(res.data.filter(layout=> data.upsellProductId == layout.idProduct)))},[])
    return (
-     <div>
-        <Heading>Order Bound ( Gancho de Venta ) </Heading>
+     <div className="mt-10">
+        <Heading className="my-5 text-center">DownSell </Heading>
         {data.upsellProductId &&
-            <Select onChange={(e)=>setData(prev => ({...prev, "orderBound" : e.target.value})) }>
+            <Select className="my-3" onChange={(e)=>setData(prev => ({...prev, "downsellLayout" :parseInt(e.target.value)})) }>
+            <option>Seleccionar Layout</option>
             {layouts?.map(prod => <option value={prod.id}>{prod.name}</option>)}
         </Select>
         }
-        <Input placeholder="Precio final del producto"/>
+        <Input className="my-3" placeholder="Precio final del producto"  type="number" onChange={(e)=> setData(prev=> ({...prev, "downsellPrice": parseFloat(e.target.value)}))}/>
     </div>
    )
 }

@@ -53,7 +53,7 @@ export function FormWarehouse(props) {
     <div className="flex w-full flex-wrap items-end justify-between gap-4 border-b border-zinc-950/10 pb-6   my-5">
       <Heading>Información de la Bodega</Heading>
     </div>
-    <Field>
+     <Field className="max-w-lg">
        <Label>Nombre*</Label>
       <Input name="name" placeholder={dataSet?.name && dataSet.name} onChange={handleChange} />
       <Label className="block my-4">Esta bodega también es punto de atención al público <Switch checked={dataSet?.isPublic} onChange={()=> setDataSet(prev=>({...prev,  isPublic: !prev.isPublic}))}/> </Label>

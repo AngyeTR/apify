@@ -58,10 +58,10 @@ export function FormProduct(props) {
     }
   return (
     <>
-    <div className="flex w-full flex-wrap items-end justify-between gap-4 border-b border-zinc-950/10 pb-6   my-5">
+    <div className="flex w-full max-w-md flex-wrap items-end justify-between gap-4 border-b border-zinc-950/10 pb-6   my-5">
       <Heading>Información del Producto</Heading>
     </div>
-    <Field>
+    <Field className="max-w-lg">
       <Label>Nombre*</Label>
       <Input name="name" placeholder={dataSet?.name} onChange={handleChange} />
       <Label>Referencia</Label>
@@ -84,15 +84,15 @@ export function FormProduct(props) {
       <Label >Precio</Label>
       <Input  name="price" type="number" onChange={handleChange}/>
       <Label className="mt-5 block">Stock</Label>
-      {!warehouses ? <p> No se encontraron Bodegas asociadas a la compañía</p> : warehouses.map(warehouse => 
-        <> <Label >Bodega - { warehouse.name} </Label>
+      {!warehouses ? <p> No se encontraron Bodegas asociadas a la compañía</p> : warehouses.filter(warehouse=> warehouse.isActive == true).map(warehouse => 
+        <div className="mb-5"> <Label >Bodega - { warehouse.name} </Label>
           <Input placeholder="cantidad para añadir a la bodega" name="stock" className="w-20" key={warehouse.id} 
           onChange={(e)=> setStock([...stock?.filter(stock => stock.idWarehouse !== warehouse.id), {idWarehouse: warehouse.id, quantity: parseInt(e.target.value) }])
-         }/></>)}
+         }/></div>)}
       <Label > Imagenes de producto </Label>
-      <p className='w-md italic text-xs'>Añadir máximo 3 imágenes. Las imágenes previamente almacenadas serán reemplazadas</p>
+      <p className='w-md italic text-xs text-zinc-700'>Añadir máximo 3 imágenes. Las imágenes previamente almacenadas serán reemplazadas</p>
       <FormArrayItems ref={"imageUrl"} state={dataSet?.images} setState={(value) => setDataSet(prev=>({...prev, images: value}))} disabled={buttonDisabled}/> 
-      <p className={`text-red-600 pt-5 ${error ? "visible" : "invisible"}`}>Ups! Algo salió mal: {error}</p>  
+      {error && <p className={`text-red-600 pt-5 `}>Ups! Algo salió mal: {error}</p> } 
     <Button onClick={handleSave}  className="my-10 mr-2" 
     disabled={!ava}>{loading ? <MyLoader /> : "Guardar"}</Button>     
  </Field>

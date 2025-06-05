@@ -11,14 +11,6 @@ import { OrderBound } from './OrderBoundStep'
 import { UpsellStep } from './UpsellStep'
 import { DownsellStep } from './DownsellStep'
 
-const campaignModel= {
-    name:"string",
-    id: 0,
-    startDate:"string",
-    endDate:"string",
-    tunnels: []
-}
-
 const tunnelModel = {
     id:0,
     name: "string",
@@ -28,6 +20,7 @@ const tunnelModel = {
     endDate:"string",
     comment: "string",
     paymentMethods: [],
+    layout: 0,
     prices:[{
         name: "string",
         initialPrice:0,
@@ -46,27 +39,20 @@ const tunnelModel = {
 
 
 export const Wizard = ()=> {
-  const [stored] = useLocalStorage("data")
-  const [data, setData] = useState({})
+  const [data, setData] = useState({prices: []})
+  // const [data, setData] = useState({prices: [{name:"Paga 2 lleva 3"}, {name:"Paga 3 lleva 5"}]})
   // const [currentStep, setCurrentStep]  = useState(stored.implementation.implementationStep  )
   const [currentStep, setCurrentStep]  = useState(1)
-  const nav = useNavigate()
-
-  const handleClick = async()=> { 
-    setCurrentStep(currentStep +1) }
-
-    const handleBack = async()=> { 
-    setCurrentStep(currentStep -1) }
-
-    console.log(data)
+  const handleClick = ()=> { setCurrentStep(currentStep +1) }
+  const handleBack = ()=> { setCurrentStep(currentStep -1) }
 
 const steps = [
     {component: <div><CampaignStep data={data} setData={setData}/><Button disabled={!data.campaignId} color="yellow" onClick={handleClick}>Siguiente</Button></div> }, 
-    {component: <div><TunnelStep data={data} setData={setData}/><Button color="blue" onClick={handleBack}>Anterior</Button><Button color="yellow" onClick={handleClick}>Siguiente</Button></div> },
-    {component:  <div><ProductStep data={data} setData={setData}/><Button color="blue" onClick={handleBack}>Anterior</Button><Button color="yellow" onClick={handleClick}>Siguiente</Button></div>},
-    {component: <div><OrderBound data={data} setData={setData}/><Button color="blue" onClick={handleBack}>Anterior</Button><Button color="yellow" onClick={handleClick}>Siguiente</Button></div>},
-    {component: <div><UpsellStep data={data} setData={setData}/><Button color="blue" onClick={handleBack}>Anterior</Button><Button color="yellow" onClick={handleClick}>Siguiente</Button></div>},
-    {component: <div><DownsellStep data={data} setData={setData}/><Button color="blue" onClick={handleBack}>Anterior</Button></div>},]
+    {component: <div><TunnelStep data={data} setData={setData}/><Button color="blue" onClick={handleBack}>Anterior</Button><Button color="yellow" disabled={!data.name || !data.productId || !data.startDate || !data.endDate} onClick={handleClick}>Siguiente</Button></div> },
+    {component:  <div><ProductStep data={data} setData={setData}/><Button color="blue" onClick={handleBack}>Anterior</Button><Button color="yellow" disabled={!data.layout|| data.prices.length==0 } onClick={handleClick}>Siguiente</Button></div>},
+    {component: <div><OrderBound data={data} setData={setData}/><Button color="blue" onClick={handleBack}>Anterior</Button><Button color="yellow" disabled={!data.orderBound || !data.orderBoundPrice} onClick={handleClick}>Siguiente</Button></div>},
+    {component: <div><UpsellStep data={data} setData={setData}/><Button color="blue" onClick={handleBack}>Anterior</Button><Button color="yellow" disabled={!data.upsellProductId || !data.upsellLayout || !data.upsellPrice}  onClick={handleClick}>Siguiente</Button></div>},
+    {component: <div><DownsellStep data={data} setData={setData}/><Button color="blue" onClick={handleBack}>Anterior</Button><Button disabled={!data.downsellLayout || !data.downsellPrice}>Guardar Tunel</Button></div>},]
 
     const render = (currentStep)=> {return steps[currentStep-1].component}
 

@@ -6,6 +6,7 @@ import { useLocalStorage } from "../../../../shared/hooks/useLocalStorage"
 import { useEffect, useState } from "react"
 import { getByCompanyId} from "../../../../shared/services/API/api/";
 import { MyGeneralInfo } from "../../components/myComponents/MyGeneralInfo"
+// import { MyCampaignsTable } from "../../components/myComponents/myCampaignsTable"
 
 export const ModulePage =()=> {
     const params = useParams()
@@ -18,7 +19,7 @@ export const ModulePage =()=> {
     const firstOption= getTranslate(modules[name]?.options[0]?.toLowerCase())
     
     useEffect(() => {
-        params.option ? ( getIsTable(params.option) && getByCompanyId(parameter, stored?.company.id).then((res) => {setData(res.data)}) ) :
+        params.option ? ( params.option != "tunnels") && ( getIsTable(params.option) && getByCompanyId(parameter, stored?.company.id).then((res) => {setData(res.data)}) ) :
         (firstOption ?  nav(`/dashboard/${params.module}/${firstOption}`): nav("/dashboard/not-found"))
     }, [,params])
     

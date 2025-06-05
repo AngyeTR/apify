@@ -10,11 +10,3 @@ export default defineConfig({
     outDir: 'dist'}
 })
 
-
-// export default defineConfig(
-//   async () => ({
-//     plugins: [
-//       react(),
-//       tailwindcss(),
-//     ], })
-// )

@@ -30,26 +30,25 @@ const Table  = ({data, headers}) => {
 export function MyTable({ data }) {
   const params = useParams()
   const nav = useNavigate()
-  const [newData, headers] = getDataToShow(data, params.option)
+   const [newData, headers] =  getDataToShow(data, params.option)
   const render = ()=> {
     if(newData.length > 0 && headers.length > 0 ){
       return (
         <div className="w-[99%] overflow-x-scroll">
           <Table  data={newData} headers={headers} />
         </div>
-
-      )}}
+)}}
 
   return (
     <>
     <Navbar className="grid grid-flow-col justify-items-end" >
       <NavbarSection>
-          <Button className="visible sm:invisible sm:w-0"><HiOutlinePlusCircle className="w-6 h-6"/></Button>
-          <Button className="invisible w-0 sm:visible sm:w-auto" onClick={()=> nav(`/dashboard/${params.module}/add/${params.option}`)}>Añadir registro</Button>
+          <Button  onClick={()=> nav(`/dashboard/${params.module}/add/${params.option}`)}>Añadir registro</Button>
+          {params.option == "campaigns" &&  <Button  onClick={()=> nav(`/dashboard/${params.module}/tunnels`)}>Ver Túneles</Button>}
       </NavbarSection>
     </Navbar>
     { 
-        !data.length && !headers.length ? <p>Cargando tabla...</p> : data.length ==0 ? <p>No se encontraron registros</p> :render()
+        !data?.length && !headers?.length ? <p>Cargando tabla...</p> : data?.length ==0 ? <p>No se encontraron registros</p> :render()
         }
     </>)
 }

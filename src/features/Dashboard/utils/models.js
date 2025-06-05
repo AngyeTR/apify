@@ -138,3 +138,13 @@ export const fileModel = {
     url: "string",
   fileType: 1
 }
+
+export const campaignModel = {
+    isActive: true,
+    createdBy:	stored?.user.email,
+    modifiedBy:	stored?.user.email,
+    idCompany:  stored?.company.id,
+    name: null,
+    startDate: null,
+    endDate: null,
+}

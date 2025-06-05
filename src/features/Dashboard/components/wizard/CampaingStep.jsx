@@ -11,7 +11,7 @@ export const CampaignStep = ({data, setData})=>{
         <Select  className="my-5"
         onChange={(e)=> setData(prev=> ({...prev, "campaignId": parseInt(e.target.value)})) }>
             <option> Seleccione una campaña</option>
-            {campaigns.map(campaign => <option value={campaign.id}>{campaign.name}</option>)}
+            {campaigns.map(campaign => <option value={campaign.id} key={campaign.id}>{campaign.name}</option>)}
         </Select>
     </div>
    )

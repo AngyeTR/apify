@@ -9,6 +9,7 @@ import { FormSalesman } from '../../components/forms/FormSalesman'
 import { useLocalStorage } from "../../../../shared/hooks/useLocalStorage"
 import { useEffect, useState } from "react"
 import { getByCompanyId} from "../../../../shared/services/API/api"
+import { FormCampaign } from "../../components/forms/FormCampaigns"
 
 export const FormPage =()=> {
     const params = useParams()
@@ -22,7 +23,8 @@ export const FormPage =()=> {
     users: <FormUser handleClick={handleClick} origin={params?.id ? "editor" : "creator"} id={params?.id && parseInt(params?.id)}/> ,
     salesman: <FormSalesman handleClick={handleClick} origin={params?.id ? "editor" : "creator"} id={params?.id && parseInt(params?.id)}/>,
     warehouses:  <FormWarehouse handleClick={handleClick} origin={params?.id ? "editor" : "creator"} id={params?.id && parseInt(params?.id)}/>,
-    products: < FormProduct handleClick={handleClick} origin={params?.id ? "editor" : "creator"} id={params?.id && parseInt(params?.id)}/>}
+    products: < FormProduct handleClick={handleClick} origin={params?.id ? "editor" : "creator"} id={params?.id && parseInt(params?.id)}/>,
+    campaigns: <FormCampaign handleClick={handleClick} origin={params?.id ? "editor" : "creator"} id={params?.id && parseInt(params?.id)}/>}
     return dictionary[option]}
 
     const render = ()=> {return getcomponent(params.option)}
