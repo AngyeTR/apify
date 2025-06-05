@@ -39,8 +39,8 @@ const [grid, setGrid] = useState()
       backgroundImage: `url('${color?.["backgroundImage"]}')`,  backgroundSize: 'cover',
       backgroundPosition: 'center', repeat: "no-repeat",  backgroundBlendMode: 'multiply' }}>
             {console.log(layout)}
-            console.log(color)
-            <GridContainer canEdit={false} items={layout}  setGrid={setGrid}/>
+{            console.log(color)
+}            <GridContainer canEdit={false} items={layout}  setGrid={setGrid}/>
             {/* <GridContainer canEdit={false} items={layout} layoutColor={color} setGrid={setGrid}/> */}
             {/* <Button className="mt-2" onClick={navigate}>Editar</Button> */}
         </div>
