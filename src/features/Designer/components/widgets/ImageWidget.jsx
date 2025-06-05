@@ -26,7 +26,7 @@ export const ImageWidget = ({content, id, edit, editable})=>{
     return (
         <>
         {/* <div className={` w-[100%] p-3  h-[98%] bg-[url(${url})] z-0 rounded-lg bg-center bg-no-repeat bg-cover`} */}
-        <div className="overflow-hidden h-[99%] min-w-[360px] bg-red-400 max-w-[720px] md:bg-amber-300"
+        <div className="overflow-hidden h-[99%] bg-red-400  w-full md:bg-amber-300"
 //         style={{ backgroundImage: `url('${url}')`,  backgroundRepeat: 'no-repeat',
 //   backgroundPosition: 'center center',
 //   backgroundSize: 'cover'}}
