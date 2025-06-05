@@ -18,8 +18,6 @@ export const GridContainer = ({canEdit, setItems, items, count, layoutColor, set
       backgroundImage: `url('${layoutColor["backgroundImage"]}')`,  backgroundSize: 'cover',
       backgroundPosition: 'center', repeat: "no-repeat",  backgroundBlendMode: 'multiply' }
   const itemsRef = useRef(new Map())
-  const width = window.innerWidth;
-  console.log(width)
   const getMap = ()=>{return itemsRef.current}
   const [isModalOpen, setModalOpen] =  useState(true)
   const removeWidget = (id) => {setItems((prev) => prev.filter((w) => w.id !== id));
@@ -39,7 +37,7 @@ export const GridContainer = ({canEdit, setItems, items, count, layoutColor, set
   }
 
   useEffect(()=>{
-    const grid = GridStack.init({float: true, cellHeight: 50, column: 4, acceptWidgets: true, columnOpts:{breakpoints:[{w:480, c:1}, {w:690, c:1}, {w:1280, c:2}]},
+    const grid = GridStack.init({float: true, cellHeight: 50, column: 4, acceptWidgets: true, columnOpts:{breakpoints:[{w:480, c:1}, {w:690, c:2}, {w:1280, c:2}]},
       margin: 1, staticGrid: !canEdit, disableResize: !canEdit, disableDrag: !canEdit})
       setGrid(grid)
     return () => {grid.destroy(false)}
@@ -64,7 +62,7 @@ export const GridContainer = ({canEdit, setItems, items, count, layoutColor, set
     <div className='grid-stack w-full border border-zinc-400  min-h-[90vh]' style={styles}>
     {items?.map((cat, index)=>
     (
-      <div className='grid-stack-item overflow-hidden h-fit' gs-w={cat?.w} gs-h={cat.id.split("-")[0] == "image" ? (width > 760 ? (cat?.h)/2 : cat?.h): cat?.h} key={cat?.id} gs-id={cat.id} gs-x={cat.x} gs-y={cat.y} gs-content={cat.content} gs-sub-grid={cat.id.split("-")[0] == "container" ? "true" : "false"}
+      <div className='grid-stack-item overflow-hidden h-fit' gs-w={cat?.w} gs-h={cat?.h} key={cat?.id} gs-id={cat.id} gs-x={cat.x} gs-y={cat.y} gs-content={cat.content} gs-sub-grid={cat.id.split("-")[0] == "container" ? "true" : "false"}
       ref={(node)=>{
         const map = getMap();
         if(node){
