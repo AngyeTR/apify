@@ -69,7 +69,7 @@ export const GridContainer = ({canEdit, setItems, items, count, layoutColor, set
           map.set((cat.id), node)
         } else {map.delete(cat.id)}
         }}>
-          <div className={`grid-stack-item-content place-content-center place-items-center overflow-hidden ${(cat.id.split("-")[0] == "container" )&& "subgrid"} content-center min-w-[50px] min-h-[20px] h-fit`} >
+          <div className={`grid-stack-item-content place-content-center place-items-center overflow-hidden ${(cat.id.split("-")[0] == "container" )&& "subgrid"} content-center min-w-[50px] min-h-[20px] h-full`} >
             {canEdit && <button onClick={() => removeWidget(( cat.id))}
             className="absolute top-1 right-1 bg-red-500 text-white px-2 py-1 text-xs rounded z-30">
            <HiOutlineTrash className="size-4" /></button>}
