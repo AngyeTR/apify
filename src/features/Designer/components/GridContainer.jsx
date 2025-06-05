@@ -62,14 +62,14 @@ export const GridContainer = ({canEdit, setItems, items, count, layoutColor, set
     <div className='grid-stack w-full border border-zinc-400  min-h-[90vh]' style={styles}>
     {items?.map((cat, index)=>
     (
-      <div className='grid-stack-item overflow-hidden h-fit' gs-w={cat?.w} gs-h={cat?.h} key={cat?.id} gs-id={cat.id} gs-x={cat.x} gs-y={cat.y} gs-content={cat.content} gs-sub-grid={cat.id.split("-")[0] == "container" ? "true" : "false"}
+      <div className='grid-stack-item overflow-hidden h-fit place-content-center place-items-center' gs-w={cat?.w} gs-h={cat?.h} key={cat?.id} gs-id={cat.id} gs-x={cat.x} gs-y={cat.y} gs-content={cat.content} gs-sub-grid={cat.id.split("-")[0] == "container" ? "true" : "false"}
       ref={(node)=>{
         const map = getMap();
         if(node){
           map.set((cat.id), node)
         } else {map.delete(cat.id)}
         }}>
-          <div className={`grid-stack-item-content overflow-hidden ${(cat.id.split("-")[0] == "container" )&& "subgrid"} content-center min-w-[50px] min-h-[20px] h-fit`} >
+          <div className={`grid-stack-item-content place-content-center place-items-center overflow-hidden ${(cat.id.split("-")[0] == "container" )&& "subgrid"} content-center min-w-[50px] min-h-[20px] h-fit`} >
             {canEdit && <button onClick={() => removeWidget(( cat.id))}
             className="absolute top-1 right-1 bg-red-500 text-white px-2 py-1 text-xs rounded z-30">
            <HiOutlineTrash className="size-4" /></button>}
