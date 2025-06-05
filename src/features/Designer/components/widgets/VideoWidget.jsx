@@ -20,7 +20,7 @@ export const VideoWidget = ({content,  id, edit, editable})=>{
     return (
       <>
         {(!editor && editable )&& <button onClick={()=>setEditor(true)} className="absolute top-1 right-10 bg-blue-500 text-white px-2 py-1  h-6 text-[6px] rounded z-300 hover:border hover:border-zinc-500 cursor-pointer"><HiOutlinePencil className="size-4"/></button>}
-        <iframe src= {url} allow="autoplay; encrypted-media" allowFullScreen title="Video de presentación"className="w-[95%] h-[95%]"></iframe>
+        <iframe src= {url} allow="autoplay; encrypted-media" allowFullScreen title="Video de presentación"className="w-[400px] md:w-[600px] h-[95%]"></iframe>
         {editor && 
         <Modal>
           <Field   className="w-[90vw] h-[90vh] bg-zinc-50 p-5 m-3 rounded-lg shadow-xl border border-zinc-200 justify-items-center">

@@ -38,7 +38,7 @@ export const CarouselWidget = ({content, id, edit, editable}) => {
   return (
     <>
     { items.length == 0 ?  
-      <div className=" w-[400px] flex  justify-self-center place-content-center bg-white/5">        
+      <div className=" w-[400px] md:w-[600px] flex  justify-self-center place-content-center bg-white/5">        
         {(!editor && editable )&& <button onClick={()=>setEditor(true)} className="absolute top-1 right-10 bg-blue-500 text-white px-2 py-1  h-6 text-[6px] rounded z-300 hover:border hover:border-zinc-500 cursor-pointer"><HiOutlinePencil className="size-4"/></button>}
         <img src="https://i.pinimg.com/736x/a5/11/32/a511323ec9460a20e7b78bd5e64bc20b.jpg" alt="Image not available" className="h-fit w-fit" /></div> :
       <div className={`relative rounded-lg w-[400px] overflow-hidden max-w-6xl mx-auto`}>

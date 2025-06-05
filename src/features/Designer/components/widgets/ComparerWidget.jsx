@@ -32,7 +32,7 @@ export const ComparerWidget = ({ content, id, edit, editable }) => {
   return (
     <>
     {(!editor && editable )&& <button onClick={()=>setEditor(true)} className="absolute top-1 right-10 bg-blue-500 text-white px-2 py-1  h-6 text-[6px] rounded z-300 hover:border hover:border-zinc-500 cursor-pointer"><HiOutlinePencil className="size-4"/></button>}
-    <div className="slider-container relative  w-[400px] h-[100%] overflow-hidden rounded-[8px]" ref={containerRef}>
+    <div className="slider-container relative  w-[400px] md:w-[600px] h-[100%] overflow-hidden rounded-[8px]" ref={containerRef}>
       <img src={beforeImg} alt="Before" className="slider-image  absolute top-0 left-0 w-[100%] h-[100%] object-cover" />
       <div className="after-image-wrapper absolute top-0 left-0 h-[100%] w-[100%] overflow-hidden z-1"
         style={{ clipPath: `inset(0 ${100 - sliderValue}% 0 0)` }}>
