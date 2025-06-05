@@ -35,10 +35,13 @@ const [grid, setGrid] = useState()
 
     return (
         // <div className="w-[90vw] sm:w-[70vw] m-0 p-0  justify-self-center" >
-        <div className="w-[400px] md:w-[800px] m-0 p-0 justify-self-center">
+        <div className="w-[400px] md:w-[800px] m-0 p-0 justify-self-center"   style={{backgroundColor: color?.["backgroundColor"],  
+      backgroundImage: `url('${color?.["backgroundImage"]}')`,  backgroundSize: 'cover',
+      backgroundPosition: 'center', repeat: "no-repeat",  backgroundBlendMode: 'multiply' }}>
             {console.log(layout)}
             console.log(color)
-            <GridContainer canEdit={false} items={layout} layoutColor={color} setGrid={setGrid}/>
+            <GridContainer canEdit={false} items={layout}  setGrid={setGrid}/>
+            {/* <GridContainer canEdit={false} items={layout} layoutColor={color} setGrid={setGrid}/> */}
             {/* <Button className="mt-2" onClick={navigate}>Editar</Button> */}
         </div>
     )

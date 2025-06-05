@@ -14,8 +14,8 @@ import { BlankWidget } from '../components/widgets/BlankWidget';
 import { PaymentButtonWidget } from '../components/widgets/PaymentButtonWidget';
 
 export const GridContainer = ({canEdit, setItems, items, count, layoutColor, setLayoutColor, setGrid})=> { 
-  const styles = {backgroundColor: layoutColor["backgroundColor"],  
-      backgroundImage: `url('${layoutColor["backgroundImage"]}')`,  backgroundSize: 'cover',
+  const styles = {backgroundColor: layoutColor?.["backgroundColor"],  
+      backgroundImage: `url('${layoutColor?.["backgroundImage"]}')`,  backgroundSize: 'cover',
       backgroundPosition: 'center', repeat: "no-repeat",  backgroundBlendMode: 'multiply' }
   const itemsRef = useRef(new Map())
   const getMap = ()=>{return itemsRef.current}
