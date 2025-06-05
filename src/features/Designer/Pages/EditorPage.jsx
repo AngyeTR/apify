@@ -36,7 +36,7 @@ export const EditorPage=()=>{
                 <WidgetsContainer  setItems={setLayout} items={layout} count={count} setCount={setCount} layoutColor={layoutColor} item={item} grid={grid}/>
             </div>
             {/* <div className="w-[90vw] sm:w-[70vw] m-0 p-0 col-span-6 "> */}
-            <div className="w-[360px] sm:w-[680px] m-0 p-0 col-span-6 ">
+            <div className="w-[360px] md:w-[1080px] m-0 p-0 col-span-6 ">
                 <GridContainer canEdit={true} setItems={setLayout} items={layout} count={count}  layoutColor={layoutColor} setLayoutColor={setLayoutColor} item={item} setGrid={setGrid}/>
             </div>
         </div>  
