@@ -36,7 +36,6 @@ export function FormOffice(props) {  useEffect(() => { props.origin == "editor" 
       const cleanData = adaptWarehouseModel(dataSet, props.origin, selectedCity)
       const res = props.origin == "editor" ? await edit("Offices", cleanData) : await post("Offices", cleanData) 
       setloading(false)
-      console.log(res)
       res?.isValid ? props.handleClick() : setError(res?.errorMessages[0])
     }
 

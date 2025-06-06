@@ -32,20 +32,17 @@ export function FormProduct(props) {
     const handleChange = (e) => {
       const { name, value } = e.target;
       setDataSet(prev=>({...prev, [name]: value}))
-      console.log(dataSet)
       const dispo =  props.origin == "editor" ? true :((dataSet.name && dataSet.description && dataSet.prices ) ? true : false) 
       setAva(dispo)};
 
     useEffect(() => {
       getByCompanyId("Warehouses", stored?.company.id).then((res) => {setWarehouses(res.data)})
       dataSet?.images?.length >= 3 ? setButtonDisabled(true) : setButtonDisabled(false)
-      console.log(dataSet)
     }, [dataSet]);
  
     const handleSave= async ()=>{
         setloading(true)
         setError(null)
-        console.log(dataSet)
         try {
           // const data = await adaptProductModel(dataSet, props.origin, status, manufacturer,  category, isColors, isSizes, colors, sizes, stock, images)
           const data = await adaptProductModel(dataSet, props.origin, stock )

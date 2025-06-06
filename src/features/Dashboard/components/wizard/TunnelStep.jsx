@@ -36,8 +36,6 @@ export const TunnelStep = ({data, setData})=>{
 
    return (
      <div>
-{console.log(data)}
-
         <Heading className="my-5 text-center">Tunel de Ventas</Heading>
         <Input className="my-3" onChange={(e)=> setData(prev=> ({...prev, name: e.target.value}))} placeholder="Ingresar el nombre de Tunel"/>
         <Select className="my-3" onChange={(e)=>setData(prev=> ({...prev, productId: parseInt(e.target.value)}))}>

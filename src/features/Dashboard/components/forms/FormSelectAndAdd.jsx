@@ -4,11 +4,13 @@ import { useEffect } from "react"
 import { Select } from "../../../../shared/components/uikit/select"
 import { getByCompanyId, post } from "../../../../shared/services/API/api" 
 import { useLocalStorage } from "../../../../shared/hooks/useLocalStorage"
+import { useNavigate } from "react-router-dom"
 
 export const FormSelectAndAdd = ({ref,  state, setState})=>{
     const [stored] = useLocalStorage("data")
     const [variable, setVariable] = useState("")
     const [internalState, setInternalState] = useState()
+    const nav = useNavigate()
     let newOption = ""
 
      useEffect(() => {
@@ -23,8 +25,6 @@ export const FormSelectAndAdd = ({ref,  state, setState})=>{
         }else setVariable("add")
     }
     const addNewOption = async ()=>{
-        // const [data] = useLocalStorage("data")
-        console.log( stored)
     const body = {
         isActive: true,
         createdBy: stored?.user.email,
@@ -41,11 +41,13 @@ export const FormSelectAndAdd = ({ref,  state, setState})=>{
                 console.log(error)
             }finally {
                  setInternalState(response)
+                 nav(0)
             }
     }
     const render = ()=> {
         if(variable == "add"){ return (
         <div className="block">
+            {console.log(internalState)}
         <input  className='w-30 my-2 mx-2 h-8 bg-white shadow-sm border border-gray-400  rounded-md' onChange={e => newOption = e.target.value} />
         <Button onClick={()=> addNewOption()}>Añadir</Button>
         </div>)

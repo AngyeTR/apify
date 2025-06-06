@@ -63,7 +63,6 @@ export function FormUser(props) {
         await new Promise(resolve => setTimeout(resolve, 2000));
         const res =( props.origin == "editor") ? await edit("Users", cleanData) :  await post("Users", cleanData)
         setloading(false)
-        console.log(res)
         res?.isValid  && (props.id == stored?.user.id && await updateUser(cleanData) ) 
         res?.isValid ? props.handleClick() : setError(res?.errorMessages ? res?.errorMessages[0] : "Por favor revise que cada campo sea correcto")} }
 

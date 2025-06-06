@@ -3,22 +3,22 @@ import { useState, useEffect } from "react";
 import DataTable from 'datatables.net-react';
 import DT from 'datatables.net-dt';
 DataTable.use(DT);
-import { TableHead, TableHeader, TableRow } from "../../../shared/components/uikit/table"
+import { TableHead, TableHeader, TableRow } from "../../../../shared/components/uikit/table.jsx"
 import { HiOutlinePencil, HiOutlineEye  } from "react-icons/hi";
 import { FaClone } from "react-icons/fa6";
 import { useRef } from "react";
-import { Modal } from "./Modal";
-import { Button } from "../../../shared/components/uikit/button";
-import { Heading } from "../../../shared/components/uikit/heading";
-import { Field, Label } from "../../../shared/components/uikit/fieldset";
-import { Combobox, ComboboxLabel, ComboboxOption } from '../../../shared/components/uikit/combobox'
-import { Input } from "../../../shared/components/uikit/input";
-import { useLocalStorage } from "../../../shared/hooks/useLocalStorage";
-import { cloneLayoutModel } from "../utils/models";
-import { Loader} from "../../../shared/components/Loader.jsx"
-import { cloneLayout } from "../../../shared/services/API/api";
+import { Modal } from "../../../../shared/components/Modal.jsx";
+import { Navbar, NavbarSection,} from '../../../../shared/components/uikit/navbar'
+import { Button } from "../../../../shared/components/uikit/button";
+import { Heading } from "../../../../shared/components/uikit/heading";
+import { Field, Label } from "../../../../shared/components/uikit/fieldset";
+import { Input } from "../../../../shared/components/uikit/input";
+import { useLocalStorage } from "../../../../shared/hooks/useLocalStorage";
+import { Loader} from "../../../../shared/components/Loader.jsx"
+import { Wizard } from "../wizard/wizard.jsx"
+import { FormCampaign } from "../forms/FormCampaigns.jsx";
 
-const Table  = ({data, headers, setIdToClone}) => {
+const Table  = ({data, headers, setModal}) => {
     const params = useParams()
     const nav = useNavigate()
     const tableRef = useRef(null); 
@@ -28,9 +28,8 @@ const Table  = ({data, headers, setIdToClone}) => {
     <DataTable data={data.reverse()} className="display "  key={params.option} ref={tableRef}  id="myTable"
     slots={{0: (data) => (
     <div className="justify-center" style={{display: "flex"}}>
-        <HiOutlinePencil className="mx-2 cursor-pointer hover:text-blue-500 text-lg my-1 justify-self-center" onClick={()=> {nav(`/designer/editor/${data}`)}}/>
-        <HiOutlineEye className="mx-2 cursor-pointer hover:text-blue-500 text-lg my-1 justify-self-center" onClick={()=> nav(`/designer/view/${data}`)}/>
-        <FaClone className="mx-2 cursor-pointer hover:text-blue-500 text-lg my-1 justify-self-center" onClick={()=> setIdToClone({...cloneLayoutModel(stored), "id": data})}/></div>
+      <HiOutlinePencil className="mx-2 cursor-pointer hover:text-blue-500 text-lg my-1 justify-self-center" onClick={()=>setModal({status:true, id: data, action: "Editar"})}/>
+      <FaClone className="mx-2 cursor-pointer hover:text-blue-500 text-lg my-1 justify-self-center" onClick={()=>setModal({status:true, id: data, action: "Clonar"})}/></div>
     )}}>
       <TableHead>
         <TableRow className="justify-center " >
@@ -39,59 +38,60 @@ const Table  = ({data, headers, setIdToClone}) => {
       </TableHead>
       </DataTable> )} 
 
-export function LayoutsTable(props) {
-  const {lay, prod} = props
-  const [layouts, setLayouts] = useState(null)
-  const [products, setProducts] = useState(null)
-  const [idToClone, setIdToClone] = useState(null)
+export function TunnelTable({data}) {
+  const [modal, setModal] = useState({status:false, id: null, action: null})
+  const [newCampaign, setNewCampaign] = useState(null)
   const [loading, setLoading] = useState(false) 
   const nav = useNavigate()
 
-  const data = layouts?.map(item => [item.id, item.name, products?.filter(product => product.id == item.idProduct)[0].name, item.modifiedDate])
-  const headers = ["Acciones", "Nombre", "Producto",  "Fecha modificación"]
+  const filteredData = data?.map(item => [item.id, item.name, item.description, item.idCampaign, item.initialDate, item.endDate])
+  const headers = ["Acciones", "Nombre", "Descripción", "Campaña", "Fecha de Inicio", "Fecha de Fin"]
   
   const clone = async () =>{
-    setLoading(true)
-    const res = await cloneLayout(idToClone).then(res=>res)
-    res && setLoading(false)
-    res.isValid && nav(0)}
-  
+   console.log("clonning")
+  }
 
-  useEffect(() => { 
-    setLayouts(lay)
-    setProducts(prod)
-    }, [ ,props]);
-
- useEffect(()=>{data && render()}, [data])
+ useEffect(()=>{filteredData && render()}, [data])
   const render = ()=> {
-    console.log(data)
-    if(data?.length > 0 && headers.length > 0 ){
+    if(filteredData?.length > 0 && headers.length > 0 ){
       return (
         <div className="w-[99%] overflow-x-scroll">
-        <Table  data={data.reverse()} headers={headers} setIdToClone={setIdToClone}/>
+        <Table  data={filteredData.reverse()} headers={headers} setModal={setModal}/>
         </div>
       )}}
-console.log(idToClone)
+
   return (
     <>
-    { !data  ? <p>Cargando tabla.. </p> : data?.length ==0 ? <p>No se encontraron registros </p> :render()}
-    {idToClone && <Modal>
-      <div className="bg-zinc-50 rounded-lg w-lg h-[70vh] py-10 justify-items-center"> 
-        <Heading className="mb-5">Clonar Layout</Heading>
-        <Field className="w-md justify-items-center">
-          <Label >Nombre del Nuevo Layout</Label>
-          <Input className="w-sm mb-5" placeholder="Inserte de nombre del nuevo Layout" onChange={e=> setIdToClone(prev=> ({...prev, name: e.target.value}))}/>
+     <Navbar className="grid grid-flow-col justify-items-end" >
+      <NavbarSection className="w-fit">
+          <Input className="w-xs" placeholder="Nombre de nueva campaña" onChange={(e)=>setNewCampaign(e.target.value)}/>
+          <Button  onClick={()=>setCampaignCreator(true)}>Añadir Campaña</Button>
+          <Button  onClick={()=>setModal({status:true, id: null, action: "Crear"})}>Crear Tunel</Button>
+      </NavbarSection>
+    </Navbar>
+    { !filteredData  ? <p>Cargando tabla.. </p> : filteredData?.length ==0 ? <p>No se encontraron registros </p> :render()}
+    {modal.status && <Modal>
+      <div className="bg-zinc-50 rounded-lg w-[80vw] h-[90vh] py-10 justify-items-center"> 
+        <div className="grid grid-cols-6 w-full"><div/><Heading className="mb-5 col-span-4 justify-self-center">{modal.action} Tunel de Ventas </Heading>
+        <Button className="w-fit h-fit justify-self-center" onClick={()=>setModal({status:false, id: null, action: null})}>Cerrar</Button></div>
+     { modal.action == "Clonar" ?  <Field className="w-md justify-items-center">
+          <Label >Nombre del Nuevo Tunel</Label>
+          <Input className="w-sm mb-5" placeholder="Inserte de nombre del nuevo Tunel" onChange={e=> setIdToClone(prev=> ({...prev, name: e.target.value}))}/>
           <Label>Producto del nuevo Layout</Label>
-          <Combobox name="product" options={products ? products : []} displayValue={(product) => product?.name} className="w-sm mb-5"
-            onChange={e=> e && setIdToClone(prev=> ({...prev, "idProduct": parseInt(e.id), "productName": e.name}))}  placeholder={idToClone ? idToClone.productName :"Seleccionar Producto"}>
-            {(product) => (
-            <ComboboxOption value={product}>
-              <ComboboxLabel>{product.name}</ComboboxLabel>
-            </ComboboxOption>)}
-            </Combobox>
-        </Field>
-      {<Button onClick={clone} className="mx-1" disabled={!idToClone.name || !idToClone.idProduct}>{loading ? <Loader/> :"Clonar"}</Button>}
-      <Button onClick={()=>setIdToClone(null)} color="red" className="mx-1">{loading ? <Loader/> : "Cerrar"}</Button></div>
+          <Input className="my-3" type="datetime-local" placeholder="Fecha de Inicio" />
+          <Input className="my-3" type="datetime-local" placeholder="Fecha de Fin" />
+        {<Button onClick={clone} className="mx-1" >{loading ? <Loader/> :"Clonar"}</Button>}
+        <Button onClick={()=>setIdToClone(null)} color="red" className="mx-1">{loading ? <Loader/> : "Cerrar"}</Button>
+        </Field> : 
+        <Wizard/>
+        }
+      </div>
       </Modal>}
+      {/* {campaignCreator && <Modal>
+        <div className="bg-zinc-50 rounded-lg w-[80vw] h-[90vh] py-10 justify-items-center"> 
+          <div className="grid grid-cols-6 w-full"><div/><Heading className="mb-5 col-span-4 justify-self-center">Nueva Campaña </Heading>
+          <Button className="w-fit h-fit justify-self-center" onClick={()=>setCampaignCreator(null)}>Cerrar</Button></div>   
+<FormCampaign/>
+</div>   </Modal>} */}
     </>)
 }

@@ -64,12 +64,12 @@ export const getByID = async (query, id)=>{
 }
 
 export const getByCompanyId = async (query, id)=>{
-  const res = await api.get(`/${query}/GetByIdCompany/${id}`).then(response =>  response.data).catch(error => {return error.response.data});
+  const res = await api.get(`/${query}/GetByIdCompany/${id}`).then(response =>  response?.data).catch(error => {return error?.response?.data});
   return res
 }
 
 export const getByDelegateId = async ( id)=>{
-  const res = await api.get(`/Delegates/GetByidDelegate/${id}`).then(response =>  response.data).catch(error => {return error.response.data});
+  const res = await api.get(`/Delegates/GetByidDelegate/${id}`).then(response =>  response?.data).catch(error => {return error.response?.data});
   return res
 }
 

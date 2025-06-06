@@ -10,6 +10,7 @@ import { useLocalStorage } from "../../../../shared/hooks/useLocalStorage"
 import { useEffect, useState } from "react"
 import { getByCompanyId} from "../../../../shared/services/API/api"
 import { FormCampaign } from "../../components/forms/FormCampaigns"
+import { CustomerForm } from "../../components/salesWizard/CustomerForm"
 
 export const FormPage =()=> {
     const params = useParams()
@@ -24,7 +25,8 @@ export const FormPage =()=> {
     salesman: <FormSalesman handleClick={handleClick} origin={params?.id ? "editor" : "creator"} id={params?.id && parseInt(params?.id)}/>,
     warehouses:  <FormWarehouse handleClick={handleClick} origin={params?.id ? "editor" : "creator"} id={params?.id && parseInt(params?.id)}/>,
     products: < FormProduct handleClick={handleClick} origin={params?.id ? "editor" : "creator"} id={params?.id && parseInt(params?.id)}/>,
-    campaigns: <FormCampaign handleClick={handleClick} origin={params?.id ? "editor" : "creator"} id={params?.id && parseInt(params?.id)}/>}
+    salestunnel: <FormCampaign handleClick={handleClick} origin={params?.id ? "editor" : "creator"} id={params?.id && parseInt(params?.id)}/>,
+ customers: <CustomerForm />}
     return dictionary[option]}
 
     const render = ()=> {return getcomponent(params.option)}

@@ -13,9 +13,7 @@ import { ViewPageStatic } from "./features/Designer/Pages/ViewPageStatic"
 function App() {
   const params = useParams()
 
-  useEffect(()=>{
-    console.log(window.location.origin)
-  },[ , params])
+  useEffect(()=>{},[ , params])
 
   let token  = getToken()
  

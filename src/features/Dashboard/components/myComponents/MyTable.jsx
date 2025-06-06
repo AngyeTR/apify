@@ -44,7 +44,7 @@ export function MyTable({ data }) {
     <Navbar className="grid grid-flow-col justify-items-end" >
       <NavbarSection>
           <Button  onClick={()=> nav(`/dashboard/${params.module}/add/${params.option}`)}>Añadir registro</Button>
-          {params.option == "campaigns" &&  <Button  onClick={()=> nav(`/dashboard/${params.module}/tunnels`)}>Ver Túneles</Button>}
+          {params.option == "salestunnel" &&  <Button  onClick={()=> nav(`/dashboard/${params.module}/tunnels`)}>Ver Túneles</Button>}
       </NavbarSection>
     </Navbar>
     { 

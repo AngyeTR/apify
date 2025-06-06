@@ -22,7 +22,7 @@ export const MySideBar = ()=>{
 
   const nav = useNavigate()
   const mods = useLocalStorage("alteredModules")?.[0]
-  useEffect(() => {getByDelegateId(user.user.id).then((res) => setTempData(res.data))}, []);
+  useEffect(() => {getByDelegateId(user.user.id).then((res) => setTempData(res?.data))}, []);
   useEffect(() => {tempData?.map(item=> getByID("Companies", item.idCompany).then(res => setCompanies(prev => [...prev, res.data]))) }, [tempData]);
   const changeCompany=async (id)=>{
     const newData = await getByID("Companies",id).then(res => getUpdatedLocalData(user,res.data))

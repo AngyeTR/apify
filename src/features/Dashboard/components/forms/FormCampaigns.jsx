@@ -31,11 +31,11 @@ export function FormCampaign(props) {
 
   return (
     <>
-    <div className="flex w-full flex-wrap items-end justify-between gap-4 border-b border-zinc-950/10 pb-6 mt-5">
+    {/* <div className="flex w-full flex-wrap items-end justify-between gap-4 border-b border-zinc-950/10 pb-6 mt-5">
       <Heading>Información de la Campaña</Heading>
       {props.origin == "editor" && <Button onClick={()=> nav(`/dashboard/${params.module}/tunnels/${1}`)} >Ver Tuneles de venta</Button>}
     </div>
-    {console.log(dataSet)}
+    {console.log(dataSet)} */}
     <Field>
       <Label>Nombre de la campaña*</Label>
       <Input name="name" placeholder={dataSet?.name && dataSet.name} onChange={handleChange} id="name"/>

@@ -50,7 +50,7 @@ export const getTranslate= (name)=>{
         general: "general",
         sedes: "offices",
         usuarios: "users",
-        campañas: "campaigns",
+        tuneles: "salestunnel",
         diseñador: "designers",
         marketing: "marketing", 
         configuración: "settings",

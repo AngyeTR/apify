@@ -53,7 +53,6 @@ export function FormCompany(props) {
     setloading(false)
     res.isValid  && await updateCompany(cleanData)  
     res.isValid ? props.handleClick() : setError("Por favor revise que todos los campos sean correctos")}
-console.log(base64)
   return (
     <>
     <div className="flex w-full flex-wrap items-end justify-between gap-4 border-b border-zinc-950/10 pb-6 my-5">

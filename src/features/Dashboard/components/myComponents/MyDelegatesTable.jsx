@@ -26,7 +26,6 @@ export const MyDelegatesTable = ({ data})=> {
     return ( 
     <Table className="w-full z-0">
         <TableHead>
-            {console.log(delegates)}
             <TableRow>
             {headers.map(header => <TableHeader key={header.name}>{header.name}</TableHeader>)}
                 <TableHeader>Acciones</TableHeader>

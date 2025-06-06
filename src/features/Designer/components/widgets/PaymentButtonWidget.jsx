@@ -4,6 +4,7 @@ import { HiOutlinePencil } from "react-icons/hi";
 import { Field, Label } from "../../../../shared/components/uikit/fieldset" 
 import { TextController } from "../controllers/TextController"
 import { Modal } from "../Modal"
+import { scrollToBottom } from "../../../../shared/utils/utils";
 
 export const PaymentButtonWidget = ({ id, edit, editable, style})=>{
     const [editor, setEditor] = useState(false)
@@ -17,8 +18,9 @@ export const PaymentButtonWidget = ({ id, edit, editable, style})=>{
     return (<>
         <div className="rounded-lg self-center items-center">
         {(!editor && editable )&& <button onClick={()=>setEditor(true)} className="absolute top-1 right-10 bg-blue-500 text-white px-2 py-1  h-6 text-[6px] rounded z-300 hover:border hover:border-zinc-500 cursor-pointer"><HiOutlinePencil className="size-4"/></button>}
-        <a href={url} target="_blank" className="h-fit"><button  style={styles}
-        className="w-full p-2 rounded-lg hover:border hover:border-zinc-500 h-fit relative">Ir a pagar</button></a>
+        {/* <a href={url} target="_blank" className="h-fit"> */}
+            <button  style={styles} className="w-full p-2 rounded-lg hover:border hover:border-zinc-500 h-fit relative" onClick={scrollToBottom}>Ir a pagar</button>
+            {/* </a> */}
         </div>
           {editor  && (
             <Modal> 

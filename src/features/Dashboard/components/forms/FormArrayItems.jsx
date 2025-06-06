@@ -8,7 +8,6 @@ import { Button } from '../../../../shared/components/uikit/button'
     // Expected props= ref: [enum["color", "size", imageUrl], required], state:[any, required] setState:[funct(), required]
 export const FormArrayItems = ({ref, state, setState, disabled})=>{
     const [variable, setVariable] = useState("")
-    console.log(state)
 
     const ColorInput =()=>{
        const [colorName, setColorName] = useState("")
@@ -36,7 +35,6 @@ export const FormArrayItems = ({ref, state, setState, disabled})=>{
             <Button disabled={disabled} onClick={()=> setState(state.length == 0 ? [{value:variable}] : [...state, {value:variable}])}>Añadir</Button>
             <div className="w-xs md:w-lg lg:w-xl flex  my-2 overflow-hidden ">
             { state?.map((stat)=> 
-            // console.log(stat.value)
             <div key={stat.id} 
             className='max-w-xs overflow-hidden mx-1 px-1 cursor-pointer rounded-lg hover:border hover:border-gray-800' 
             onClick={()=> setState(state.filter(state => state.value!== stat.value))}>

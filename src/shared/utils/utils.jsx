@@ -31,3 +31,10 @@ export const getBase64= (file)=>{
         };
       }); 
 }
+
+export const scrollToBottom = () => {
+    window.scrollTo({
+      top: document.documentElement.scrollHeight,
+      behavior: 'smooth', 
+    });
+  };

@@ -59,7 +59,7 @@ export const GridContainer = ({canEdit, setItems, items, count, layoutColor, set
    return dictionary[type]}
 
   return (
-    <div className='grid-stack w-full border border-zinc-400  min-h-[90vh]' style={styles}>
+    <div className='grid-stack w-full   min-h-[90vh]' style={styles}>
     {items?.map((cat, index)=>
     (
       <div className='grid-stack-item overflow-hidden h-fit place-content-center place-items-center' gs-w={cat?.w} gs-h={cat?.h} key={cat?.id} gs-id={cat.id} gs-x={cat.x} gs-y={cat.y} gs-content={cat.content} gs-sub-grid={cat.id.split("-")[0] == "container" ? "true" : "false"}

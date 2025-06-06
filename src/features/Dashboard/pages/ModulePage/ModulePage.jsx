@@ -6,6 +6,7 @@ import { useLocalStorage } from "../../../../shared/hooks/useLocalStorage"
 import { useEffect, useState } from "react"
 import { getByCompanyId} from "../../../../shared/services/API/api/";
 import { MyGeneralInfo } from "../../components/myComponents/MyGeneralInfo"
+import { TunnelTable } from "../../components/myComponents/MyTunelTable"
 // import { MyCampaignsTable } from "../../components/myComponents/myCampaignsTable"
 
 export const ModulePage =()=> {
@@ -19,12 +20,12 @@ export const ModulePage =()=> {
     const firstOption= getTranslate(modules[name]?.options[0]?.toLowerCase())
     
     useEffect(() => {
-        params.option ? ( params.option != "tunnels") && ( getIsTable(params.option) && getByCompanyId(parameter, stored?.company.id).then((res) => {setData(res.data)}) ) :
+        params.option ? ( params.option != "general" && getByCompanyId(parameter, stored?.company.id).then((res) => {setData(res?.data)}) ) :
         (firstOption ?  nav(`/dashboard/${params.module}/${firstOption}`): nav("/dashboard/not-found"))
     }, [,params])
     
     return (
         <MyLayout >  
-        {getIsTable(params.option) ? <MyTable data={data} /> : (params.option == "general" && <MyGeneralInfo />)}
+        {getIsTable(params.option) ? <MyTable data={data} /> : params.option == "general" ? <MyGeneralInfo />: (params.option == "salestunnel" && <TunnelTable data={data}/>) }
     </MyLayout>)
 }
