@@ -17,6 +17,7 @@ export const SalesForm =({data, setDataSet, dataSet, handleClick})=> {
     return (
         <div className="justify-center  justify-items-center bg-zinc-50 mt-5 w-[px] md:w-[600px] rounded-lg p-5">
         <Field>
+             {console.log(dataSet)}
             <Heading className="text-center my-5">Información de Venta</Heading>
             <Label>Selecciona el precio que deseas pagar</Label>
             <PriceCard  price={{name: "Precio Normal", price: orderBound?.price}} setDataSet={setDataSet} setPriced={setPriced} selected={priced == "Precio Normal"}/> 

@@ -46,7 +46,7 @@ const tunnelModel = {
 }
 
   const [data, setData] = useState(tunnelModel)
-  const [currentStep, setCurrentStep]  = useState(2)
+  const [currentStep, setCurrentStep]  = useState(1)
   const handleClick = (step)=> { 
     setCurrentStep(currentStep + step) }
   const handleUpsell = ()=> {const steps = dataSet.upsaleAccepted ? 2: (data.downsellLayout ? 1 : 2)

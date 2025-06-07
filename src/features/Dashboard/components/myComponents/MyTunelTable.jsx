@@ -16,12 +16,13 @@ import { Input } from "../../../../shared/components/uikit/input";
 import { useLocalStorage } from "../../../../shared/hooks/useLocalStorage";
 import { Loader} from "../../../../shared/components/Loader.jsx"
 import { Wizard } from "../wizard/wizard.jsx"
-import { FormCampaign } from "../forms/FormCampaigns.jsx";
+import { getByCompanyId } from "../../../../shared/services/API/api.js";
 
 const Table  = ({data, headers, setModal}) => {
+  console.log(data)
     const params = useParams()
     const nav = useNavigate()
-    const tableRef = useRef(null); 
+    const tableRef = useRef(null);
     const [stored] = useLocalStorage("data")
     data.reverse()
   return (
@@ -29,6 +30,7 @@ const Table  = ({data, headers, setModal}) => {
     slots={{0: (data) => (
     <div className="justify-center" style={{display: "flex"}}>
       <HiOutlinePencil className="mx-2 cursor-pointer hover:text-blue-500 text-lg my-1 justify-self-center" onClick={()=>setModal({status:true, id: data, action: "Editar"})}/>
+      <HiOutlineEye  className="mx-2 cursor-pointer hover:text-blue-500 text-lg my-1 justify-self-center" onClick={()=>nav(`/dashboard/salestunnel/${data}`)}/>
       <FaClone className="mx-2 cursor-pointer hover:text-blue-500 text-lg my-1 justify-self-center" onClick={()=>setModal({status:true, id: data, action: "Clonar"})}/></div>
     )}}>
       <TableHead>
@@ -42,21 +44,24 @@ export function TunnelTable({data}) {
   const [modal, setModal] = useState({status:false, id: null, action: null})
   const [newCampaign, setNewCampaign] = useState(null)
   const [loading, setLoading] = useState(false) 
+   const [camps, setCamps] = useState(null) 
   const nav = useNavigate()
+   const [stored] = useLocalStorage("data")
 
-  const filteredData = data?.map(item => [item.id, item.name, item.description, item.idCampaign, item.initialDate, item.endDate])
+  const filteredData = data?.map(item => [item.id, item.name, item.description, camps?.filter(camp=> camp.id==item.idCampaign)[0].name, item.initialDate, item.endDate])
   const headers = ["Acciones", "Nombre", "Descripción", "Campaña", "Fecha de Inicio", "Fecha de Fin"]
   
   const clone = async () =>{
    console.log("clonning")
   }
 
+  useEffect(()=>{getByCompanyId("CampaingCompanies", stored.company.id).then(res=>setCamps(res.data))},[])
  useEffect(()=>{filteredData && render()}, [data])
   const render = ()=> {
     if(filteredData?.length > 0 && headers.length > 0 ){
       return (
         <div className="w-[99%] overflow-x-scroll">
-        <Table  data={filteredData.reverse()} headers={headers} setModal={setModal}/>
+        <Table  data={filteredData.reverse()} headers={headers} setModal={setModal} />
         </div>
       )}}
 
