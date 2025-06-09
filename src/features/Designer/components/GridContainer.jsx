@@ -19,6 +19,7 @@ export const GridContainer = ({canEdit, setItems, items, count, layoutColor, set
       backgroundPosition: 'center', repeat: "no-repeat",  backgroundBlendMode: 'multiply' }
   const itemsRef = useRef(new Map())
   const getMap = ()=>{return itemsRef.current}
+  const [toEdit, setToEdit] = useState(null)
   const [isModalOpen, setModalOpen] =  useState(true)
   const removeWidget = (id) => {setItems((prev) => prev.filter((w) => w.id !== id));
   if (grid) {const el = document.getElementById(id)
@@ -46,23 +47,24 @@ export const GridContainer = ({canEdit, setItems, items, count, layoutColor, set
   const render=(item)=>{
     const type = item.id.split("-")[0]
     const dictionary = {
-      image: <ImageWidget content={item.content} id={item.id} edit={editWidget} editable={canEdit} style={item.style}/>,
-      text:  <TextWidget content={item.content} id={item.id} edit={editWidget} editable={canEdit} style={item.style}/>,
-      title: <TitleWidget content={item.content} id={item.id} edit={editWidget} editable={canEdit} style={item.style}/>, 
-      payment: <PaymentButtonWidget content={item.content} id={item.id} edit={editWidget} editable={canEdit} style={item.style}/> , 
-      button: <ButtonWidget content={item.content} id={item.id} edit={editWidget} editable={canEdit} style={item.style}/> , 
-      video: <VideoWidget content={item.content} id={item.id} edit={editWidget} editable={canEdit} style={item.style}/> ,
-      comparer: <ComparerWidget content={item.content} id={item.id} edit={editWidget} editable={canEdit} style={item.style}/>,
-      carousel: <CarouselWidget content={item.content} id={item.id} edit={editWidget} editable={canEdit} style={item.style} />,
-      blank: <BlankWidget content={item.content} id={item.id} edit={editWidget} editable={canEdit} style={item.style}  />
+      image: <ImageWidget content={item.content} id={item.id} edit={editWidget} editable={canEdit} style={item.style} toEdit={toEdit}/>,
+      text:  <TextWidget content={item.content} id={item.id} edit={editWidget} editable={canEdit} style={item.style} toEdit={toEdit}/>,
+      title: <TitleWidget content={item.content} id={item.id} edit={editWidget} editable={canEdit} style={item.style} toEdit={toEdit}/>, 
+      payment: <PaymentButtonWidget content={item.content} id={item.id} edit={editWidget} editable={canEdit} style={item.style} toEdit={toEdit}/> , 
+      button: <ButtonWidget content={item.content} id={item.id} edit={editWidget} editable={canEdit} style={item.style} toEdit={toEdit}/> , 
+      video: <VideoWidget content={item.content} id={item.id} edit={editWidget} editable={canEdit} style={item.style} toEdit={toEdit}/> ,
+      comparer: <ComparerWidget content={item.content} id={item.id} edit={editWidget} editable={canEdit} style={item.style} toEdit={toEdit}/>,
+      carousel: <CarouselWidget content={item.content} id={item.id} edit={editWidget} editable={canEdit} style={item.style} toEdit={toEdit}/>,
+      blank: <BlankWidget content={item.content} id={item.id} edit={editWidget} editable={canEdit} style={item.style}  toEdit={toEdit}/>
     }
    return dictionary[type]}
 
   return (
     <div className='grid-stack w-full   min-h-[90vh]' style={styles}>
+      {console.log(toEdit)}
     {items?.map((cat, index)=>
     (
-      <div className='grid-stack-item overflow-hidden h-fit place-content-center place-items-center' gs-w={cat?.w} gs-h={cat?.h} key={cat?.id} gs-id={cat.id} gs-x={cat.x} gs-y={cat.y} gs-content={cat.content} gs-sub-grid={cat.id.split("-")[0] == "container" ? "true" : "false"}
+      <div className={`grid-stack-item overflow-hidden h-fit place-content-center place-items-center ${canEdit && "hover:border hover:border-red-600"}`} gs-w={cat?.w} gs-h={cat?.h} key={cat?.id} gs-id={cat.id} gs-x={cat.x} gs-y={cat.y} gs-content={cat.content} gs-sub-grid={cat.id.split("-")[0] == "container" ? "true" : "false"} onClick={()=>setToEdit(cat.id)}
       ref={(node)=>{
         const map = getMap();
         if(node){
@@ -70,7 +72,7 @@ export const GridContainer = ({canEdit, setItems, items, count, layoutColor, set
         } else {map.delete(cat.id)}
         }}>
           <div className={`grid-stack-item-content place-content-center place-items-center overflow-hidden ${(cat.id.split("-")[0] == "container" )&& "subgrid"} content-center min-w-[50px] min-h-[20px] h-full`} >
-            {canEdit && <button onClick={() => removeWidget(( cat.id))}
+            {toEdit == cat.id && <button onClick={() => removeWidget(( cat.id))}
             className="absolute top-1 right-1 bg-red-500 text-white px-2 py-1 text-xs rounded z-30">
            <HiOutlineTrash className="size-4" /></button>}
             {render(cat, index)}

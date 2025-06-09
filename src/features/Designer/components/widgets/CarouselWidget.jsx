@@ -10,7 +10,7 @@ import { Switch} from "../../../../shared/components/uikit/switch"
 import { CollectionSelector } from "../CollectionSelector";
 import { Heading } from "../../../../shared/components/uikit/heading";
 
-export const CarouselWidget = ({content, id, edit, editable}) => {
+export const CarouselWidget = ({content, id, edit, editable, toEdit}) => {
   const [editor, setEditor] = useState(false)
   const [first, setFirst] = useState("")
   const [second, setSecond] = useState("")
@@ -39,10 +39,10 @@ export const CarouselWidget = ({content, id, edit, editable}) => {
     <>
     { items.length == 0 ?  
       <div className=" w-[400px] md:w-[600px] flex  justify-self-center place-content-center bg-white/5">        
-        {(!editor && editable )&& <button onClick={()=>setEditor(true)} className="absolute top-1 right-10 bg-blue-500 text-white px-2 py-1  h-6 text-[6px] rounded z-300 hover:border hover:border-zinc-500 cursor-pointer"><HiOutlinePencil className="size-4"/></button>}
+        {toEdit == id && <button onClick={()=>setEditor(true)} className="absolute top-1 right-10 bg-blue-500 text-white px-2 py-1  h-6 text-[6px] rounded z-300 hover:border hover:border-zinc-500 cursor-pointer"><HiOutlinePencil className="size-4"/></button>}
         <img src="https://i.pinimg.com/736x/a5/11/32/a511323ec9460a20e7b78bd5e64bc20b.jpg" alt="Image not available" className="h-fit w-fit" /></div> :
       <div className={`relative rounded-lg w-[400px] md:w-[600px] overflow-hidden max-w-6xl mx-auto`}>
-        {(!editor && editable )&&  <button onClick={()=>setEditor(true)} className="absolute top-1 right-10 bg-blue-500 text-white px-2 py-1  h-6 text-[6px] rounded z-300 hover:border hover:border-zinc-500 cursor-pointer"><HiOutlinePencil className="size-4"/></button>}
+        {toEdit == id &&  <button onClick={()=>setEditor(true)} className="absolute top-1 right-10 bg-blue-500 text-white px-2 py-1  h-6 text-[6px] rounded z-300 hover:border hover:border-zinc-500 cursor-pointer"><HiOutlinePencil className="size-4"/></button>}
       <div className="w-[95%] mx-auto flex transition-transform duration-500 ease-in-out" style={{ transform: `translateX(-${current * 100}%)` }}>
         { items.map((item, index) => (
           <div key={index} className="bg-white/20 w-full flex-shrink-0 p-4 content-center">
@@ -72,7 +72,7 @@ export const CarouselWidget = ({content, id, edit, editable}) => {
                 <div className='border border-zinc-200 p-2 rounded-lg m-2'>
                     <Heading>Tercera Imagen</Heading>
                     <p>Seleccionar desde las Colecciones guardadas  <Switch checked={thirdOrigin} onChange={setThirdOrigin}/> </p>
-                    {!thirdOrigin ? <Input name="url" placeholder="Ingrese URL de la imagen" onChange={e=> setThird(e.target.value)}/>
+                    {!thirdOrigin ? <Input name="url" placeholder="Ingrese URL de la imagen" onChange={e=> setThird(e.target.value)} />
                     :<CollectionSelector variable={third} setVariable={setThird} type="image"/>}
                 </div>
                 <Button type="submit" className="mx-1 my-2" onClick={save}>Guardar</Button>

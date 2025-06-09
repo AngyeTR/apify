@@ -57,11 +57,11 @@ const steps = [
     const render = (currentStep)=> {return steps[currentStep-1].component}
 
   return (
-    <StackedLayout>
-      <div className='justify-self-center'>
+    // <StackedLayout>
+      <div className='justify-self-center overflow-scroll h-auto'>
         <MyProgressBar currentStep={currentStep} steps={steps.length} />
         {render(currentStep)}
       </div>
-    </StackedLayout>
+    // </StackedLayout>
   )
 }

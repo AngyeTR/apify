@@ -47,12 +47,10 @@ export const WizardPage = ()=> {
   }
 
   return (
-    <StackedLayout>
       <div className='justify-self-center'>
         <div className='grid grid-flow-col justify-items-end'><Button className=" my-5" onClick={finish}>Finalizar</Button></div>
         <MyProgressBar currentStep={currentStep} steps={steps.length} />
         {render(currentStep)}
       </div>
-    </StackedLayout>
   )
 }

@@ -21,7 +21,7 @@ const handleprice = ()=>{
 }
 
    return (
-     <div className="mt-10">
+     <div className="mt-10 overflow-scroll">
         <Heading className="my-5 text-center">Producto</Heading>
         <Select onChange={(e)=>setData(prev => ({...prev, "layout": parseInt(e.target.value)})) }>
             <option>Selecciona un Layout</option>
