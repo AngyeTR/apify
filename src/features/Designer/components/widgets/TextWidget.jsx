@@ -27,7 +27,7 @@ export const TextWidget = ({content,  id, edit, editable, style, toEdit})=>{
     <Modal>
         <Field className="w-[90vw] h-[90vh] bg-zinc-50 p-5 pt-15 m-3 rounded-lg shadow-xl border border-zinc-200 justify-items-center">
           <Heading>Texto</Heading>
-          <Textarea placeholder="Ingrese el Texto"  value={variable} onChange={e=> setVariable(e.target.value)} className="max-w-lg my-5" />
+          <Textarea placeholder="Ingrese el Texto"  value={variable} onChange={e=> setVariable(e.target.value)} className="max-w-2xl my-5 h-50" />
           <TextController styles={styles} setStyles={setStyles} />
           <Button type="submit" className="mx-1 my-5" onClick={save} >Guardar</Button>
           <Button className="mx-1 my-5" onClick={()=> setEditor(false)}>Cancelar</Button>

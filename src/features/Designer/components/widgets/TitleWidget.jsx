@@ -26,7 +26,7 @@ export const TitleWidget = ({content, id, edit, editable, style, toEdit})=>{
     <Modal>
       <Field className="w-[90vw] h-[90vh] bg-zinc-50 p-5 pt-15 m-3 rounded-lg shadow-xl border border-zinc-200 justify-items-center">
         <Heading >Título</Heading>
-        <Input name="url" placeholder="Ingrese el Título" value={variable} onChange={e=> setVariable(e.target.value)} className="my-5"/>
+        <Input name="url" placeholder="Ingrese el Título" value={variable} onChange={e=> setVariable(e.target.value)} className="my-5 max-w-xl"/>
         <TextController styles={styles} setStyles={setStyles}/>
         <Button type="submit" className="mx-1 my-5" onClick={save}>Guardar</Button>
         <Button className="mx-1 my-5" onClick={()=> setEditor(false)}>Cancelar</Button>

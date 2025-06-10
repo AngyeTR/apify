@@ -13,7 +13,7 @@ import { CarouselWidget } from '../components/widgets/CarouselWidget';
 import { BlankWidget } from '../components/widgets/BlankWidget';
 import { PaymentButtonWidget } from '../components/widgets/PaymentButtonWidget';
 
-export const GridContainer = ({canEdit, setItems, items, count, layoutColor, setLayoutColor, setGrid})=> { 
+export const GridContainer = ({canEdit, setItems, items, count, layoutColor, setLayoutColor, grid, setGrid})=> { 
   const styles = {backgroundColor: layoutColor?.["backgroundColor"],  
       backgroundImage: `url('${layoutColor?.["backgroundImage"]}')`,  backgroundSize: 'cover',
       backgroundPosition: 'center', repeat: "no-repeat",  backgroundBlendMode: 'multiply' }
@@ -21,9 +21,11 @@ export const GridContainer = ({canEdit, setItems, items, count, layoutColor, set
   const getMap = ()=>{return itemsRef.current}
   const [toEdit, setToEdit] = useState(null)
   const [isModalOpen, setModalOpen] =  useState(true)
+  const [internalState, setInternalState] = useState(items? items : [])
+  
   const removeWidget = (id) => {setItems((prev) => prev.filter((w) => w.id !== id));
-  if (grid) {const el = document.getElementById(id)
-      if (el) { grid.removeWidget(el)}}}
+    if (grid) {const el = document.getElementById(id)
+    if (el) { grid.removeWidget(el)}}}
 
   const editWidget = async(id, content, style)=>{
     const newItem = items.filter((item)=> item.id == id )[0]
@@ -33,14 +35,21 @@ export const GridContainer = ({canEdit, setItems, items, count, layoutColor, set
     let filteredItems = [...items]
     filteredItems[ind] = newItem
     setItems(filteredItems);
-    await new Promise(resolve => setTimeout(resolve, 500));
-    // setTimeout(()=>{grid.makeWidget(getMap().get(count))}, 5)
-  }
+    await new Promise(resolve => setTimeout(resolve, 500))}
+
+  useEffect(()=>{ 
+    const layout = grid?.save(false);
+        layout?.forEach(item => {
+        const match = items.find(it => it.id === item.id);
+        item.content = match?.content;
+        item.style = match?.style });
+  setItems(layout)},[toEdit])
 
   useEffect(()=>{
     const grid = GridStack.init({float: true, cellHeight: 50, column: 4, acceptWidgets: true, columnOpts:{breakpoints:[{w:480, c:1}, {w:690, c:1}, {w:1280, c:1}]},
       margin: 1, staticGrid: !canEdit, disableResize: !canEdit, disableDrag: !canEdit})
       setGrid(grid)
+    setInternalState(items)
     return () => {grid.destroy(false)}
   },[ ,items]) 
 
@@ -61,8 +70,9 @@ export const GridContainer = ({canEdit, setItems, items, count, layoutColor, set
 
   return (
     <div className='grid-stack w-full   min-h-[90vh]' style={styles}>
-      {console.log(toEdit)}
-    {items?.map((cat, index)=>
+      {console.log(items)}
+    {/* {internalState?.map((cat, index)=>  */}
+     {items?.map((cat, index)=> 
     (
       <div className={`grid-stack-item overflow-hidden h-fit place-content-center place-items-center ${canEdit && "hover:border hover:border-red-600"}`} gs-w={cat?.w} gs-h={cat?.h} key={cat?.id} gs-id={cat.id} gs-x={cat.x} gs-y={cat.y} gs-content={cat.content} gs-sub-grid={cat.id.split("-")[0] == "container" ? "true" : "false"} onClick={()=>setToEdit(cat.id)}
       ref={(node)=>{
