@@ -73,7 +73,6 @@ export const Summary = ({data, dataSet, setDataSet, handleClick})=>{
             {editor ? <Input placeholder="Ejemplo: calle 1 # 23-45 apartamento 67" onChange={e=> setInternalData(prev => ({...prev, customerData: { ...prev.customerData, address: e.target.value}}))}/>:
              <p>{internalData.customerData.address}, {internalData.customerData.city.name}</p>}
            </div>
-           {console.log(internalData, products)}
            <Button className="my-3" onClick={finishSale}>Finalizar Compra</Button>
         </div>
     )

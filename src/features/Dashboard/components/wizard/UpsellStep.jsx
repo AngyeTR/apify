@@ -22,9 +22,11 @@ export const UpsellStep = ({data, setData})=>{
     }
 
    return (
-     <div className="my-3 mt-10">
+     <div className="my-3 mt-10 ">
         <Heading className="my-5 text-center">Upsell </Heading>
-        <Select className="my-3" onChange={(e)=>handleProduct(parseInt(e.target.value)) }>
+        {console.log(!!data.upsellProductId)}
+        <Select className="my-3 w-sm sm:w-md" onChange={(e)=>handleProduct(parseInt(e.target.value)) }>
+            <option>Selecciona un producto</option>
             {products?.map(prod => <option value={prod.id}>{prod.name}</option>)}
         </Select >
         {filteredLayouts.length > 0 ?

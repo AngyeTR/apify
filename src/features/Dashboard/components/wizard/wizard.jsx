@@ -1,9 +1,6 @@
 import { MyProgressBar } from '../../components/myComponents/MyProgressBar'
-import { StackedLayout } from '../../../../shared/components/uikit/stacked-layout'
 import { Button } from "../../../../shared/components/uikit/button"
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useLocalStorage } from '../../../../shared/hooks/useLocalStorage'
 import { CampaignStep } from './CampaingStep'
 import { TunnelStep } from './TunnelStep'
 import { ProductStep } from './ProductStep'
@@ -40,28 +37,26 @@ const tunnelModel = {
 
 export const Wizard = ()=> {
   const [data, setData] = useState({prices: []})
-  // const [data, setData] = useState({prices: [{name:"Paga 2 lleva 3"}, {name:"Paga 3 lleva 5"}]})
   // const [currentStep, setCurrentStep]  = useState(stored.implementation.implementationStep  )
   const [currentStep, setCurrentStep]  = useState(1)
   const handleClick = ()=> { setCurrentStep(currentStep +1) }
   const handleBack = ()=> { setCurrentStep(currentStep -1) }
 
 const steps = [
-    {component: <div><CampaignStep data={data} setData={setData}/><Button disabled={!data.campaignId} color="yellow" onClick={handleClick}>Siguiente</Button></div> }, 
-    {component: <div><TunnelStep data={data} setData={setData}/><Button color="blue" onClick={handleBack}>Anterior</Button><Button color="yellow" disabled={!data.name || !data.productId || !data.startDate || !data.endDate} onClick={handleClick}>Siguiente</Button></div> },
-    {component:  <div><ProductStep data={data} setData={setData}/><Button color="blue" onClick={handleBack}>Anterior</Button><Button color="yellow" disabled={!data.layout|| data.prices.length==0 } onClick={handleClick}>Siguiente</Button></div>},
-    {component: <div><OrderBound data={data} setData={setData}/><Button color="blue" onClick={handleBack}>Anterior</Button><Button color="yellow" disabled={!data.orderBound || !data.orderBoundPrice} onClick={handleClick}>Siguiente</Button></div>},
-    {component: <div><UpsellStep data={data} setData={setData}/><Button color="blue" onClick={handleBack}>Anterior</Button><Button color="yellow" disabled={!data.upsellProductId || !data.upsellLayout || !data.upsellPrice}  onClick={handleClick}>Siguiente</Button></div>},
-    {component: <div><DownsellStep data={data} setData={setData}/><Button color="blue" onClick={handleBack}>Anterior</Button><Button disabled={!data.downsellLayout || !data.downsellPrice}>Guardar Tunel</Button></div>},]
+    {component: <div><CampaignStep data={data} setData={setData}/><Button disabled={!data.campaignId || !data.productId } color="yellow" onClick={handleClick}>Siguiente</Button></div> }, 
+    {component: <div><TunnelStep data={data} setData={setData}/><Button color="yellow" disabled={!data.name || !data.layout || !data.startDate || !data.endDate} onClick={handleClick}>Siguiente</Button></div> },
+    {component:  <div><ProductStep data={data} setData={setData}/><Button color="yellow" disabled={ data.prices.length==0 } onClick={handleClick}>Siguiente</Button></div>},
+    {component: <div><OrderBound data={data} setData={setData}/><Button color="yellow"  onClick={handleClick}>Siguiente</Button></div>},
+    {component: <div><UpsellStep data={data} setData={setData}/><Button color="yellow" disabled={!!data.upsellProductId && (!data.upsellProductId || !data.upsellLayout || !data.upsellPrice)  }  onClick={handleClick}>Siguiente</Button></div>},
+    {component: <div><DownsellStep data={data} setData={setData}/><Button disabled={!!data.downsellLayout && (!data.downsellLayout || !data.downsellPrice)}>Guardar Tunel</Button></div>},]
 
     const render = (currentStep)=> {return steps[currentStep-1].component}
 
   return (
-    // <StackedLayout>
-      <div className='justify-self-center overflow-scroll h-auto'>
-        <MyProgressBar currentStep={currentStep} steps={steps.length} />
+      <div className='justify-self-center w-full justify-items-center '>
+        {console.log(data)}
+        <MyProgressBar currentStep={currentStep} steps={steps.length}  className="w-full"/>
         {render(currentStep)}
       </div>
-    // </StackedLayout>
   )
 }

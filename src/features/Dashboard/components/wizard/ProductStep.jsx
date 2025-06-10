@@ -5,32 +5,51 @@ import { Input } from "../../../../shared/components/uikit/input"
 import { Select } from "../../../../shared/components/uikit/select"
 import { getByCompanyId } from "../../../../shared/services/API/api"
 import { useLocalStorage } from "../../../../shared/hooks/useLocalStorage"
+import { CheckboxGroup, CheckboxField, Checkbox } from "../../../../shared/components/uikit/checkbox"
 import { Description, Fieldset, Label } from "../../../../shared/components/uikit/fieldset"
 
-const colors = [{name: "Azul", value:"blue"}, {name: "Verde", value:"green"}, {name: "Rojo", value: "red"}, {name: "Amarillo", value: "ambar"}, {name: "Naranja", value: "orange"}]
+const paymentOptions = [{name:"Efectivo Contraentrega"}, {name: "Pago online"}]
+const colors = [{name: "Azul", value:"blue"}, {name: "Verde", value:"green"}, {name: "Rojo", value: "red"}, {name: "Amarillo", value: "ambar"}]
 export const ProductStep = ({data, setData})=>{
     const [stored] = useLocalStorage("data")
-    const [layouts, setLayouts] = useState(null)
+    // const [layouts, setLayouts] = useState(null)
     const [prices, setPrices] = useState([])
     const [price, setPrice] = useState({})
-    useEffect(()=>{getByCompanyId("Layouts", stored?.company.id).then(res=> setLayouts(res.data))},[])
+    const methods = [{name:"Efectivo Contraentrega"}, {name: "Pago online"}]
+
+    useEffect(()=>{
+        // getByCompanyId("Layouts", stored?.company.id).then(res=> setLayouts(res.data))
+        setData(prev=>({...prev, paymentMethods : methods}))
+    },[])
 
 const handleprice = ()=>{
     setData(prev => ({...prev, prices: [...prev.prices, price]}))
     setPrice({})
 }
 
+const handlePaymentMethod = (name, value) =>
+    {
+      const options = data.paymentMethods
+     const index = options.findIndex(obj => obj.name === name)
+     options[index].value = value
+     setData(prev=>({...prev, paymentMethods : options}))
+    }
+
    return (
-     <div className="mt-10 overflow-scroll">
-        <Heading className="my-5 text-center">Producto</Heading>
-        <Select onChange={(e)=>setData(prev => ({...prev, "layout": parseInt(e.target.value)})) }>
-            <option>Selecciona un Layout</option>
-            {layouts?.map(layout => <option value={layout.id} key={layout.id}>{layout.name}</option>)}
-        </Select>
+     <div className="mt-10 ">
+        <Heading className="my-5 text-center">Precios y Métodos de Pago</Heading>
+             <CheckboxGroup >
+        {methods?.map(method=> <CheckboxField className="my-3" key={method.name}>
+          <Checkbox  onChange={(e)=> handlePaymentMethod(method.name, e)} name={method.name} value={method.name} />
+          <Label>{method.name}</Label>
+        </CheckboxField>)}
+      </CheckboxGroup>
         <Fieldset className="my-5 bg-zinc-100 p-2 rounded-lg">
         <Heading>Crear Precios</Heading>
         <Input placeholder="Nombre del precio" onChange={e=> setPrice(prev=> ({...prev, name : e.target.value}))}/>
         <p className="text-[14px] text-zinc-700">Por ejemplo: Combo 2, 2X1, superPromo, etc</p>
+       <Input type="number" placeholder="Cantidad que el comprador estaría llevando" onChange={e=> setPrice(prev=> ({...prev, quantity: parseInt(e.target.value)}))}/>
+        <p className="text-[14px] text-zinc-700">Por ejemplo: en pague 1 lleve 2, la cantidad será 2</p>
         <Input type="number" placeholder="Precio anterior" onChange={e=> setPrice(prev=> ({...prev, initialPrice : parseFloat(e.target.value)}))}/>
         <p className="text-[14px] text-zinc-700">Este precio se mostrará <span className="line-through">tachado</span></p>
         <Input type="number" placeholder="Precio Final" onChange={e=> setPrice(prev=> ({...prev, finalPrice : parseFloat(e.target.value)}))}/>

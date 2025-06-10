@@ -4,7 +4,7 @@ import { Wizard} from "../../components/wizard/wizard"
 export const CampaignWizard =()=>{
     return (
         <MyLayout>
-            <h1>Campaña</h1>
+            <h1 className="text-red-500">Campaña</h1>
             <Wizard />
         </MyLayout>)
 }

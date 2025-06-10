@@ -21,7 +21,7 @@ export const CustomerForm = ({data, handleClick, dataSet, setDataSet})=>{
         if(verifyEmail){
             setError(verifyEmail)
         }
-        else if (buyerInfo.phone.length < 10) {
+        else if (buyerInfo.phone.length < 10 || buyerInfo.phone[0] != 3) {
             setError("Formato de teléfono inválido")
         }
         else {

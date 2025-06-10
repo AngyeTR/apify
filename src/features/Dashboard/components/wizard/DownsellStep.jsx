@@ -16,7 +16,7 @@ export const DownsellStep = ({data, setData})=>{
      <div className="mt-10">
         <Heading className="my-5 text-center">DownSell </Heading>
         {data.upsellProductId &&
-            <Select className="my-3" onChange={(e)=>setData(prev => ({...prev, "downsellLayout" :parseInt(e.target.value)})) }>
+            <Select className="my-3 w-sm sm:w-md" onChange={(e)=>setData(prev => ({...prev, "downsellLayout" :parseInt(e.target.value)})) }>
             <option>Seleccionar Layout</option>
             {layouts?.map(prod => <option value={prod.id}>{prod.name}</option>)}
         </Select>

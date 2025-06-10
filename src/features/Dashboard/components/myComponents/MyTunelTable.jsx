@@ -76,7 +76,7 @@ export function TunnelTable({data}) {
     </Navbar>
     { !filteredData  ? <p>Cargando tabla.. </p> : filteredData?.length ==0 ? <p>No se encontraron registros </p> :render()}
     {modal.status && <Modal>
-      <div className="bg-zinc-50 rounded-lg w-[80vw] h-[90vh] py-10 justify-items-center"> 
+      <div className="bg-zinc-50 rounded-lg w-[90%] md:w-[70%] h-[90%] overflow-scroll py-10 justify-items-center"> 
         <div className="grid grid-cols-6 w-full"><div/><Heading className="mb-5 col-span-4 justify-self-center">{modal.action} Tunel de Ventas </Heading>
         <Button className="w-fit h-fit justify-self-center" onClick={()=>setModal({status:false, id: null, action: null})}>Cerrar</Button></div>
      { modal.action == "Clonar" ?  <Field className="w-md justify-items-center">

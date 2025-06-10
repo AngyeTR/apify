@@ -12,13 +12,13 @@ export const MyProgressBar = (props )=>{
     }
 
     return (
-      // <div className="w-full bg-amber-200">
+      <div className="w-[99%] justify-items-center -ml-[15%]">
         <nav aria-label="Progress" className="w-xs md:w-sm lg:w-md  justify-items-center ">
         <ol role="list" className="flex items-center">
           {getItems().map((item)=> item)}
       </ol>
     </nav>
-      // </div>
+       </div>
         )
     
 }
