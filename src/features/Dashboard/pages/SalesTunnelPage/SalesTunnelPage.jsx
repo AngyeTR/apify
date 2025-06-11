@@ -43,4 +43,4 @@ export const SalesTunnelPage = ()=> {
             </div>
          </div>
     )
-}
+} 

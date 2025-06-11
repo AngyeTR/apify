@@ -16,10 +16,10 @@ import { Input } from "../../../../shared/components/uikit/input";
 import { useLocalStorage } from "../../../../shared/hooks/useLocalStorage";
 import { Loader} from "../../../../shared/components/Loader.jsx"
 import { Wizard } from "../wizard/wizard.jsx"
-import { getByCompanyId } from "../../../../shared/services/API/api.js";
+import { getByCompanyId, post } from "../../../../shared/services/API/api.js";
+import { campaignModel } from "../../utils/models.js";
 
 const Table  = ({data, headers, setModal}) => {
-  console.log(data)
     const params = useParams()
     const nav = useNavigate()
     const tableRef = useRef(null);
@@ -47,21 +47,27 @@ export function TunnelTable({data}) {
    const [camps, setCamps] = useState(null) 
   const nav = useNavigate()
    const [stored] = useLocalStorage("data")
-
-  const filteredData = data?.map(item => [item.id, item.name, item.description, camps?.filter(camp=> camp.id==item.idCampaign)[0].name, item.initialDate, item.endDate])
+  const filteredData = data?.map(item => [item.id, item.name, item.description ? item.description: " ", camps?.filter(camp=> camp.id==item.idCampaign)[0].name, item.initialDate, item.endDate])
   const headers = ["Acciones", "Nombre", "Descripción", "Campaña", "Fecha de Inicio", "Fecha de Fin"]
   
   const clone = async () =>{
    console.log("clonning")
   }
 
+  const createCampaign = async()=>{
+    const camp = campaignModel
+    camp.name = newCampaign
+    const res = await post("CampaingCompanies", camp).then(res=>console.log(res))
+    res.isValid && setNewCampaign(null)
+  }
+
   useEffect(()=>{getByCompanyId("CampaingCompanies", stored.company.id).then(res=>setCamps(res.data))},[])
  useEffect(()=>{filteredData && render()}, [data])
-  const render = ()=> {
-    if(filteredData?.length > 0 && headers.length > 0 ){
+  const render = (data)=> {
+    if(data?.length > 0 && headers.length > 0 ){
       return (
         <div className="w-[99%] overflow-x-scroll">
-        <Table  data={filteredData.reverse()} headers={headers} setModal={setModal} />
+        <Table  data={data.reverse()} headers={headers} setModal={setModal} />
         </div>
       )}}
 
@@ -70,11 +76,11 @@ export function TunnelTable({data}) {
      <Navbar className="grid grid-flow-col justify-items-end" >
       <NavbarSection className="w-fit">
           <Input className="w-xs" placeholder="Nombre de nueva campaña" onChange={(e)=>setNewCampaign(e.target.value)}/>
-          <Button  onClick={()=>setCampaignCreator(true)}>Añadir Campaña</Button>
+          <Button  onClick={createCampaign} disabled={!newCampaign}>Añadir Campaña</Button>
           <Button  onClick={()=>setModal({status:true, id: null, action: "Crear"})}>Crear Tunel</Button>
       </NavbarSection>
     </Navbar>
-    { !filteredData  ? <p>Cargando tabla.. </p> : filteredData?.length ==0 ? <p>No se encontraron registros </p> :render()}
+    { !filteredData  ? <p>Cargando tabla.. </p> : filteredData?.length ==0 ? <p>No se encontraron registros </p> :render(filteredData)}
     {modal.status && <Modal>
       <div className="bg-zinc-50 rounded-lg w-[90%] md:w-[70%] h-[90%] overflow-scroll py-10 justify-items-center"> 
         <div className="grid grid-cols-6 w-full"><div/><Heading className="mb-5 col-span-4 justify-self-center">{modal.action} Tunel de Ventas </Heading>
@@ -88,7 +94,7 @@ export function TunnelTable({data}) {
         {<Button onClick={clone} className="mx-1" >{loading ? <Loader/> :"Clonar"}</Button>}
         <Button onClick={()=>setIdToClone(null)} color="red" className="mx-1">{loading ? <Loader/> : "Cerrar"}</Button>
         </Field> : 
-        <Wizard/>
+        <Wizard action={modal.action} id={modal.id}/>
         }
       </div>
       </Modal>}

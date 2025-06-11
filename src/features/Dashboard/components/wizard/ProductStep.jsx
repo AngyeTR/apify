@@ -12,28 +12,20 @@ const paymentOptions = [{name:"Efectivo Contraentrega"}, {name: "Pago online"}]
 const colors = [{name: "Azul", value:"blue"}, {name: "Verde", value:"green"}, {name: "Rojo", value: "red"}, {name: "Amarillo", value: "ambar"}]
 export const ProductStep = ({data, setData})=>{
     const [stored] = useLocalStorage("data")
-    // const [layouts, setLayouts] = useState(null)
     const [prices, setPrices] = useState([])
     const [price, setPrice] = useState({})
     const methods = [{name:"Efectivo Contraentrega"}, {name: "Pago online"}]
 
-    useEffect(()=>{
-        // getByCompanyId("Layouts", stored?.company.id).then(res=> setLayouts(res.data))
-        setData(prev=>({...prev, paymentMethods : methods}))
-    },[])
+    useEffect(()=>{ setData(prev=>({...prev, paymentMethods : methods}))},[])
 
-const handleprice = ()=>{
-    setData(prev => ({...prev, prices: [...prev.prices, price]}))
-    setPrice({})
-}
+const handleprice = ()=>{ setData(prev => ({...prev, prices: [...prev.prices, price]}))
+    setPrice({})}
 
-const handlePaymentMethod = (name, value) =>
-    {
+const handlePaymentMethod = (name, value) => {
       const options = data.paymentMethods
      const index = options.findIndex(obj => obj.name === name)
      options[index].value = value
-     setData(prev=>({...prev, paymentMethods : options}))
-    }
+     setData(prev=>({...prev, paymentMethods : options}))}
 
    return (
      <div className="mt-10 ">
@@ -63,7 +55,7 @@ const handlePaymentMethod = (name, value) =>
         <Button className="my-2" onClick={handleprice} disabled={!price.name || !price.initialPrice || !price.finalPrice}>Crear Precio</Button>
         </Fieldset>
         <h2 className="font-medium my-2">Tus compradores verán estos precios especiales:</h2>
-        {data.prices.length > 0 ? data.prices?.map(price=> 
+        {data.prices?.length > 0 ? data.prices?.map(price=> 
         <p className="my-2">{price.name} {price.tag && <span className={`bg-${price.tagColor}-600 text-white`}> {price.tag}</span>}</p>) : 
         <p className="my-2"> Aún no hay precios creados</p>}
     </div>

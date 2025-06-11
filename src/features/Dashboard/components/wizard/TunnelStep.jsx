@@ -18,14 +18,23 @@ export const TunnelStep = ({data, setData})=>{
     filtered.push({idLayout: id, percent: percent})
     setLayoutsPercent(filtered)
     const suma = filtered.reduce((subTotal, current) => subTotal + current.percent, 0);
-    setTotal(suma)}
+    setTotal(suma)
+  addLayout(id, percent)}
 
     const handleDate=(value, type) =>{
        const now = new Date();
        const date = new Date(value);
        setError(null)
-       type == "start" ? ( date <= now ? setError('La fecha de inicio debe ser posterior al momento actual.') : setData(prev=> ({...prev, startDate: value})))
-        : (date <= new Date(data.startDate) ? setError('La fecha de fin debe ser posterior a la fecha de inicio') : setData(prev=> ({...prev, endDate: value})) )}
+       type == "start" ? ( date <= now ? setError('La fecha de inicio debe ser posterior al momento actual.') : setData(prev=> ({...prev, initialDate: date.toISOString()})))
+        : (date <= new Date(data.initialDate) ? setError('La fecha de fin debe ser posterior a la fecha de inicio') : setData(prev=> ({...prev, endDate: date.toISOString()})) )}
+
+    const addLayout = (id, percent)=>{
+      const toAssign = data.abTesting ? percent : 100 
+      const layouts = data.layouts.filter(layout=>layout.idLayout != id)
+      id && layouts.push({ isActive: true, createdBy:	stored?.user.email, modifiedBy:	stored?.user.email,
+      idLayout: id, percent: toAssign})
+      setData(prev=> ({...prev, layouts: layouts})) 
+    }
 
     const render = ()=>{
       if(!layouts) {<p className="my-3">No se encontraron Layouts creados para este producto</p>}
@@ -33,13 +42,13 @@ export const TunnelStep = ({data, setData})=>{
           <div>
           <Heading>Layouts de Pruebas A/B</Heading>
           <p>Asigne un procentaje de compradores que verán  cada Layout</p>
-          {layouts?.map(layout=> <div className="flex-row"><p className="my-1"> <input className="border border-zinc-400 rounded-md" type="number" min="0" max="100" defaultValue={0}
+          {layouts?.map((layout)=> <div className="flex-row"><p className="my-1"> <input className="border border-zinc-400 rounded-md" type="number" min="0" max="100" 
           onChange={(e)=>handlePercent(layout.id, parseFloat(e.target.value))}/>% {layout.name}</p></div>)}
           <p className="mt-3">Porcentaje asignado: {total}% </p>
           {total != 100 && <p className="text-red-600 text-sm mb-3 max-w-lg">El total asignado debe ser 100% Por favor verifique los porcentajes asignados a los Layouts</p>}
         </div>)}
       else { return (
-        <Select onChange={(e)=>setData(prev => ({...prev, "layout": parseInt(e.target.value)})) } className="my-3">
+        <Select onChange={(e)=> addLayout(parseInt(e.target.value)) } className="my-3">
             <option>Selecciona un Layout</option>
             {layouts?.map(layout => <option value={layout.id} key={layout.id}>{layout.name}</option>)}
         </Select>)}}
@@ -47,10 +56,10 @@ export const TunnelStep = ({data, setData})=>{
    return (
      <div className="w-full ">
         <Heading className="my-5 text-center">Tunel de Ventas de Producto</Heading>
-        <Input className="my-3 w-sm md:w-lg" onChange={(e)=> setData(prev=> ({...prev, name: e.target.value}))} placeholder="Ingresar el nombre de Tunel"/>
+        <Input className="my-3 w-sm md:w-lg" onChange={(e)=> setData(prev=> ({...prev, name: e.target.value}))} placeholder={data.name? data.name : "Ingresar el nombre de Tunel"}/>
         <Input className="my-3" type="datetime-local" placeholder="Fecha de Inicio" onChange={(e)=> handleDate(e.target.value, "start")} invalid={error?.includes("actual")}/>
         <Input className="my-3" type="datetime-local" placeholder="Fecha de Fin" onChange={(e)=>handleDate(e.target.value, "end")} invalid={error?.includes("fin")}/>
-        <Input className="my-3" type="text" placeholder="Comentario Importante" onChange={(e)=> setData(prev=> ({...prev, comment: e.target.value}))}/>
+        <Input className="my-3" type="text" placeholder={data.name? data.description :"Comentario Importante"} onChange={(e)=> setData(prev=> ({...prev, description: e.target.value}))}/>
         {render()}
       {error && <p className="text-red-500 my-2">Ups! algo salió mal: {error}</p>}
     </div>

@@ -145,6 +145,54 @@ export const campaignModel = {
     modifiedBy:	stored?.user.email,
     idCompany:  stored?.company.id,
     name: null,
-    startDate: null,
-    endDate: null,
 }
+
+export const salesTunnelModel = {
+  isActive: true,
+  createdBy:	stored?.user.email,
+  modifiedBy:	stored?.user.email,
+  idCompany:  stored?.company.id,
+  idCampaign: null,
+  name: null,
+  description: null,
+  domain: "pending",
+  initialDate: null,
+  endDate: null,
+  orderBounds: [],
+  layouts: [],
+}
+
+export const orderBoundModel= { 
+    isActive: true,
+    createdBy:	stored?.user.email,
+    modifiedBy:	stored?.user.email,
+    idCompany:  stored?.company.id,
+    idProduct: null,
+    quantity: null,
+    price: null}
+
+export const layoutsModel =  {
+    isActive: true,
+    createdBy:	stored?.user.email,
+    modifiedBy:	stored?.user.email,
+    idLayout: null,
+    percent: null
+    }
+
+ export const upsellModel= {
+    isActive: true,
+    createdBy:	stored?.user.email,
+    modifiedBy:	stored?.user.email,
+    idProduct: null,
+    quantity: null,
+    price: null
+  }
+
+  export const downsellModel= {
+    isActive: true,
+    createdBy:	stored?.user.email,
+    modifiedBy:	stored?.user.email,
+    idProduct: null,
+    quantity: null,
+    price: null
+  }
