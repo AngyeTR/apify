@@ -1,6 +1,4 @@
-import { StackedLayout } from '../../../../shared/components/uikit/stacked-layout'
-import { Button } from "../../../../shared/components/uikit/button"
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { CustomerForm } from './CustomerForm'
 import { MyProgressBar } from '../myComponents/MyProgressBar'
 import { SalesForm } from './SalesForm'
@@ -8,10 +6,12 @@ import { Upsale } from './Upsale'
 import { Downsale } from './Downsale'
 import { Summary } from './Summary'
 import { Thanks } from './Thanks'
+import {  getByID } from '../../../../shared/services/API/api'
+import { useParams } from 'react-router-dom'
 
 
-export const SalesWizard = ()=> {
-    const [dataSet, setDataSet] = useState({upsaleAccepted: false, orderBoundAccepted: false, downsaleAccepted: false})
+export const SalesWizard = ({data})=> {
+    const [dataSet, setDataSet] = useState({upsaleAccepted: false, downsaleAccepted: false})
 
 const tunnelModel = {
     id:1,
@@ -44,15 +44,19 @@ const tunnelModel = {
     downsellLayout:4,
     downsellPrice:25000,
 }
+  const params = useParams()
 
-  const [data, setData] = useState(tunnelModel)
+  // const [data, setData] = useState(null)
   const [currentStep, setCurrentStep]  = useState(1)
+console.log(data)
+  // useEffect(()=>{getByID("SalesTunnel", params.tunnel).then(res=> setData(res.data))},[])
+
   const handleClick = (step)=> { 
     setCurrentStep(currentStep + step) }
-  const handleUpsell = ()=> {const steps = dataSet.upsaleAccepted ? 2: (data.downsellLayout ? 1 : 2)
-    handleClick(steps)
-  }
 
+    const handleUpsell = ()=> {const steps = dataSet.upsaleAccepted ? 2: (data.downsell.idLayout ? 1 : 2)
+    handleClick(steps)  }
+  
 const stepsComplete = [
     {component: <div><CustomerForm data={data} dataSet={dataSet} setDataSet={setDataSet} handleClick={handleClick}/></div> }, 
     {component: <div><SalesForm data={data} dataSet={dataSet} setDataSet={setDataSet} handleClick={handleClick}/></div> }, 
@@ -67,14 +71,14 @@ const stepsWithoutUpsell = [
      {component: <div> <Summary data={data} dataSet={dataSet} setDataSet={setDataSet} handleClick={handleClick}/></div> }, 
     {component: <div> <Thanks data={data} dataSet={dataSet} setDataSet={setDataSet}/></div> }, 
 ]
-const steps = data.upsellId ? stepsComplete : stepsWithoutUpsell 
+const steps = data?.upsell?.id ? stepsComplete : stepsWithoutUpsell 
+console.log(steps)
     const render = (currentStep)=> {return steps[currentStep-1].component}
 
   return (
       <div className='justify-self-center bg-zinc-50 p-2 pt-10  mt-5 rounded-lg'>
+        {console.log(dataSet)}
         <div className='w-[400px]'>
             <MyProgressBar currentStep={currentStep} steps={steps.length} /></div>
         {render(currentStep)}
-      </div>
-  )
-}
+      </div>)}

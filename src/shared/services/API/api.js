@@ -8,7 +8,7 @@ const api = axios.create({
   (config) => {
     const token = getToken(); 
     if (token) {config.headers.Authorization = `Bearer ${token}`}
-    return config;
+    return config; 
   },
   (error) => Promise.reject(error)
 );
@@ -29,7 +29,7 @@ export  const  getCities  = async(id)=>{
 }
 
 export const getLogin = async (email, password)=> {
-  const res = await api.post(`/login/login`,  { email: email, password: password } ).then(response =>  response.data).catch(error => error);
+  const res = await api.post(`/login/login`,  { email: email, password: password }).then(response =>  response.data).catch(error => error);
   return res
 }
 

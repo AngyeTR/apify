@@ -18,21 +18,30 @@ import { Loader} from "../../../../shared/components/Loader.jsx"
 import { Wizard } from "../wizard/wizard.jsx"
 import { getByCompanyId, post } from "../../../../shared/services/API/api.js";
 import { campaignModel } from "../../utils/models.js";
+import { FaFacebook, FaTiktok  } from "react-icons/fa";
+import { DropdownButton, DropdownMenu, Dropdown, DropdownItem} from "../../../../shared/components/uikit/dropdown.jsx"
 
 const Table  = ({data, headers, setModal}) => {
     const params = useParams()
     const nav = useNavigate()
     const tableRef = useRef(null);
     const [stored] = useLocalStorage("data")
-    data.reverse()
+
   return (
-    <DataTable data={data.reverse()} className="display "  key={params.option} ref={tableRef}  id="myTable"
+    <DataTable data={data} className="display "  key={params.option} ref={tableRef}  id="myTable"
     slots={{0: (data) => (
     <div className="justify-center" style={{display: "flex"}}>
       <HiOutlinePencil className="mx-2 cursor-pointer hover:text-blue-500 text-lg my-1 justify-self-center" onClick={()=>setModal({status:true, id: data, action: "Editar"})}/>
       <HiOutlineEye  className="mx-2 cursor-pointer hover:text-blue-500 text-lg my-1 justify-self-center" onClick={()=>nav(`/dashboard/salestunnel/${data}`)}/>
       <FaClone className="mx-2 cursor-pointer hover:text-blue-500 text-lg my-1 justify-self-center" onClick={()=>setModal({status:true, id: data, action: "Clonar"})}/></div>
-    )}}>
+    ),
+    7: (data) => ( // columna al final
+      <div className="justify-center" style={{ display: "flex" }}>
+        {data[0] && <FaFacebook className="mx-1 text-blue-800"/>}
+        {data[1] && <FaTiktok className="mx-1 text-blue-500"/>}
+      </div>
+    )
+    }}>
       <TableHead>
         <TableRow className="justify-center " >
           {headers.map((option)=><TableHeader key={option}>{option}</TableHeader>)}
@@ -41,18 +50,26 @@ const Table  = ({data, headers, setModal}) => {
       </DataTable> )} 
 
 export function TunnelTable({data}) {
+  const [dataToShow, setDataToShow] = useState(data? data: [])
   const [modal, setModal] = useState({status:false, id: null, action: null})
+  const [filter, setFilter] = useState(null)
   const [newCampaign, setNewCampaign] = useState(null)
   const [loading, setLoading] = useState(false) 
-   const [camps, setCamps] = useState(null) 
-  const nav = useNavigate()
-   const [stored] = useLocalStorage("data")
-  const filteredData = data?.map(item => [item.id, item.name, item.description ? item.description: " ", camps?.filter(camp=> camp.id==item.idCampaign)[0].name, item.initialDate, item.endDate])
-  const headers = ["Acciones", "Nombre", "Descripción", "Campaña", "Fecha de Inicio", "Fecha de Fin"]
+  const [camps, setCamps] = useState(null) 
+  const [stored] = useLocalStorage("data")
+
+ useEffect(()=>{getByCompanyId("CampaingCompanies", stored.company.id).then(res=>setCamps(res.data))
+    setDataToShow(data)
+  },[])
+
+  useEffect(()=>{const filteredD= filter ? data.filter(item=> item.idCampaign == filter) : data
+  setDataToShow(filteredD) },[data, filter])
   
-  const clone = async () =>{
-   console.log("clonning")
-  }
+  useEffect(()=>{ filteredData && render()}, [data])
+  const filteredData = dataToShow?.map(item => [item.id, item.name, item.description ? item.description: " ", camps?.filter(camp=> camp.id==item.idCampaign)[0] ? camps?.filter(camp=> camp.id==item.idCampaign)[0].name: "", item.initialDate, item.endDate, item.domain, [item.facebookPixel, item.tikTokPixel], item?.prices?.length, item?.orderBounds?.length, item?.upsell?.idProduct? "Si": "No", item?.downsell?.idLayout? "Si": "No"] )
+  const headers = ["Acciones", "Nombre", "Descripción", "Campaña", "Fecha de Inicio", "Fecha de Fin", "Dominio", "Pixel", "precios", "orderBounds", "upsell", "downsell"]
+  
+  const clone = async () =>{console.log("clonning")}
 
   const createCampaign = async()=>{
     const camp = campaignModel
@@ -61,10 +78,9 @@ export function TunnelTable({data}) {
     res.isValid && setNewCampaign(null)
   }
 
-  useEffect(()=>{getByCompanyId("CampaingCompanies", stored.company.id).then(res=>setCamps(res.data))},[])
- useEffect(()=>{filteredData && render()}, [data])
+
   const render = (data)=> {
-    if(data?.length > 0 && headers.length > 0 ){
+    if(data?.length > 0 && headers.length > 0 &&  data[0].length == headers.length){
       return (
         <div className="w-[99%] overflow-x-scroll">
         <Table  data={data.reverse()} headers={headers} setModal={setModal} />
@@ -74,12 +90,22 @@ export function TunnelTable({data}) {
   return (
     <>
      <Navbar className="grid grid-flow-col justify-items-end" >
-      <NavbarSection className="w-fit">
-          <Input className="w-xs" placeholder="Nombre de nueva campaña" onChange={(e)=>setNewCampaign(e.target.value)}/>
-          <Button  onClick={createCampaign} disabled={!newCampaign}>Añadir Campaña</Button>
-          <Button  onClick={()=>setModal({status:true, id: null, action: "Crear"})}>Crear Tunel</Button>
+      <NavbarSection className="w-full flex-wrap">
+          <div className="flex-wrap">
+            <input className="w-[150px] sm:w-sm border border-zinc-400 rounded-lg p-1 mr-2" placeholder="Nueva campaña" onChange={(e)=>setNewCampaign(e.target.value)}/>
+          <Button  onClick={createCampaign} disabled={!newCampaign} className="mx-2">Crear</Button>
+          <Dropdown>
+            <DropdownButton outline> Filtrar</DropdownButton>
+          <DropdownMenu>
+            <DropdownItem onClick={() => setFilter(null)}>Ver todos</DropdownItem>
+            {camps?.map(camp =>  <DropdownItem onClick={() => setFilter(camp.id)}>{camp.name}</DropdownItem>)}
+          </DropdownMenu>
+    </Dropdown>
+          </div> 
       </NavbarSection>
     </Navbar>
+    <Button   onClick={()=>setModal({status:true, id: null, action: "Crear"})}>Crear Tunel</Button>
+
     { !filteredData  ? <p>Cargando tabla.. </p> : filteredData?.length ==0 ? <p>No se encontraron registros </p> :render(filteredData)}
     {modal.status && <Modal>
       <div className="bg-zinc-50 rounded-lg w-[90%] md:w-[70%] h-[90%] overflow-scroll py-10 justify-items-center"> 
@@ -98,11 +124,5 @@ export function TunnelTable({data}) {
         }
       </div>
       </Modal>}
-      {/* {campaignCreator && <Modal>
-        <div className="bg-zinc-50 rounded-lg w-[80vw] h-[90vh] py-10 justify-items-center"> 
-          <div className="grid grid-cols-6 w-full"><div/><Heading className="mb-5 col-span-4 justify-self-center">Nueva Campaña </Heading>
-          <Button className="w-fit h-fit justify-self-center" onClick={()=>setCampaignCreator(null)}>Cerrar</Button></div>   
-<FormCampaign/>
-</div>   </Modal>} */}
     </>)
 }

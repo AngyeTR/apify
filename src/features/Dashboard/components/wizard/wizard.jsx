@@ -26,13 +26,11 @@ useEffect(()=>{action == "Crear" ? setData(prev=>({...salesTunnelModel, prices :
 const saveTunnel = async ()=>{
  const res = action == "Crear" ? await post("SalesTunnel", data).then(res=> res) :
   await edit("SalesTunnel", data).then(res=> res) 
- res && console.log(res)
-//  res.isValid && nav(0)
+ res.isValid && nav(0)
 }
 
-
 const steps = [
-    {component: <div><CampaignStep data={data} setData={setData}/><Button disabled={!data.idCampaign || !data.productId } color="yellow" onClick={handleClick}>Siguiente</Button></div> }, 
+    {component: <div><CampaignStep data={data} setData={setData}/><Button disabled={!data.idCampaign || !data.idProduct || !data.domain || !(!!data.facebookPixel || !!data.tikTokPixel)} color="yellow" onClick={handleClick}>Siguiente</Button>{console.log(!(!!data.facebookPixel || !!data.tikTokPixel), !data.idCampaign, !data.idProduct, (!data.idCampaign || !data.idProduct) )}</div> }, 
     {component: <div><TunnelStep data={data} setData={setData}/><Button color="yellow" disabled={!data.name || data.layouts.length == 0 || !data.initialDate || !data.endDate} onClick={handleClick}>Siguiente</Button></div> },
     {component:  <div><ProductStep data={data} setData={setData}/><Button color="yellow" disabled={ data?.prices?.length==0 } onClick={handleClick}>Siguiente</Button></div>},
     {component: <div><OrderBound data={data} setData={setData}/><Button color="yellow"  onClick={handleClick}>Siguiente</Button></div>},
@@ -43,6 +41,7 @@ const steps = [
 
   return (
       <div className='justify-self-center w-full justify-items-center '>
+        {console.log(data)}
         <MyProgressBar currentStep={currentStep} steps={steps.length}  className="w-full"/>
         {render(currentStep)}
       </div>

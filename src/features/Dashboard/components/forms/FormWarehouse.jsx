@@ -36,6 +36,7 @@ export function FormWarehouse(props) {
         location?.country && getStates(location.country.id).then((res) => setLocation(prev=> ({...prev, "states": res.data})));
         location?.state && getCities(location.state.id).then((res) => setLocation(prev=> ({...prev, "cities": res.data})));
         location?.state && getCities(location.state.id).then((res) =>console.log(res) );
+        console.log(location)
       }, [ location?.country, location?.state ]);
 
 
@@ -59,21 +60,21 @@ export function FormWarehouse(props) {
       <Label className="block my-4">Esta bodega también es punto de atención al público <Switch checked={dataSet?.isPublic} onChange={()=> setDataSet(prev=>({...prev,  isPublic: !prev.isPublic}))}/> </Label>
       <Label className="block my-4">Bodega Activa <Switch checked={dataSet?.isActive} onChange={()=> setDataSet(prev=>({...prev,  isActive: !prev.isActive}))}/></Label>
       <Label>Pais*</Label>
-      <Select name="country" onChange={(e)=> setLocation(prev => ({...prev, "country": JSON.parse(e.target.value)}))}>
+      <Select name="country" onChange={(e)=> e.target.value && setLocation(prev => ({...prev, "country": JSON.parse(e.target.value)}))}>
         <option value="">Selecciona una opcion</option>
         {location?.countries?.map((country)=> <option value={JSON.stringify(country)} key={country.name}>{country.name}</option>)}
       </Select>
       <Label>Estado/ Departamento*</Label>
-         <Select name="state" onChange={(e)=> setLocation(prev => ({...prev, "state": JSON.parse(e.target.value)}))}>
-        <option value="">Selecciona una opcion</option>
+         <Select name="state" onChange={(e)=> e.target.value && setLocation(prev => ({...prev, "state": JSON.parse(e.target.value)}))}>
+        <option  value="">Selecciona una opcion</option>
         {location?.states?.map((state)=> <option value={JSON.stringify(state)} key={state.name}>{state.name}</option> )}
       </Select>
       <Label>Ciudad*</Label>
       
       <Combobox name="city" options={location?.cities ? location.cities : []} displayValue={(city) => city?.name} 
-       onChange={(e)=> setSelectedCity(JSON.parse(e))} placeholder={selectedCity ? selectedCity.name : "Seleccionar ciudad&hellip;"}>
+       onChange={(e)=> {e && setSelectedCity(e)}} placeholder={selectedCity ? selectedCity.name : "Seleccionar ciudad&hellip;"}>
         {(city) => (
-          <ComboboxOption value={JSON.stringify(city)}>
+          <ComboboxOption value={city}>
             <ComboboxLabel>{city.name}</ComboboxLabel>
           </ComboboxOption>
         )}

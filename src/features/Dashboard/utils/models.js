@@ -155,11 +155,16 @@ export const salesTunnelModel = {
   idCampaign: null,
   name: null,
   description: null,
-  domain: "pending",
+  domain: null,
   initialDate: null,
   endDate: null,
   orderBounds: [],
   layouts: [],
+  facebookPixel: null,
+  tikTokPixel: null,
+  abTesting: false,
+  paymentOnDelivery: true,
+  paymentGateway: true,
 }
 
 export const orderBoundModel= { 
@@ -196,3 +201,17 @@ export const layoutsModel =  {
     quantity: null,
     price: null
   }
+
+
+  export const pricesModel =  {
+    isActive: true,
+    createdBy:	stored?.user.email,
+    modifiedBy:	stored?.user.email,
+    idProduct: null,
+    name: null,
+    quantity: 1,
+    oldPrice: null,
+    price: null,
+    tagColor: null,
+    tagName: null
+    }

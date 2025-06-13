@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Field, Label } from "../../../../shared/components/uikit/fieldset"
 import { Input } from "../../../../shared/components/uikit/input"
-import { getCities, getCountries, getStates, getByID, edit, post } from "../../../../shared/services/API/api"
+import { getCities, getCountries, getStates, getByID, edit, post, postFile } from "../../../../shared/services/API/api"
 import { HiExclamation } from "react-icons/hi";
 
 import { Combobox, ComboboxLabel, ComboboxOption } from "../../../../shared/components/uikit/combobox";
@@ -16,17 +16,22 @@ export const CustomerForm = ({data, handleClick, dataSet, setDataSet})=>{
     const [error, setError] = useState(null)
     const [buyerInfo, setBuyerInfo] = useState({})
 
-    const saveform = ()=>{
+    const saveform = async()=>{
+        const fullName = (buyerInfo.firstName && buyerInfo.lastName) ? buyerInfo.firstName + " " + buyerInfo.lastName: null
+        setBuyerInfo(prev => ({...prev, ["fullname"] : fullName}))
         const verifyEmail = validateEmail(buyerInfo.email)
         if(verifyEmail){
             setError(verifyEmail)
         }
-        else if (buyerInfo.phone.length < 10 || buyerInfo.phone[0] != 3) {
+        else if (buyerInfo.cellphone?.length < 10 || buyerInfo.cellphone[0] != 3) {
             setError("Formato de teléfono inválido")
         }
         else {
-            setDataSet(prev=>({...prev, "customerData":buyerInfo})) 
-            handleClick(1)}
+             const res = await post("Customers", buyerInfo).then(res=> res)
+             res && console.log(res)
+            // setDataSet(prev=>({...prev, "customerData":buyerInfo})) 
+            handleClick(1)
+        }
     }
 
     useEffect(() => {
@@ -37,43 +42,43 @@ export const CustomerForm = ({data, handleClick, dataSet, setDataSet})=>{
           }, [ location?.country, location?.state ]);
 
     return ( 
-        <div className="justify-center  justify-items-center bg-zinc-50 mt-5 w-[px] md:w-[600px] rounded-lg p-5">
-            <Field className="justify-center ">
+        <div className="justify-center  justify-items-center bg-zinc-50 mt-5 w-[400px] md:w-[600px] rounded-lg p-5">
+            <Field className="justify-center w-full max-w-lg">
                 {console.log(dataSet)}
             <Heading className="text-center">Datos del comprador</Heading>
             <Label>Nombre <span className="text-red-600">*</span></Label>
-            <Input placeholder="Nombre" onChange={e=> setBuyerInfo(prev=>({...prev, name: e.target.value}))}/>
+            <Input placeholder="Nombre" onChange={e=> setBuyerInfo(prev=>({...prev, firstName: e.target.value, "dni": "123456", password:"temporalPass2025."}))}/>
             <Label>Apellido <span className="text-red-600">*</span></Label>
-            <Input placeholder="Apellido" onChange={e=> setBuyerInfo(prev=>({...prev, lastName: e.target.value}))}/>
+            <Input placeholder="Apellido" onChange={e=> setBuyerInfo(prev=>({...prev, lastName: e.target.value, createdBy:"System", modifiedBy: "System"}))}/>
             <Label>Número Celular <span className="text-red-600">*</span></Label>
-            <Input placeholder="3012345678" type="number" onChange={e=> setBuyerInfo(prev=>({...prev, phone: e.target.value}))}/>
+            <Input invalid={error?.includes("teléfono")} placeholder="3012345678" type="number" onChange={e=> setBuyerInfo(prev=>({...prev, cellphone: e.target.value}))}/>
             <Label>Email <span className="text-red-600">*</span></Label>
-            <Input placeholder="ejemplo@ejemplo.com" type="email" onChange={e=> setBuyerInfo(prev=>({...prev, email: e.target.value}))}/>
+            <Input invalid={error?.includes("email")} placeholder="ejemplo@ejemplo.com" type="email" onChange={e=> setBuyerInfo(prev=>({...prev, email: e.target.value}))}/>
              <Label>Dirección de entrega  <span className="text-red-600">*</span></Label>
             <Input placeholder="Ejemplo: calle 1 # 23-45 apartamento 67" onChange={e=> setBuyerInfo(prev=>({...prev, address: e.target.value}))}/>
              <Label>Pais*</Label>
-            <Select name="country" onChange={(e)=> setLocation(prev => ({...prev, "country": JSON.parse(e.target.value)}))}>
+            <Select name="country" onChange={(e)=> e.target.value && setLocation(prev => ({...prev, "country": JSON.parse(e.target.value)}))}>
                 <option value="">Selecciona una opcion</option>
             {location?.countries?.map((country)=> <option value={JSON.stringify(country)} key={country.name}>{country.name}</option>)}
             </Select>
             <Label>Estado/ Departamento*</Label>
-            <Select name="state" onChange={(e)=> setLocation(prev => ({...prev, "state": JSON.parse(e.target.value)}))}>
+            <Select name="state" onChange={(e)=> e.target.value &&  setLocation(prev => ({...prev, "state": JSON.parse(e.target.value)}))}>
                 <option value="">Selecciona una opcion</option>
                 {location?.states?.map((state)=> <option value={JSON.stringify(state)} key={state.name}>{state.name}</option> )}
             </Select>
             <Label>Ciudad*</Label>
             <Combobox name="city" options={location?.cities ? location.cities : []} displayValue={(city) => city?.name} 
-                onChange={(e)=> {setBuyerInfo(prev=>({...prev, "city": JSON.parse(e)})); console.log(e)}} placeholder={buyerInfo?.city ? buyerInfo?.city?.name : "Seleccionar ciudad&hellip;"}>
+                onChange={(e)=> { e && setBuyerInfo(prev=>({...prev, "city": (e)}))}} placeholder={buyerInfo?.city ? buyerInfo?.city?.name : "Seleccionar ciudad"}>
                 {(city) => (
-                <ComboboxOption value={JSON.stringify(city)}>
+                <ComboboxOption value={city}>
                 <ComboboxLabel>{city.name}</ComboboxLabel>
                 </ComboboxOption>)}
             </Combobox>
-            {data.comment &&  <div className="border-2 border-dashed border-red-500 m-3 p-2 rounded-lg" >
+            {data?.description &&  <div className="border-2 border-dashed border-red-500 m-3 p-2 rounded-lg" >
             <div className="grid grid-cols-5 justify-items-center"><HiExclamation className="text-amber-400 size-6"/><h2 className="font-semibold col-span-3"> ATENCIÓN </h2><HiExclamation className="text-amber-400 size-6"/></div>
-            <p>{data.comment}</p></div>}
+            <p>{data.description}</p></div>}
         </Field>
-        <Button disabled={!buyerInfo.name || !buyerInfo.lastName || !buyerInfo.phone || !buyerInfo.email || !buyerInfo.address || !buyerInfo.city} 
+        <Button disabled={!buyerInfo.firstName || !buyerInfo.lastName || !buyerInfo.cellphone || !buyerInfo.email || !buyerInfo.address || !buyerInfo.city} 
         color="yellow" onClick={saveform}>Siguiente</Button>
         {error && <p className="text-sm text-red-600">Algo salió mal: {error}</p>}
         </div>

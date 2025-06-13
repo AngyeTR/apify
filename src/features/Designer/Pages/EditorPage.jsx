@@ -18,6 +18,7 @@ export const EditorPage=()=>{
     const [layouts, setLayouts] =  useState([])
     const [item, setItem ] = useState(null)
     const [grid, setGrid ] = useState(null)
+    const [selected, setSelected ] = useState(null)
     useEffect(() => {
         const layoutOBJ = layouts?.filter(item => item.id == params.id)
         layoutOBJ && setItem(layoutOBJ)
@@ -36,11 +37,12 @@ export const EditorPage=()=>{
             {/* <div className="w-[95vw] mb-4  m-0 p-0 "> */}
             <div className="w-[95vw] mb-4 sm:w-[10vw]  m-0 p-0 ">
             {/* <div className="w-[95vw] mb-4 sm:w-[15vw]  m-0 p-0 "> */}
-                <WidgetsContainer  setItems={setLayout} items={layout} count={count} setCount={setCount} layoutColor={layoutColor} item={item} grid={grid}/>
+                <WidgetsContainer  setItems={setLayout} items={layout} count={count} setCount={setCount} layoutColor={layoutColor} item={item} grid={grid} />
             </div>
             {/* <div className="w-[90vw] sm:w-[70vw] m-0 p-0 col-span-6 "> */}
             <div className="w-[400px] md:w-[800px] m-0 p-0 col-span-6 border border-zinc-400">
-                <GridContainer canEdit={true} setItems={setLayout} items={layout} count={count}  layoutColor={layoutColor} setLayoutColor={setLayoutColor} item={item} grid={grid} setGrid={setGrid}/>
+                <GridContainer canEdit={true} setItems={setLayout} items={layout} count={count}  layoutColor={layoutColor} setLayoutColor={setLayoutColor} item={item} grid={grid} setGrid={setGrid} />
+                {console.log(selected)}
             </div>
         </div>  
     )

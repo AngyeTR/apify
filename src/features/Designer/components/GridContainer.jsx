@@ -43,7 +43,7 @@ export const GridContainer = ({canEdit, setItems, items, count, layoutColor, set
         const match = items.find(it => it.id === item.id);
         item.content = match?.content;
         item.style = match?.style });
-  setItems(layout)},[toEdit])
+        setItems && setItems(layout)},[toEdit])
 
   useEffect(()=>{
     const grid = GridStack.init({float: true, cellHeight: 50, column: 4, acceptWidgets: true, columnOpts:{breakpoints:[{w:480, c:1}, {w:690, c:1}, {w:1280, c:1}]},
@@ -70,11 +70,9 @@ export const GridContainer = ({canEdit, setItems, items, count, layoutColor, set
 
   return (
     <div className='grid-stack w-full   min-h-[90vh]' style={styles}>
-      {console.log(items)}
-    {/* {internalState?.map((cat, index)=>  */}
      {items?.map((cat, index)=> 
     (
-      <div className={`grid-stack-item overflow-hidden h-fit place-content-center place-items-center ${canEdit && "hover:border hover:border-red-600"}`} gs-w={cat?.w} gs-h={cat?.h} key={cat?.id} gs-id={cat.id} gs-x={cat.x} gs-y={cat.y} gs-content={cat.content} gs-sub-grid={cat.id.split("-")[0] == "container" ? "true" : "false"} onClick={()=>setToEdit(cat.id)}
+      <div className={`grid-stack-item overflow-hidden h-fit place-content-center place-items-center ${canEdit && "hover:border hover:border-red-600"}`} gs-w={cat?.w} gs-h={cat?.h} key={cat?.id} gs-id={cat.id} gs-x={cat.x} gs-y={cat.y} gs-content={cat.content} gs-sub-grid={cat.id.split("-")[0] == "container" ? "true" : "false"} onClick={()=>{setToEdit(cat.id)}}
       ref={(node)=>{
         const map = getMap();
         if(node){
@@ -85,6 +83,8 @@ export const GridContainer = ({canEdit, setItems, items, count, layoutColor, set
             {toEdit == cat.id && <button onClick={() => removeWidget(( cat.id))}
             className="absolute top-1 right-1 bg-red-500 text-white px-2 py-1 text-xs rounded z-30">
            <HiOutlineTrash className="size-4" /></button>}
+           {/* {toEdit == cat.id && <button onClick={() => removeWidget(( cat.id))}
+            className="absolute top-1 right-1 bg-red-500 text-white px-2 py-1 text-xs rounded z-30"> Añadir Abajo</button>} */}
             {render(cat, index)}
     </div>            
     </div> ))}

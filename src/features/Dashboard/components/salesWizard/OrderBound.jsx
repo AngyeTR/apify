@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react"
 import { getByCompanyId, getByID } from "../../../../shared/services/API/api"
 import { HiArrowCircleRight } from "react-icons/hi";
+import { Button } from "../../../../shared/components/uikit/button";
 
 
-export const OrderBound = ({id, price})=> {
+export const OrderBound = ({id, price, orderBounds, setOrderBounds})=> {
+    console.log(id, price)
     const [product, setProduct] = useState(null)
     useEffect(()=>{const res = getByID("Products", id).then(res => setProduct(res.data))},[])
     return (
@@ -17,8 +19,9 @@ export const OrderBound = ({id, price})=> {
                  <div className="grid grid-cols-3 items-center"><p className="text-xs italic"> Precio regular: <span className="line-through">{product?.price}</span></p>
                 <HiArrowCircleRight className="size-5 justify-self-center" />
                 <p className="text-sm text-start justify-self-start font-medium"> Solo por hoy : <span >{price}</span></p></div>
+                {orderBounds.filter(bound=> id == bound.id)?.[0] ? <p className="text-green-800">Añadido</p> : <Button color="green" onClick={()=>setOrderBounds(prev=>[...prev, {id:id, price:price}])} className="my-1">Añadir</Button>}
             </div>
         </div>}
-       </>
+       </> 
     )
 }

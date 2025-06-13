@@ -11,7 +11,7 @@ export const TunnelStep = ({data, setData})=>{
     const [layoutsPercent, setLayoutsPercent] = useState([])
     const [total, setTotal] = useState(0)
     const [ error, setError] = useState(null)
-    useEffect(()=>{getByCompanyId("Layouts", stored?.company.id).then(res=> setLayouts(res?.data?.filter(item=> item.idProduct== data.productId))) },[])
+    useEffect(()=>{getByCompanyId("Layouts", stored?.company.id).then(res=> setLayouts(res?.data?.filter(item=> item.idProduct== data.idProduct))) },[])
 
   const handlePercent=(id, percent) => {
     const filtered = layoutsPercent?.filter(percent=> percent.idLayout != id)
@@ -59,7 +59,7 @@ export const TunnelStep = ({data, setData})=>{
         <Input className="my-3 w-sm md:w-lg" onChange={(e)=> setData(prev=> ({...prev, name: e.target.value}))} placeholder={data.name? data.name : "Ingresar el nombre de Tunel"}/>
         <Input className="my-3" type="datetime-local" placeholder="Fecha de Inicio" onChange={(e)=> handleDate(e.target.value, "start")} invalid={error?.includes("actual")}/>
         <Input className="my-3" type="datetime-local" placeholder="Fecha de Fin" onChange={(e)=>handleDate(e.target.value, "end")} invalid={error?.includes("fin")}/>
-        <Input className="my-3" type="text" placeholder={data.name? data.description :"Comentario Importante"} onChange={(e)=> setData(prev=> ({...prev, description: e.target.value}))}/>
+        <Input className="my-3" type="text" placeholder={data.description? data.description :"Comentario Importante"} onChange={(e)=> setData(prev=> ({...prev, description: e.target.value}))}/>
         {render()}
       {error && <p className="text-red-500 my-2">Ups! algo salió mal: {error}</p>}
     </div>

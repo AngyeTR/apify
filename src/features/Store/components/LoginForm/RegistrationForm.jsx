@@ -32,7 +32,7 @@ export const RegistrationForm = ()=> {
       if(verifyEmail) {setError(verifyEmail) 
       }else {
         const fullName = (dataset.firstName && dataset.lastName) ? dataset.firstName + " " + dataset.lastName: null
-        setDataset(prev => ({...prev, ["fullname"] : fullName}))
+        setDataset(prev => ({...prev, ["fullname"] : fullName})) 
         const res = await post("Customers", dataset).then(res=> res)
         res.isValid ? setStoreUser(res.data.id) : setError("algo salió mal. Intenta de nuevo")
         res.isValid && await getByCompanyId("PreOrders", stored?.company.id).then(response=> setCart(filtercarts(response.data, res.data.id)))
@@ -67,6 +67,6 @@ export const RegistrationForm = ()=> {
         <p className={`text-red-700 text-sm my-5 ${error ? "visible": "invisible"}`}>Ups! Algo salió mal: {error}. Intenta de nuevo</p>
         </Field>
         </div>
-      </AuthLayout>
+      </AuthLayout> 
     )
 }

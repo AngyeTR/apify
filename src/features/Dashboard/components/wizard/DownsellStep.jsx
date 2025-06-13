@@ -26,7 +26,7 @@ export const DownsellStep = ({data, setData})=>{
         <Heading className="my-5 text-center">DownSell </Heading>
         {data?.upsell?.idProduct ?
             <><Select className="my-3 w-sm sm:w-md" onChange={(e)=>handleDownSell(parseInt(e.target.value)) }>
-            <option>{data?.downsell?.idLayout ? layouts.filter(lay=> lay.id == data?.downsell?.idLayout)?.[0].name: "Seleccionar Layout"}</option>
+            <option>{data?.downsell?.idLayout ? layouts?.filter(lay=> lay.id == data?.downsell?.idLayout)?.[0].name: "Seleccionar Layout"}</option>
             {layouts?.map(prod => <option value={prod.id}>{prod.name}</option>)}
         </Select>
         <Input className="my-3  w-sm sm:w-md" placeholder="Precio final del producto"  type="number" onChange={(e)=> setData(prev => ({...prev, "downsell": {...prev.downsell, "price": parseInt(e.target.value)}})) }/>
