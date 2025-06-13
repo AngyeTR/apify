@@ -9,7 +9,6 @@ import { getStoreUser } from "../../../../shared/services/cookies"
 import { useCart } from "../../hooks/UseCart"
 
 export const PromoCard = ({data})=>{
-  console.log(data)
   const storeUser = getStoreUser()
   const nav = useNavigate()
   const [cart, setCart, removeCart] = useLocalStorage("cart")

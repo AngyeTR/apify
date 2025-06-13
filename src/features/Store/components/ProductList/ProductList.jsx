@@ -32,7 +32,6 @@ export const ProductList =()=>{
 
     useEffect(()=>{
         productsToShow ? setFilteredProducts(filterByName(productsToShow, search)) : console.log(search)
-        console.log(search)
     },[search])
 
     return (

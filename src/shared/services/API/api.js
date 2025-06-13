@@ -43,6 +43,21 @@ export const getByCustomerId = async (query, id)=>{
   return res.data.data
 }
 
+export const getCustomerByPhone = async (id, phone)=>{
+  const res = await api.get(`/Customers/GetByCellphone/${id}/${phone}`).then(response =>  response).catch(error => error);
+  return res.data
+}
+
+export const getCustomerScore = async (phone)=>{
+  const res = await api.get(`/Customers/GetScore/${phone}`).then(response =>  response).catch(error => error);
+  return res.data
+}
+
+export const getCustomerByEmail = async (id, email)=>{
+  const res = await api.get(`/Customers/GetByEmail/${id}/${email}`).then(response =>  response).catch(error => error);
+  return res.data
+}
+
 export const  getByEmail = async (email) => {
   const res = await api.get(`Users/GetByEmail/${email}`).then(response =>  response.data).catch(error => error.response.data);
   return res

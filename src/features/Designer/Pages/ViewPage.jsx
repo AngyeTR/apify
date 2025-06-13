@@ -23,8 +23,6 @@ const [grid, setGrid] = useState()
         const savedLayout = layoutOBJ?.[0]?.content?.replaceAll("'", "\"")
         const savedColor = layoutOBJ?.[0]?.styles?.replaceAll("'", "\"")
         savedColor && setColor(JSON.parse(savedColor))
-                console.log(savedColor)
-                console.log(layouts)
         if (savedLayout) {
             const layout = JSON.parse(savedLayout);
             layout.forEach((item) => {

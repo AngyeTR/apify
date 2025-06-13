@@ -20,12 +20,9 @@ export const CollectionsList = ({collection, setCollection, data})=> {
         setEditor(false)
         setError(false)
     }
-console.log(data)
     const save= async()=>{
         try {
-            console.log(dataSet)
             const res  = await postFolder(dataSet)
-            console.log(res)
             res?.isValid ?  nav(0) : setError(res?.errorMessages[0])
             } catch (error) {setError("algo salió mal. Intenta de nuevo") }     }
 

@@ -173,3 +173,64 @@ export const adaptLibraryModel = (name) =>{
   library.name = name
    return library
 }
+
+export const adaptNewCartModel= (dataSet, product, customer) => {
+  console.log(customer)
+  console.log(dataSet)
+  dataSet["idCompany"]= stored?.company.id
+  dataSet["idCustomer"]= customer.id
+  dataSet["fUllname"] = customer.firstName + " " + customer.lastName
+  dataSet["address"] = customer.address != "none" ? customer.address : ""
+  dataSet["cellphone"]= customer.cellphone,
+  dataSet["idCity"]= customer.idCity,
+  dataSet["docDate"]= date
+  dataSet["app"]= 1
+  dataSet["lines"]= []
+    console.log(dataSet)
+    return dataSet
+}
+
+export const adaptAddingCartModel= (dataSet, product, userId, quantity) => {
+  const quant = quantity ?  quantity  : 1
+  dataSet["app"]= dataSet.app + 1
+  dataSet["lines"]= [
+    {
+      isActive: true,
+      idCompany: stored?.company.id,
+      createdBy: stored?.user.email,
+      modifiedBy: stored?.user.email,
+      idCustomer: userId,
+      idProduct: product.id,
+      lineNum: dataSet.lines.length,
+      productName: product.name,
+      quantity: quant,
+      price: product.price,
+      taxRate: 0,
+      taxValue: 0,
+      discPrcnt: 0,
+      discValue: 0,
+      total: 0,
+      idPreOrder: dataSet.id
+    }]
+    return dataSet
+}
+
+export const adaptquantityChangeCartModel= (dataSet, productId, quantity, discount) => {
+const index = dataSet.lines.findIndex(item => item.idProduct == productId);
+ dataSet["lines"][index].quantity= quantity
+ discount && (dataSet["lines"][index].discValue = discount)
+  return dataSet 
+}
+
+export const adaptDeleteCartModel= (dataSet, productId) => {
+  console.log(dataSet.lines)
+    const newLines = dataSet.lines.filter(item => item.idProduct != productId)
+    console.log(newLines)
+    newLines.map(item => {delete item.id; delete item.idPreOrder})
+    const { id, lines, ...rest } = dataSet;
+
+  rest["app"]= dataSet.app -1
+  rest["lines"]= newLines
+
+  return rest
+}

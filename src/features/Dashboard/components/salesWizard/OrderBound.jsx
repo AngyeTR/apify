@@ -19,7 +19,7 @@ export const OrderBound = ({id, price, orderBounds, setOrderBounds})=> {
                  <div className="grid grid-cols-3 items-center"><p className="text-xs italic"> Precio regular: <span className="line-through">{product?.price}</span></p>
                 <HiArrowCircleRight className="size-5 justify-self-center" />
                 <p className="text-sm text-start justify-self-start font-medium"> Solo por hoy : <span >{price}</span></p></div>
-                {orderBounds.filter(bound=> id == bound.id)?.[0] ? <p className="text-green-800">Añadido</p> : <Button color="green" onClick={()=>setOrderBounds(prev=>[...prev, {id:id, price:price}])} className="my-1">Añadir</Button>}
+                {orderBounds.filter(bound=> id == bound.id)?.[0] ? <p className="text-green-800">Añadido</p> : <Button color="green" onClick={()=>setOrderBounds(prev=>[...prev, {id:id, price:price, name:product?.name}])} className="my-1">Añadir</Button>}
             </div>
         </div>}
        </> 

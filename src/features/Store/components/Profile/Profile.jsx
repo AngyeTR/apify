@@ -17,7 +17,6 @@ export const Profile = ()=> {
     const [editor, setEditor] = useState(null)
     const [error, setError] = useState(null)
     const [cart, setCart, removeCart] = useLocalStorage("cart")
-    console.log(editor)
     const storeUserId = getStoreUser()
     const logOut=()=>{
         deleteStoreUser()

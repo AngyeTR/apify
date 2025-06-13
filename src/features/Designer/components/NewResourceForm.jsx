@@ -27,9 +27,7 @@ export const NewResourceForm = ({setEditor, data})=>{
             const data ={name: dataSet["name"], "base64": base64, "imageType": 2}
             const url  = await postImage(data).then(res => {return res})
             dataSet["url"] = url.data
-            console.log(dataSet)
             const res  = await postFile(dataSet)
-            console.log(res)
             res?.isValid ? nav(0) : setError(res?.errorMessages[0])
         } catch (error) {setError("algo salió mal. Intenta de nuevo") }     
     }

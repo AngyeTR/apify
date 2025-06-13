@@ -9,7 +9,6 @@ import { CollectionSelector } from "../CollectionSelector";
 import { Heading } from '../../../../shared/components/uikit/heading';
 
 export const ComparerWidget = ({ content, id, edit, editable, toEdit}) => {
-  console.log(content)
   const [editor, setEditor] = useState(false)
   const [left, setLeft] =  useState("")
   const [right, setRight] =  useState("")

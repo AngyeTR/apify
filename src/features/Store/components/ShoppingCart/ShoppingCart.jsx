@@ -1,5 +1,5 @@
 import { Button } from "../../../../shared/components/uikit/button"
-import { Input } from "../../../../shared/components/uikit/input"
+import { Input, InputGroup } from "../../../../shared/components/uikit/input"
 import { HiOutlineTrash } from "react-icons/hi";
 import logo from "../../../../assets/gallery-icon.png" 
 import { use, useEffect, useState } from "react";
@@ -10,12 +10,15 @@ import { getStoreUser } from "../../../../shared/services/cookies";
 import { useLocalStorage } from "../../../../shared/hooks/useLocalStorage";
 import { filtercarts } from "../../utils/functions";
 import { useCart } from "../../hooks/UseCart";
+import { Field } from "../../../../shared/components/uikit/fieldset";
+import { DeliveryForm } from "../DeliveryForm/DeliveryForm";
 
 export const ShoppingCart = ()=> {
   const [cart, setCart] = useLocalStorage("cart", null)
   const [products, setProducts] = useState([])
   const [stored] = useLocalStorage("data")
   const [idToDelete, setIdToDelete] = useState(null)
+  const [newAddress, setNewAddress] = useState(null)
   const { createCart,updateCart,updateQuantity,removeProduct,}  = useCart()
 
   const nav = useNavigate()
@@ -47,10 +50,11 @@ const saveCart = async (data)=>{
   <div className="bg-white">
   <div className="mx-auto max-w-2xl px-4 pt-1 pb-24 sm:px-6 lg:max-w-7xl lg:px-8">
     <h1 className="text-3xl font-bold tracking-tight text-zinc-900 sm:text-4xl">Orden</h1>
-    {cart.lines.length == 0 ? <div className="justify-items-center my-10">
+{    console.log(cart)
+}    {cart.lines.length == 0 ? <div className="justify-items-center my-10">
             <HiOutlineShoppingCart className="size-16  my-5"/>
             <h1 className="text-xl"> Aún no hay artículos en el carrito</h1>
-            <Button className="my-3" onClick={()=> nav("/")}>Ir de compras</Button>
+            <Button className="my-3" onClick={()=> nav("/store")}>Ir de compras</Button>
           </div> 
           : 
     <form className="mt-8 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16">
@@ -96,6 +100,10 @@ const saveCart = async (data)=>{
 
       {/* <!-- Order summary --> */}
       <section aria-labelledby="summary-heading" className="mt-8 rounded-lg bg-zinc-50 px-4 py-6 sm:p-6 lg:col-span-5 lg:mt-0 lg:p-8">
+        <h2 id="summary-heading" className="text-lg font-medium text-zinc-900">Dirección de Entrega</h2>
+        {cart.address && <p className="my-5">{cart.address} </p> }
+        {newAddress ? <DeliveryForm cart={cart}/> : <Button className="my-5" onClick={()=>setNewAddress({address:""})}>Nueva Dirección de Entrega</Button>}
+        
         <h2 id="summary-heading" className="text-lg font-medium text-zinc-900">Resumen de la orden</h2>
 
         <dl className="mt-6 space-y-4">
@@ -123,7 +131,7 @@ const saveCart = async (data)=>{
         </dl>
 
         <div className="mt-6">
-          <Button type="submit" className="w-full rounded-md border border-transparent bg-indigo-600 px-4 py-3 text-base font-medium text-white shadow-xs hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-zinc-50 focus:outline-hidden">Proceder a Pagar</Button>
+          <Button type="submit" disabled={!cart.address} className="w-full ">Proceder a Pagar</Button>
         </div>
       </section>
     </form>}

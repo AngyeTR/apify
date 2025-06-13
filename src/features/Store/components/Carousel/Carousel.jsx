@@ -13,7 +13,6 @@ export const Carousel = ({type, data}) => {
       sizes: ["XS", "S", "M", "L"], score: 4.1, price:540, reviews: 1100,  isColors:false, isSizes:false}
         ]
     data && (items = data)
-    console.log(items, items.length)
   const [current, setCurrent] = useState(0);
   const prev = () => {setCurrent((prev) => (prev === 0 ? items.length - 1 : prev - 1));};
   const next = () => {setCurrent((prev) => (prev === items.length - 1 ? 0 : prev + 1));};

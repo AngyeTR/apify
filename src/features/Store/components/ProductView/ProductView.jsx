@@ -15,6 +15,7 @@ import { favoriteModel } from "../../utils/models"
 
 export const ProductView = ()=>{
     const [product, setProduct] = useState(null)
+    const [customer, setCustomer] = useState(null)
     const sizes = ["XS", "S", "M"]
     const params = useParams()
     const reviewsRef = useRef(null);
@@ -24,12 +25,13 @@ export const ProductView = ()=>{
     const nav = useNavigate()
     const [cart, setCart, removeCart] = useLocalStorage("cart")
     const { createCart,updateCart,updateQuantity,removeProduct,}  = useCart()
+    
     const handleAdd = async ()=> {
       if(storeUser){
         const exist = cart.lines.filter(item=>item.idProduct == product.id)
         cart.lines.length > 0 ? (exist[0] ? updateQuantity(cart, product.id, exist[0].quantity+1) 
         : await updateCart(cart, product, storeUser)  )
-        : await createCart(product, storeUser)
+        : await createCart(product, storeUser) 
         await new Promise(resolve => setTimeout(resolve, 1000));
         nav(0)
       } 

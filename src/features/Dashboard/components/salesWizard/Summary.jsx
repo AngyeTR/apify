@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react"
 import { Heading } from "../../../../shared/components/uikit/heading"
-import { getByID, getCities } from "../../../../shared/services/API/api"
+import { getByCompanyId, getByID, getCities } from "../../../../shared/services/API/api"
 import { HiOutlineTrash } from "react-icons/hi";
 import { Input } from "../../../../shared/components/uikit/input";
 import { HiOutlinePencil } from "react-icons/hi";
 import { Button } from "../../../../shared/components/uikit/button";
+import { useTunnelCart } from "../../hooks/useTunnelCart";
 
 export const Summary = ({data, dataSet, setDataSet, handleClick})=>{
     const [products, setProducts ] = useState({orderBounds:[]})
@@ -12,6 +13,7 @@ export const Summary = ({data, dataSet, setDataSet, handleClick})=>{
     const [ editor, setEditor] = useState(false)
     const [ toDelete, setToDelete] = useState(null)
     const [internalData, setInternalData] = useState(dataSet)
+    const { removeProduct, updateCart, updateQuantity }  = useTunnelCart() 
     const sumar = ()=>{
     setTotal(dataSet?.price?.price)
     internalData?.orderBounds?.map(bound=> setTotal(prev=> (prev + data?.orderBounds.filter(orderbound=> orderbound.idProduct == bound.id)?.[0]?.price)))
@@ -21,6 +23,7 @@ export const Summary = ({data, dataSet, setDataSet, handleClick})=>{
     useEffect(()=>{
         getByID("Products", data?.idProduct).then(res=> setProducts(prev=> ({...prev, "product": res.data} )))
         const bounds = []
+        getByID("PreOrders", dataSet.cart.id).then(res=> setDataSet(prev=>({...prev, cart:res.data})))
         internalData?.orderBounds?.map(bound =>getByID("Products", bound.id).then(res=> bounds.push(res.data)))
         internalData?.upsaleAccepted || internalData?.downsaleAccepted ? getByID("Products", data.upsell.idProduct).then(res=> setProducts(prev=> ({...prev, "upsellProduct": res.data} ))): setProducts(prev=> ({...prev, "upsellProduct": null}))   
         setProducts(prev=> ({...prev, orderBounds: bounds}))
@@ -28,23 +31,27 @@ export const Summary = ({data, dataSet, setDataSet, handleClick})=>{
 
     useEffect(()=>{sumar()},[internalData])
 
-    const finishSale=()=>{
-        console.log("finish")
+    const finishSale= async()=>{
+        const carts = await  getByCompanyId("PreOrders", dataSet.customerData.idCompany).then(res => res.data.filter(order=> order.idCustomer == dataSet.customerData.id))
+        carts && setDataSet(prev=> ({...prev, cart: carts[carts.length -1]})) 
         setDataSet(internalData)
         handleClick(1)}
 
-    const handleDeleteUpsell = ()=>{
+    const handleDeleteUpsell = async()=>{
+       await  removeProduct(dataSet.cart, data.upsell.idProduct).then(res=>setDataSet(prev=>({...prev, cart: res})))
         setInternalData(prev=>({...prev, "upsaleAccepted": false, "downsaleAccepted":false}))
         const { upsellProduct, ...rest } = products
         setProducts(rest)}
     
-    const handleDeleteOB = (id)=>{
+    const handleDeleteOB = async(id)=>{
+        await  removeProduct(dataSet.cart,  id).then(res=>setDataSet(prev=>({...prev, cart: res})))
         setInternalData(prev=>({...prev, "orderBounds": prev.orderBounds.filter(ob=> ob.id != id)}))
         setProducts(prev=>({...prev, "orderBounds": prev.orderBounds.filter(ob=> ob.id != id)}))}
     
      return (
         <div className="justify-center  justify-items-center bg-zinc-50 mt-5 w-[px] md:w-[600px] rounded-lg p-5">
             <Heading className="text-center"> Este es el resumen de tu Compra</Heading>
+           {console.log(products)}
             <div key="product" className="grid grid-cols-3 w-[350px] justify-self-center place-items-center border border-zinc-400 rounded-lg m-5">
                 <div ><img src={products.product?.images?.[0] ? products.product?.images?.[0]?.url :   "https://impresorasrenting.com/wp-content/uploads/2021/06/circulocromatico.jpg"} 
                 className="border - border-zinc-400 w-[110px] h-[110px]"/></div>

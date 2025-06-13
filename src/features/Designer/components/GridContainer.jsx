@@ -83,9 +83,7 @@ export const GridContainer = ({canEdit, setItems, items, count, layoutColor, set
             {toEdit == cat.id && <button onClick={() => removeWidget(( cat.id))}
             className="absolute top-1 right-1 bg-red-500 text-white px-2 py-1 text-xs rounded z-30">
            <HiOutlineTrash className="size-4" /></button>}
-           {/* {toEdit == cat.id && <button onClick={() => removeWidget(( cat.id))}
-            className="absolute top-1 right-1 bg-red-500 text-white px-2 py-1 text-xs rounded z-30"> Añadir Abajo</button>} */}
-            {render(cat, index)}
+           {render(cat, index)}
     </div>            
     </div> ))}
     <div >

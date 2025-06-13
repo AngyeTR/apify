@@ -1,27 +1,28 @@
 import { useState } from "react";
 import { edit, getByCompanyId, post } from "../../../shared/services/API/api";
 import { CartModel } from "../utils/models";
-import { adaptAddingCartModel, adaptDeleteCartModel, adaptNewCartModel, adaptquantityChangeCartModel } from "../utils/adaptModels";
+import { adaptAddingCartModel,  adaptDeleteCartModel,  adaptNewCartModel, adaptquantityChangeCartModel } from "../utils/adaptDataModel"
 import { useLocalStorage } from "../../../shared/hooks/useLocalStorage";
-import { filtercarts } from "../utils/functions";
 import { getStoreUser } from "../../../shared/services/cookies";
 
-export function useCart(initialCart = null) {
+export function useTunnelCart(initialCart = null) {
   const [cart, setCart] = useState(initialCart);
   const [newCart, setNewCart] = useLocalStorage("cart")
-  const [stored] = useLocalStorage("data")
+//   const [stored] = {company:{id:1}}
   const storeUser = getStoreUser()
 
-  const updateLocalCart = async() =>{
-    await getByCompanyId("PreOrders", stored?.company.id).then(response=> setNewCart(filtercarts(response.data, storeUser))) 
-  }
+ //Importante: Se debe incorporar el endpoint de obetenr idCompany con el dominio 
 
-  const createCart = async (product, storeUser) => {
+//   const updateLocalCart = async() =>{
+//     await getByCompanyId("PreOrders", stored?.company.id).then(response=> setNewCart(filtercarts(response.data, storeUser))) 
+//   }
+
+  const createCart = async (product, customerData) => {
+    console.log(product, customerData)
     try {
-        const adaptedProduct = adaptNewCartModel(CartModel, product, storeUser)
+       const adaptedProduct = adaptNewCartModel(CartModel, product, customerData)
       const res = await post("PreOrders", adaptedProduct)
       setCart(res.data);
-      updateLocalCart() 
       return res.data;
     } catch (error) {
       console.error("Error creating cart", error);
@@ -29,12 +30,13 @@ export function useCart(initialCart = null) {
     }
   };
 
-  const updateCart = async (cartModel, product, userId) => {
+  const updateCart = async (cart, product, userId, quantity) => {
+    console.log( product)
+    console.log(cart)
     try {
-    const adaptedProduct = adaptAddingCartModel(cartModel, product, userId)
+    const adaptedProduct = adaptAddingCartModel(cart, product, userId, quantity)
       const res = await edit("PreOrders", adaptedProduct)
       setCart(res.data);
-      updateLocalCart()
       return res.data;
     } catch (error) {
       console.error("Error updating cart", error);
@@ -42,24 +44,13 @@ export function useCart(initialCart = null) {
     }
   };
 
-    const updateCartAddress = async (cart) => {
+    const updateQuantity = async (cart, productId, quantity, discount) => {
+        console.log(productId, quantity, discount)
+    console.log(cart)
     try {
-      const res = await edit("PreOrders", cart)
-      setCart(res.data);
-      updateLocalCart()
-      return res.data;
-    } catch (error) {
-      console.error("Error updating cart", error);
-      throw error;
-    }
-  };
-
-    const updateQuantity = async (cartModel, productId, quantity) => {
-    try {
-      const adaptedProduct = adaptquantityChangeCartModel(cartModel, productId, quantity)
+      const adaptedProduct = adaptquantityChangeCartModel(cart, productId, quantity, discount)
       const res = await edit("PreOrders", adaptedProduct)
       setCart(res.data);
-      updateLocalCart()
       return res.data;
     } catch (error) {
       console.error("Error updating cart", error);
@@ -72,7 +63,6 @@ export function useCart(initialCart = null) {
        const adaptedProduct = adaptDeleteCartModel(cartModel, productId)
       const res = await post("PreOrders", adaptedProduct)
       setCart(res.data);
-      updateLocalCart()
       return res.data;
     } catch (error) {
       console.error("Error removing product", error);
@@ -86,6 +76,6 @@ export function useCart(initialCart = null) {
     updateQuantity,
     removeProduct,
     setCart,
-    updateCartAddress
+    
   };
 }

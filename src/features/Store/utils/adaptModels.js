@@ -2,12 +2,16 @@ const rawData = window.localStorage.getItem("data")
 const stored = JSON.parse(rawData)
 const date = new Date().toISOString();
 
-export const adaptNewCartModel= (dataSet, product, userId) => {
-  console.log(dataSet)
+export const adaptNewCartModel= (dataSet, product, customer) => {
+  console.log(customer)
   dataSet["modifiedBy"]= stored?.user.email
   dataSet["createdBy"]= stored?.user.email
   dataSet["idCompany"]= stored?.company.id
-  dataSet["idCustomer"]= userId
+  dataSet["idCustomer"]= customer
+  // dataSet["fUllname"] = customer.firstName + " " + customer.lastName
+  // dataSet["address"] = customer.address != "none" ? customer.address : ""
+  // dataSet["cellphone"]= customer.cellphone,
+  // dataSet["idCity"]= customer.idCity,
   dataSet["docDate"]= date
   dataSet["app"]= 1
   dataSet["lines"]= [
@@ -16,7 +20,7 @@ export const adaptNewCartModel= (dataSet, product, userId) => {
       idCompany: stored?.company.id,
       createdBy: stored?.user.email,
       modifiedBy: stored?.user.email,
-      idCustomer: userId,
+      idCustomer: customer,
       idProduct: product.id,
       lineNum: 1,
       productName: product.name,
@@ -40,7 +44,7 @@ export const adaptAddingCartModel= (dataSet, product, userId) => {
       idCompany: stored?.company.id,
       createdBy: stored?.user.email,
       modifiedBy: stored?.user.email,
-      idCustomer: userId,
+      idCustomer: userId.id,
       idProduct: product.id,
       lineNum: dataSet.lines.length,
       productName: product.name,
@@ -77,7 +81,7 @@ export const adaptFavoriteModel= (dataSet, userId, productId ) => {
   dataSet["modifiedBy"]= stored?.user.email
   dataSet["createdBy"]= stored?.user.email
   dataSet["idCompany"]= stored?.company.id
-  dataSet["idCustomer"]= userId
+  dataSet["idCustomer"]= userId.id
   dataSet["idProduct"]= parseInt(productId)
   dataSet["startDate"] = date
   return dataSet

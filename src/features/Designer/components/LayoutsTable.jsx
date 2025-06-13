@@ -65,7 +65,6 @@ export function LayoutsTable(props) {
 
  useEffect(()=>{data && render()}, [data])
   const render = ()=> {
-    console.log(data)
     if(data?.length > 0 && headers.length > 0 ){
       return (
         <div className="w-[99%] overflow-x-scroll">

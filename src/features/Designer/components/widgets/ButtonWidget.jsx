@@ -19,7 +19,6 @@ export const ButtonWidget = ({content, id, edit, editable, style, toEdit})=>{
     const url = content?.url ? content.url : "https://www.google.com/webhp?hl=es-419&sa=X&ved=0ahUKEwiz2ZG6nPyMAxUMRzABHc6_BZkQPAgI"
     return (
         <>
-        {console.log(variable)}
         <div className="rounded-lg self-center items-center">
         {toEdit == id && <button onClick={()=>setEditor(true)} className="absolute top-1 right-10 bg-blue-500 text-white px-2 py-1  h-6 text-[6px] rounded z-300 hover:border hover:border-zinc-500 cursor-pointer"><HiOutlinePencil className="size-4"/></button>}
         <a href={url} target="_blank" className="h-fit"><button  style={styles}

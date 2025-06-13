@@ -215,3 +215,17 @@ export const layoutsModel =  {
     tagColor: null,
     tagName: null
     }
+
+  export const  CartModel = 
+    {
+  isActive: true,
+  createdBy: "System",
+  modifiedBy: "System",
+  idCompany: 0,
+  idCustomer: 0,
+  guid: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  docDate: "",
+  docTotal: 0,
+  app: 0,
+  lines: []
+}
