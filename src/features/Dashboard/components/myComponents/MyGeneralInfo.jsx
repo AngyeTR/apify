@@ -37,13 +37,18 @@ export const MyGeneralInfo = ()=>{
     </ul>
     <div className="mt-2 rounded-lg" >
         <h3 className={`pt-6  font-semibold  tracking-tight `} >Carga Masiva</h3>
-        <p className="text-sm/6 text-gray-600 mx-4">Puede cargar información de clientes, stocks o precios que hayan sido previamente almacenados en otro medio.</p>
+        <p className="text-sm/6 text-gray-600 mx-4">Cargar información de clientes, stocks o precios que hayan sido previamente almacenados en otro medio.</p>
         <Button className="my-2" onClick={()=>nav("/dashboard/upload")}>Realizar carga masiva</Button>
       </div>
       <div className="mt-1 rounded-lg" >
         <h3 className={`pt-6  font-semibold  tracking-tight `} >Gestionar Usuarios Delegados</h3>
-        <p className="text-sm/6 text-gray-600 mx-4">Puede consultar, autorizar y retirar permisos a delegados</p>
+        <p className="text-sm/6 text-gray-600 mx-4">Consultar, autorizar y retirar permisos a delegados</p>
         <Button className="my-2" onClick={()=>nav("/dashboard/delegates")}>Delegados</Button>
+      </div>
+      <div className="mt-1 rounded-lg" >
+        <h3 className={`pt-6  font-semibold  tracking-tight `} >Gestionar Dominios</h3>
+        <p className="text-sm/6 text-gray-600 mx-4">Consultar, verificar y eliminar Dominios</p>
+        <Button className="my-2" onClick={()=>nav("/dashboard/domains")}>Dominios</Button>
       </div>
 </div>
 

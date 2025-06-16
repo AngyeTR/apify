@@ -9,6 +9,7 @@ import { Select } from "../../../../shared/components/uikit/select";
 import { Heading } from "../../../../shared/components/uikit/heading";
 import { Button } from "../../../../shared/components/uikit/button";
 import { validateEmail } from "../../../../shared/utils/utils";
+import { useLocalStorage } from "../../../../shared/hooks/useLocalStorage";
 
 export const CustomerForm = ({data, handleClick, dataSet, setDataSet})=>{
     const [location, setLocation] = useState(null)
@@ -16,13 +17,11 @@ export const CustomerForm = ({data, handleClick, dataSet, setDataSet})=>{
     const [error, setError] = useState(null)
     const [buyerInfo, setBuyerInfo] = useState({})
     const { createCart}  = useTunnelCart()
-
-// Aqui es necesario usar el endpoint de dominios para saber a que compañía corresponde este dominio y poder pasar eldato de company al crear comprador
+    const [store] = useLocalStorage("store")
 
     const saveform = async()=>{
-        console.log("saving")
         buyerInfo.idCity = buyerInfo.cityData.id
-        buyerInfo.idCompany = 1
+        buyerInfo.idCompany = store
         buyerInfo.fullName = buyerInfo.firstName + " " + buyerInfo.lastName
         const verifyEmail = validateEmail(buyerInfo.email)
         if(verifyEmail){setError(verifyEmail)}
@@ -53,8 +52,6 @@ export const CustomerForm = ({data, handleClick, dataSet, setDataSet})=>{
     return ( 
         <div className="justify-center  justify-items-center bg-zinc-50 mt-5 w-[400px] md:w-[600px] rounded-lg p-5">
             <Field className="justify-center w-full max-w-lg">
-                {            console.log("data: ", data)
-}
             <Heading className="text-center">Datos del comprador</Heading>
             <Label>Nombre <span className="text-red-600">*</span></Label>
             <Input placeholder="Nombre" onChange={e=> setBuyerInfo(prev=>({...prev, firstName: e.target.value, "dni": "123456", password:"temporalPass2025."}))}/>

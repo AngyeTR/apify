@@ -4,8 +4,11 @@ import { getByCompanyId, postFile, postFolder, postImage } from "../../../shared
 import { fileModel, libraryModel } from "./models";
 
 const rawData = window.localStorage.getItem("data")
+const rawStore = window.localStorage.getItem("store")
 const stored = JSON.parse(rawData)
+const store = JSON.parse(rawStore)
 const date = new Date().toISOString();
+console.log(store)
 
 export const adaptWarehouseModel = (dataSet, origin, selectedCity,) =>{
    !dataSet.createdBy && (dataSet["createdBy"] = stored?.user.email)
@@ -174,10 +177,8 @@ export const adaptLibraryModel = (name) =>{
    return library
 }
 
-export const adaptNewCartModel= (dataSet, product, customer) => {
-  console.log(customer)
-  console.log(dataSet)
-  dataSet["idCompany"]= stored?.company.id
+export const adaptNewCartModel= (dataSet, product, customer, origin) => {
+  dataSet["idCompany"]= origin == "salesTunnel" ? store : stored?.company.id
   dataSet["idCustomer"]= customer.id
   dataSet["fUllname"] = customer.firstName + " " + customer.lastName
   dataSet["address"] = customer.address != "none" ? customer.address : ""
@@ -190,17 +191,17 @@ export const adaptNewCartModel= (dataSet, product, customer) => {
     return dataSet
 }
 
-export const adaptAddingCartModel= (dataSet, product, userId, quantity) => {
+export const adaptAddingCartModel= (dataSet, product, userId, quantity, origin) => {
   const quant = quantity ?  quantity  : 1
   dataSet["app"]= dataSet.app + 1
   dataSet["lines"]= [
     {
       isActive: true,
-      idCompany: stored?.company.id,
-      createdBy: stored?.user.email,
-      modifiedBy: stored?.user.email,
+      idCompany: origin == "salesTunnel" ? store : stored?.company.id,
+      createdBy: origin == "salesTunnel"?  "SalesTunnel": stored?.user.email,
+      modifiedBy: origin == "salesTunnel"?  "SalesTunnel": stored?.user.email,
       idCustomer: userId,
-      idProduct: product.id,
+      idProduct: product.id, 
       lineNum: dataSet.lines.length,
       productName: product.name,
       quantity: quant,

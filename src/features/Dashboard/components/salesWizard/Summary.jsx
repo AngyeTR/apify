@@ -6,6 +6,7 @@ import { Input } from "../../../../shared/components/uikit/input";
 import { HiOutlinePencil } from "react-icons/hi";
 import { Button } from "../../../../shared/components/uikit/button";
 import { useTunnelCart } from "../../hooks/useTunnelCart";
+import { useLocalStorage } from "../../../../shared/hooks/useLocalStorage";
 
 export const Summary = ({data, dataSet, setDataSet, handleClick})=>{
     const [products, setProducts ] = useState({orderBounds:[]})
@@ -13,6 +14,7 @@ export const Summary = ({data, dataSet, setDataSet, handleClick})=>{
     const [ editor, setEditor] = useState(false)
     const [ toDelete, setToDelete] = useState(null)
     const [internalData, setInternalData] = useState(dataSet)
+    const [store] = useLocalStorage("store")
     const { removeProduct, updateCart, updateQuantity }  = useTunnelCart() 
     const sumar = ()=>{
     setTotal(dataSet?.price?.price)
@@ -32,7 +34,7 @@ export const Summary = ({data, dataSet, setDataSet, handleClick})=>{
     useEffect(()=>{sumar()},[internalData])
 
     const finishSale= async()=>{
-        const carts = await  getByCompanyId("PreOrders", dataSet.customerData.idCompany).then(res => res.data.filter(order=> order.idCustomer == dataSet.customerData.id))
+        const carts = await  getByCompanyId("PreOrders", store).then(res => res.data.filter(order=> order.idCustomer == dataSet.customerData.id))
         carts && setDataSet(prev=> ({...prev, cart: carts[carts.length -1]})) 
         setDataSet(internalData)
         handleClick(1)}

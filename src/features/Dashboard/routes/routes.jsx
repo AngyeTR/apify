@@ -8,6 +8,7 @@ import { HomePage} from "../pages/HomePage/HomePage"
 import { StoreManagerPage } from "../pages/StoreManagerPage/StoreManagerPage"
 import { CampaignWizard } from "../pages/CampaignWizard/CampaignWizard"
 import { SalesTunnelPage } from "../pages/SalesTunnelPage/SalesTunnelPage"
+import { DomainsPage } from "../pages/DomainsPage/DomainsPage"
 
 const dashboardRoutes =[
       <Route path="/dashboard/wizard" element={<WizardPage/>} />,
@@ -18,6 +19,7 @@ const dashboardRoutes =[
       <Route path="/dashboard/:module" element={<ModulePage />  } />,
       <Route path="/dashboard/upload" element={<UploadPage />  } />,
       <Route path="/dashboard/delegates" element={<DelegatesPage />  } />,
+      <Route path="/dashboard/domains" element={<DomainsPage />  } />,
       <Route path="/dashboard/storemanager" element={<StoreManagerPage /> } />,
       <Route path="/dashboard/salestunnel/:tunnel" element={<SalesTunnelPage/> } />,
       <Route path="/*" element={<h1>No se encontraron resultados</h1>  } />,

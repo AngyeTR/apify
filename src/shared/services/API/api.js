@@ -88,6 +88,16 @@ export const getByDelegateId = async ( id)=>{
   return res
 }
 
+export const getByDomain = async (domain)=>{
+  const res = await api.get(`/CompaniesDomain/GetByDomain/${domain}`).then(response =>  response?.data).catch(error => {return error.response?.data});
+  return res
+}
+
+export const validateDomain = async (data) =>{
+  const res = await api.patch(`/Domains/Validate`, data).then(response =>  response?.data).catch(error => {return error.response?.data});
+  return res
+}
+
 export const post = async (query, data)=>{
   const res = await api.post(`/${query}/Add`, data).then(response =>  response.data).catch(error => {return error.response.data});
   return res

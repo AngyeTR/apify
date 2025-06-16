@@ -34,7 +34,7 @@ export function useTunnelCart(initialCart = null) {
     console.log( product)
     console.log(cart)
     try {
-    const adaptedProduct = adaptAddingCartModel(cart, product, userId, quantity)
+    const adaptedProduct = adaptAddingCartModel(cart, product, userId, quantity, "salesTunnel")
       const res = await edit("PreOrders", adaptedProduct)
       setCart(res.data);
       return res.data;

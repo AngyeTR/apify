@@ -16,7 +16,6 @@ export const SalesForm =({data, setDataSet, dataSet, handleClick})=> {
     const [orderBounds, setOrderBounds] = useState([])
     const [cart, setCart] = useState(dataSet.cart)
     const { updateQuantity, updateCart }  = useTunnelCart()
-  console.log(data)
 
     useEffect(()=>{
       getByID("Products", data?.idProduct).then(res=>{setMainProduct(res.data);console.log(res)})

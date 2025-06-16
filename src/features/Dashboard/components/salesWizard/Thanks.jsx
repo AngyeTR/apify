@@ -1,9 +1,11 @@
 import { useEffect } from "react"
 import { Heading } from "../../../../shared/components/uikit/heading"
 import { getByCompanyId } from "../../../../shared/services/API/api"
+import { useLocalStorage } from "../../../../shared/hooks/useLocalStorage"
 
 export const Thanks = ({dataSet, setDataSet})=> {
-    useEffect(()=>{  getByCompanyId("PreOrders", 1).then(res=> setDataSet(prev=> ({...prev, cart : res.data.filter(cart=> dataSet.customerData.id == cart.idCustomer)?.reverse()?.[0]})))
+    const [store] = useLocalStorage("store")
+    useEffect(()=>{  getByCompanyId("PreOrders", store).then(res=> setDataSet(prev=> ({...prev, cart : res.data.filter(cart=> dataSet.customerData.id == cart.idCustomer)?.reverse()?.[0]})))
     // useEffect(()=>{  getByCompanyId("PreOrders", 1).then(res=> console.log( res.data.filter(cart=> dataSet.customerData.id == cart.idCustomer).reverse()?.[0]))
     },[])
     return (

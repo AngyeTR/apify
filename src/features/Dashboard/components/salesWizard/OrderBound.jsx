@@ -5,7 +5,6 @@ import { Button } from "../../../../shared/components/uikit/button";
 
 
 export const OrderBound = ({id, price, orderBounds, setOrderBounds})=> {
-    console.log(id, price)
     const [product, setProduct] = useState(null)
     useEffect(()=>{const res = getByID("Products", id).then(res => setProduct(res.data))},[])
     return (

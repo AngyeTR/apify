@@ -71,9 +71,9 @@ export function FormCompany(props) {
       <Label for="favcolor">Selecciona el color secundario:</Label>
       <input type="color" value={dataSet.colorSecondary} className='block  w-50 my-2' name='colorSecondary'  onChange={handleChange} />
       <Label className="block">Imagen de Tienda</Label>
-      <Button onClick={()=>setModalMode("external")}>Desde URL</Button>
-      <Button onClick={()=>setModalMode("local")}>Desde mi equipo</Button>
-      <Button onClick={()=>setModalMode("internal")}>Desde mis colecciones</Button>
+      <Button onClick={()=>setModalMode("external")} className="m-1">Desde URL</Button>
+      <Button onClick={()=>setModalMode("local")} className="m-1">Desde El equipo</Button>
+      <Button onClick={()=>setModalMode("internal")} className="m-1">Desde Colecciones</Button>
     
       <img   className={` ${imgUrl ? "h-30 visible" : "invisible"}`} src={imgUrl} alt=""/>
       <p className={`text-red-600 pt-5 ${error ? "visible" : "invisible"}`}>Ups! Algo salió mal: {error}</p>  

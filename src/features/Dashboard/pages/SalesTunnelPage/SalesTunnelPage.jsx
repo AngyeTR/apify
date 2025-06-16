@@ -2,14 +2,12 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom"
 import { useLocalStorage } from "../../../../shared/hooks/useLocalStorage";
 import { GridContainer } from "../../../Designer/components/GridContainer";
-import { getByCompanyId, getByID } from "../../../../shared/services/API/api";
+import { getByCompanyId, getByDomain, getByID } from "../../../../shared/services/API/api";
 import { SalesWizard } from "../../components/salesWizard/SalesWizard";
 
+//Importante: Guardar 
 export const SalesTunnelPage = ()=> {
-    // useEffect(()=>{getByID("SalesTunnel", params.tunnel).then(res=> setData(res.data))},[])
-    useEffect(() => { getByCompanyId("Layouts", stored?.company.id).then(res => setLayouts(res.data))
-        getByID("SalesTunnel", params.tunnel).then(res=> setData(res.data))
-    }, []);
+ 
     const params = useParams()
     const nav = useNavigate()
     const [layout, setLayout] = useState(null) 
@@ -17,7 +15,14 @@ export const SalesTunnelPage = ()=> {
     const [color, setColor] = useState({backgroundColor: "#ffffff"}) 
     const [ layouts, setLayouts] = useState(null)
     const [stored] = useLocalStorage("data")
+    const [store, setStore] = useLocalStorage("store", null)
     const [grid, setGrid] = useState()
+
+    useEffect(()=>{const host = window.location.hostname
+        getByDomain(host).then(res=> res.data?.idCompany ? setStore(res.data?.idCompany): setStore(1))
+        getByID("SalesTunnel", params.tunnel).then(res=> setData(res.data))},[])
+
+    useEffect(() => { getByCompanyId("Layouts", store).then(res => setLayouts(res.data))}, [store]);
 
     const navigate= ()=>{
         nav(`/designer/editor/${params.id}`)
