@@ -1,7 +1,7 @@
 import { Dropdown, DropdownButton, DropdownDivider, DropdownItem, DropdownLabel, DropdownMenu,} from '../../../../shared/components/uikit/dropdown'
 import {Sidebar, SidebarBody, SidebarFooter, SidebarHeader, SidebarItem, SidebarLabel, SidebarSection, SidebarSpacer,} from '../../../../shared/components/uikit/sidebar'
 import {ArrowRightStartOnRectangleIcon, ChevronDownIcon, ChevronUpIcon, UserIcon} from '@heroicons/react/16/solid'
-import { HiBell, HiOutlineTicket  } from "react-icons/hi";
+import { HiBell, HiOutlineTicket, HiShoppingBag  } from "react-icons/hi";
 import {Avatar} from "../../../../shared/components/uikit/avatar"
 import logo from "../../../../assets/logo.png"
 import { MySideBarItem } from './MySideBarItem'
@@ -58,6 +58,7 @@ export const MySideBar = ()=>{
       </SidebarHeader>
       <SidebarBody>
       { user.company.id == user.user.company.id ? Object.keys(mods).map((module)=><MySideBarItem data={mods[module]} key={mods[module].id}/>) : <MySideBarItem data={mods["Marketing"]} key={mods["Marketing"].id}/>}
+        <MySideBarItem data={{id:3, name: "Tienda"}} key={3}/>
         <SidebarSpacer />
         <SidebarSection>
           <SidebarLabel>Proximos Eventos</SidebarLabel>

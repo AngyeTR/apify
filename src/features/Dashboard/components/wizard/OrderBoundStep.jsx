@@ -4,7 +4,7 @@ import { Input } from "../../../../shared/components/uikit/input"
 import { Select } from "../../../../shared/components/uikit/select"
 import { getByCompanyId } from "../../../../shared/services/API/api"
 import { useLocalStorage } from "../../../../shared/hooks/useLocalStorage"
-import { Field } from "../../../../shared/components/uikit/fieldset"
+import { Field, Label } from "../../../../shared/components/uikit/fieldset"
 import { Button } from "../../../../shared/components/uikit/button"
 import { Combobox, ComboboxLabel, ComboboxOption } from '../../../../shared/components/uikit/combobox'
 import { orderBoundModel } from "../../utils/models"
@@ -30,15 +30,18 @@ export const OrderBound = ({data, setData})=>{
        
         <Heading className="my-5 text-center">Order Bound ( Gancho de Venta ) </Heading>
         <Field>
+            <Label>Producto</Label>
             <Combobox className="my-3 w-sm sm:w-md" name="product" options={products ? products : []} displayValue={(product) => product?.name} 
-       onChange={(e)=> setNewItem(prev=> ({...prev, "idProduct": parseInt(e)}))} placeholder={newItem?.idProduct ? products?.filter(prod=>prod.id == newItem?.idProduct)?.[0].name  :"Buscar y Seleccionar producto"}>
+       onChange={(e)=> e && setNewItem(prev=> ({...prev, "idProduct": parseInt(e.id), price: parseFloat(e.price)}))} placeholder={newItem?.idProduct ? products?.filter(prod=>prod.id == newItem?.idProduct)?.[0].name  :"Buscar y Seleccionar producto"}>
         {(product) => (
-          <ComboboxOption value={product.id}>
+          <ComboboxOption value={product}>
             <ComboboxLabel>{product.name}</ComboboxLabel>
           </ComboboxOption>)}
       </Combobox>
-            <Input defaultValue={newItem.price ? newItem.price: 0} type="number" placeholder="Precio final del producto" className="my-3" onChange={(e)=>setNewItem(prev => ({...prev, "price" : parseFloat(e.target.value), quantity: 1})) }/>
-            <Button onClick={()=>handleInternal("add", newItem.idProduct)} disabled={!newItem.idProduct || !newItem.price} className="my-5">Añadir</Button>
+        {newItem.idProduct && <> <Label>Precio</Label>
+            <Input defaultValue={newItem.price} type="number" placeholder="Precio final del producto" className="my-3" onChange={(e)=>setNewItem(prev => ({...prev, "price" : parseFloat(e.target.value), quantity: 1})) }/>
+           </>}
+        <Button onClick={()=>handleInternal("add", newItem.idProduct)} disabled={!newItem.idProduct || !newItem.price} className="my-5">Añadir</Button>
         </Field>
         <div className="my-5">
             {internalData?.map(item=> <p className="my-2" key={item.idProduct}>

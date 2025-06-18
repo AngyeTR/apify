@@ -55,7 +55,8 @@ export const getTranslate= (name)=>{
         marketing: "marketing", 
         configuración: "settings",
         vendedores: "salesman", 
-        "not-found": "not-found"
+        "not-found": "not-found",
+        tienda: "store"
     }
     return dictionary[name] ?  dictionary[name] : "not-found"
 }
@@ -63,7 +64,8 @@ export const getTranslate= (name)=>{
 export const getModuleId = (name)=>{
     const dictionary = {
         settings: {id: 1, name:"Configuración"} ,
-        marketing:{id: 2, name: "Marketing"}
+        marketing:{id: 2, name: "Marketing"},
+        store:{id: 3, name: "Tienda"}
     }
     return dictionary[name]
 }

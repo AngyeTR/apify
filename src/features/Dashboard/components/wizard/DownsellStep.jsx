@@ -5,6 +5,7 @@ import { Select } from "../../../../shared/components/uikit/select"
 import { getByCompanyId } from "../../../../shared/services/API/api"
 import { useLocalStorage } from "../../../../shared/hooks/useLocalStorage"
 import { downsellModel } from "../../utils/models"
+import { Field, Label } from "../../../../shared/components/uikit/fieldset"
 
 export const DownsellStep = ({data, setData})=>{
     const [ products, setProducts] = useState(null)
@@ -24,14 +25,18 @@ export const DownsellStep = ({data, setData})=>{
     return (
      <div className="mt-10">
         <Heading className="my-5 text-center">DownSell </Heading>
+        <Field>
         {data?.upsell?.idProduct ?
-            <><Select className="my-3 w-sm sm:w-md" onChange={(e)=>handleDownSell(parseInt(e.target.value)) }>
+            <>
+            <Label>Producto Downsell</Label>
+            <Select className="my-3 w-sm sm:w-md" onChange={(e)=>handleDownSell(parseInt(e.target.value)) }>
             <option>{data?.downsell?.idLayout ? layouts?.filter(lay=> lay.id == data?.downsell?.idLayout)?.[0].name: "Seleccionar Layout"}</option>
             {layouts?.map(prod => <option value={prod.id}>{prod.name}</option>)}
         </Select>
-        <Input className="my-3  w-sm sm:w-md" placeholder="Precio final del producto"  type="number" onChange={(e)=> setData(prev => ({...prev, "downsell": {...prev.downsell, "price": parseInt(e.target.value)}})) }/>
+        <Label>Precio Downsell</Label>
+        <Input defaultValue={data.upsell.price} className="my-3  w-sm sm:w-md" placeholder="Precio final del producto"  type="number" onChange={(e)=> setData(prev => ({...prev, "downsell": {...prev.downsell, "price": parseInt(e.target.value)}})) }/>
         </>: <p className="my-3">Tunel de ventas casi listo. Solo falta guardar</p>
-        }
+        }</Field>
     </div>
    )
 }

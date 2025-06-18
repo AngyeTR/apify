@@ -45,6 +45,7 @@ export const  MyStoreForms =()=> {
   return (
     <><div className="flex w-full flex-wrap items-end justify-between gap-4 border-b border-zinc-950/10 pb-6   my-5">
       <Heading>Personalización de Tienda</Heading>
+      <Button onClick={()=>nav("/store")}>Ver Tienda</Button>
     </div>
     <div className='w-sm'>
       <Field>

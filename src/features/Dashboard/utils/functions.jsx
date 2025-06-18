@@ -1,4 +1,4 @@
-import {  HiCalculator, HiCog, HiBell, HiChartPie, HiGlobeAlt, HiLibrary } from "react-icons/hi";
+import {  HiCalculator, HiCog, HiBell, HiChartPie, HiGlobeAlt, HiLibrary, HiShoppingBag } from "react-icons/hi";
 
 export const adjustLoginData = (data)=>{
     const newData = {
@@ -38,6 +38,7 @@ export const getModuleIcon = (id)=>{
         // calculator: <HiCalculator className="size-6 shrink-0"/> ,
         1: {icon: <HiCog className="text-zinc-500 size-6 shrink-0  hover:text-zinc-950"/>, url: "/dashboard/settings"},
         2:{icon:   <HiBell className=" text-zinc-500 size-6 shrink-0 hover:text-zinc-950"/> , url:"/dashboard/marketing" }, 
+        3:{icon:   <HiShoppingBag className=" text-zinc-500 size-6 shrink-0 hover:text-zinc-950"/> , url:"/dashboard/storemanager" }, 
         // analytics: <HiChartPie className="size-6 shrink-0"/>,
         // logistics: <HiGlobeAlt  className="size-6 shrink-0"/>,
         // store: <HiLibrary className="size-6 shrink-0"/>,
@@ -55,7 +56,8 @@ export const getTranslate= (name)=>{
         marketing: "marketing",
         configuración: "settings",
         vendedores: "salesman", 
-        "not-found": "not-found"
+        "not-found": "not-found",
+        tienda: "store"
     }
     return dictionary[name] ?  dictionary[name] : "not-found"
 }
@@ -63,7 +65,8 @@ export const getTranslate= (name)=>{
 export const getModuleId = (name)=>{
     const dictionary = {
         settings: {id: 1, name:"Configuración"} ,
-        marketing:{id: 2, name: "Marketing"}
+        marketing:{id: 2, name: "Marketing"},
+        store:{id: 3, name: "Tienda"}
     }
     return dictionary[name]
 }

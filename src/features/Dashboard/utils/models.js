@@ -1,5 +1,9 @@
 const rawData = window.localStorage.getItem("data")
 const stored = JSON.parse(rawData)
+const now = new Date();
+const hours = now.getHours()
+const  today = new Date(now.setHours(hours + 4))
+const nextYear = new Date(now.setHours(hours + (365*24))).toISOString()
 
 export const productModel= 
 {
@@ -154,10 +158,10 @@ export const salesTunnelModel = {
   idCompany:  stored?.company.id,
   idCampaign: null,
   name: null,
-  description: null,
+  description: "Aplican términos y condiciones",
   domain: null,
-  initialDate: null,
-  endDate: null,
+  initialDate: today.toISOString(),
+  endDate: nextYear,
   orderBounds: [],
   layouts: [],
   facebookPixel: null,
@@ -208,7 +212,7 @@ export const layoutsModel =  {
     createdBy:	stored?.user.email,
     modifiedBy:	stored?.user.email,
     idProduct: null,
-    name: null,
+    name: "Precio Regular",
     quantity: 1,
     oldPrice: null,
     price: null,
