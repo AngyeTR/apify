@@ -3,7 +3,7 @@ import { getToken } from '../cookies';
 import { adaptImplementationModel } from "../../../features/Dashboard/utils/adaptDataModel" 
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_HOST});
+  baseURL: "https://app.dashwork.co:444/api"});
   api.interceptors.request.use(
   (config) => {
     const token = getToken(); 
@@ -88,8 +88,13 @@ export const getByDelegateId = async ( id)=>{
   return res
 }
 
+// export const getByDomain = async (domain)=>{
+//   const res = await api.get(`/CompaniesDomain/GetByDomain/${domain}`).then(response =>  response?.data).catch(error => {return error.response?.data});
+//   return res
+// }
+
 export const getByDomain = async (domain)=>{
-  const res = await api.get(`/CompaniesDomain/GetByDomain/${domain}`).then(response =>  response?.data).catch(error => {return error.response?.data});
+  const res = await api.get(`/Domains/GetByDomain/${domain}?d=${domain}`).then(response =>  response?.data).catch(error => {return error.response?.data});
   return res
 }
 
@@ -161,4 +166,12 @@ export const markFavorite = async (data) => {
 export const unMarkFavorite = async (data) => {
   const res = await api.post(`/Products/UnmarkFavorite`, data).then(response =>  response).catch(error => {return error.response}); 
   return res.data
+}
+
+
+//// REPORTES de TUNELES:
+
+export const convertions = async (query, data) => {
+  const res = await api.post(`/Conversions/${query}`, data).then(response =>  response).catch(error => {return error.response}); 
+  return res
 }

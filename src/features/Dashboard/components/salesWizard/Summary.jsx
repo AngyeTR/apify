@@ -34,7 +34,7 @@ export const Summary = ({data, dataSet, setDataSet, handleClick})=>{
     useEffect(()=>{sumar()},[internalData])
 
     const finishSale= async()=>{
-        const carts = await  getByCompanyId("PreOrders", store).then(res => res.data.filter(order=> order.idCustomer == dataSet.customerData.id))
+        const carts = await  getByCompanyId("PreOrders", store.idCompany).then(res => res?.data?.filter(order=> order.idCustomer == dataSet.customerData.id))
         carts && setDataSet(prev=> ({...prev, cart: carts[carts.length -1]})) 
         setDataSet(internalData)
         handleClick(1)}
@@ -91,6 +91,8 @@ export const Summary = ({data, dataSet, setDataSet, handleClick})=>{
             {editor ? <Input placeholder="Ejemplo: calle 1 # 23-45 apartamento 67" onChange={e=> setInternalData(prev => ({...prev, customerData: { ...prev.customerData, address: e.target.value}}))}/>:
              <p>{internalData?.customerData?.address}, {internalData?.customerData?.city}</p>}
            </div>
+           {        console.log(dataSet)
+}
            <Button className="my-3" onClick={finishSale}>Finalizar Compra</Button>
         </div>
     )

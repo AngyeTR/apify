@@ -40,7 +40,6 @@ const steps = data?.upsell?.id ? stepsComplete : stepsWithoutUpsell
 
   return (
       <div className='justify-self-center bg-zinc-50 p-2 pt-10  mt-5 rounded-lg'>
-        {console.log("dataSet: ", dataSet)}
         <div className='w-[400px]'>
             <MyProgressBar currentStep={currentStep} steps={steps.length} /></div>
         {render(currentStep)}

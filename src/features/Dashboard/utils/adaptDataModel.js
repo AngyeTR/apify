@@ -178,7 +178,7 @@ export const adaptLibraryModel = (name) =>{
 }
 
 export const adaptNewCartModel= (dataSet, product, customer, origin) => {
-  dataSet["idCompany"]= origin == "salesTunnel" ? store : stored?.company.id
+  dataSet["idCompany"]= origin == "salesTunnel" ? store.idCompany : stored?.company.id
   dataSet["idCustomer"]= customer.id
   dataSet["fUllname"] = customer.firstName + " " + customer.lastName
   dataSet["address"] = customer.address != "none" ? customer.address : ""
@@ -197,7 +197,7 @@ export const adaptAddingCartModel= (dataSet, product, userId, quantity, origin) 
   dataSet["lines"]= [
     {
       isActive: true,
-      idCompany: origin == "salesTunnel" ? store : stored?.company.id,
+      idCompany: origin == "salesTunnel" ? store.idCompany : stored?.company.id,
       createdBy: origin == "salesTunnel"?  "SalesTunnel": stored?.user.email,
       modifiedBy: origin == "salesTunnel"?  "SalesTunnel": stored?.user.email,
       idCustomer: userId,

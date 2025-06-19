@@ -10,6 +10,7 @@ import { Heading } from "../../../../shared/components/uikit/heading";
 import { Button } from "../../../../shared/components/uikit/button";
 import { validateEmail } from "../../../../shared/utils/utils";
 import { useLocalStorage } from "../../../../shared/hooks/useLocalStorage";
+import { useReport } from "../../hooks/useReport";
 
 export const CustomerForm = ({data, handleClick, dataSet, setDataSet})=>{
     const [location, setLocation] = useState(null)
@@ -18,6 +19,8 @@ export const CustomerForm = ({data, handleClick, dataSet, setDataSet})=>{
     const [buyerInfo, setBuyerInfo] = useState({})
     const { createCart}  = useTunnelCart()
     const [store] = useLocalStorage("store")
+    const { reportAddToCart } = useReport()
+
 
     const saveform = async()=>{
         buyerInfo.idCity = buyerInfo.cityData.id
@@ -37,6 +40,7 @@ export const CustomerForm = ({data, handleClick, dataSet, setDataSet})=>{
             setDataSet(prev=>({...prev, "customerData":buyerInfo})) 
             console.log("creating 2")
             await createCart(product, buyerInfo).then(res=>setDataSet(prev=>({...prev, cart: res})))
+            await reportAddToCart(buyerInfo.email, buyerInfo.cellphone, "fbc", "fbp", product.price)
             handleClick(1)
         }
     }

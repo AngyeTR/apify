@@ -1,5 +1,8 @@
-@import "tailwindcss";
-@import "datatables.net-dt";
+/* @import "tailwindcss";  */
+/* @tailwind base;
+@tailwind components; */
+/* @tailwind utilities; */
+
 :root {
   font-family: "Inter", Inter,  sans-serif;
   line-height: 1.5;

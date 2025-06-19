@@ -13,7 +13,7 @@ import { CarouselWidget } from '../components/widgets/CarouselWidget';
 import { BlankWidget } from '../components/widgets/BlankWidget';
 import { PaymentButtonWidget } from '../components/widgets/PaymentButtonWidget';
 
-export const GridContainer = ({canEdit, setItems, items, count, layoutColor, setLayoutColor, grid, setGrid})=> { 
+export const GridContainer = ({canEdit, setItems, items, count, layoutColor, setLayoutColor, grid, setGrid, handleClickInCOmponent})=> { 
   const styles = {backgroundColor: layoutColor?.["backgroundColor"],  
       backgroundImage: `url('${layoutColor?.["backgroundImage"]}')`,  backgroundSize: 'cover',
       backgroundPosition: 'center', repeat: "no-repeat",  backgroundBlendMode: 'multiply' }
@@ -72,7 +72,7 @@ export const GridContainer = ({canEdit, setItems, items, count, layoutColor, set
     <div className='grid-stack w-full   min-h-[90vh]' style={styles}>
      {items?.map((cat, index)=> 
     (
-      <div className={`grid-stack-item overflow-hidden h-fit place-content-center place-items-center ${canEdit && "hover:border hover:border-red-600"}`} gs-w={cat?.w} gs-h={cat?.h} key={cat?.id} gs-id={cat.id} gs-x={cat.x} gs-y={cat.y} gs-content={cat.content} gs-sub-grid={cat.id.split("-")[0] == "container" ? "true" : "false"} onClick={()=>{setToEdit(cat.id)}}
+      <div className={`grid-stack-item overflow-hidden h-fit place-content-center place-items-center ${canEdit && "hover:border hover:border-red-600"}`} gs-w={cat?.w} gs-h={cat?.h} key={cat?.id} gs-id={cat.id} gs-x={cat.x} gs-y={cat.y} gs-content={cat.content} gs-sub-grid={cat.id.split("-")[0] == "container" ? "true" : "false"} onClick={()=>{canEdit ? setToEdit(cat.id): handleClickInCOmponent(cat.id)}}
       ref={(node)=>{
         const map = getMap();
         if(node){

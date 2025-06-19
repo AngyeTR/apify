@@ -1,7 +1,7 @@
 import {  useState } from "react";
 import { useLocalStorage } from "../../../../shared/hooks/useLocalStorage.js";
 import { getLogin } from "../../../../shared/services/API/api/";
-import logo from "../../../../assets/logo.avif"
+import logo from "../../../Login/logo.avif"
 import { adjustLoginData } from "../../utils/functions.jsx";
 import { validateEmail} from "../../../../shared/utils/utils.jsx"
 import { useNavigate } from "react-router-dom";

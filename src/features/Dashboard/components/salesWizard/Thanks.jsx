@@ -2,12 +2,16 @@ import { useEffect } from "react"
 import { Heading } from "../../../../shared/components/uikit/heading"
 import { getByCompanyId } from "../../../../shared/services/API/api"
 import { useLocalStorage } from "../../../../shared/hooks/useLocalStorage"
+import { useReport } from "../../hooks/useReport"
 
 export const Thanks = ({dataSet, setDataSet})=> {
+    const {reportPurchase} = useReport()
     const [store] = useLocalStorage("store")
-    useEffect(()=>{  getByCompanyId("PreOrders", store).then(res=> setDataSet(prev=> ({...prev, cart : res.data.filter(cart=> dataSet.customerData.id == cart.idCustomer)?.reverse()?.[0]})))
-    // useEffect(()=>{  getByCompanyId("PreOrders", 1).then(res=> console.log( res.data.filter(cart=> dataSet.customerData.id == cart.idCustomer).reverse()?.[0]))
-    },[])
+    useEffect(()=>{  getByCompanyId("PreOrders", store.idCompany).then(res=> setDataSet(prev=> ({...prev, cart : res.data.filter(cart=> dataSet.customerData.id == cart.idCustomer)?.reverse()?.[0]}))) 
+    reportPurchase(dataSet.customerData.email, dataSet.customerData.cellphone, "fbc", "fbp", dataSet.cart.docTotal, dataSet.cart.id, dataSet.cart.lines.length  )    
+    console.log(dataSet)
+},[])
+    
     return (
         <div className="justify-center  justify-items-center bg-zinc-50 mt-5 w-[px] md:w-[600px] rounded-lg p-5">
             <Heading>Gracias por tu compra</Heading>
