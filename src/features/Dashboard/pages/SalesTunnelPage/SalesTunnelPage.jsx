@@ -26,11 +26,12 @@ export const SalesTunnelPage = ()=> {
 
     useEffect(()=>{
         const host = window.location.hostname
-        getByDomain(host == "localhost" ? "store.apify.com.co": host).then(res=>  setStore({idStore: res.data.id, idCompany: res.data?.idCompany}))
+        getByDomain(host == "localhost" ? "store.apify.com.co": host).then(res=>  {setStore({idStore: res.data.id, idCompany: res.data?.idCompany})
+    getByCompanyId("Layouts", res.data?.idCompany).then(res => setLayouts(res.data))})
         getByID("SalesTunnel", params.tunnel).then(res=> setData(res.data))
     reportView()},[])
 
-    useEffect(() => { getByCompanyId("Layouts", store.idCompany).then(res => setLayouts(res.data))}, [store]);
+    // useEffect(() => { getByCompanyId("Layouts", store.idCompany).then(res => setLayouts(res.data))}, [store]);
 
 
     
