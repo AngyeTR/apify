@@ -5,11 +5,12 @@ import { GridContainer } from "../../../Designer/components/GridContainer";
 import { getByCompanyId, getByDomain, getByID } from "../../../../shared/services/API/api";
 import { SalesWizard } from "../../components/salesWizard/SalesWizard";
 import { useScrollCheckpoints } from "../../hooks/useScrollCheckPoints";
-import useNavigatorData from "../../hooks/useNavigatorData";
 import { useReport } from "../../hooks/useReport";
+import { useExit } from "../../hooks/useExit";
 
 //Importante: Guardar 
 export const SalesTunnelPage = ()=> {
+    useExit()
     useScrollCheckpoints(10)
     const params = useParams()
     const nav = useNavigate()
@@ -52,11 +53,10 @@ export const SalesTunnelPage = ()=> {
         const handleClickInCOmponent = (id)=>{console.log("Click en ", id)}
     
     return (
-         <div className="w-screen justify-self-center pb-5" style={{backgroundColor: color?.["backgroundColor"],  
+         <div className="w-screen container mx-auto justify-self-center justify-center pb-5" style={{backgroundColor: color?.["backgroundColor"],  
               backgroundImage: `url('${color?.["backgroundImage"]}')`,  backgroundSize: 'cover',
               backgroundPosition: 'center', repeat: "no-repeat",  backgroundBlendMode: 'multiply' }} >
             <div className="w-[90vw] sm:w-[70vw] m-0 p-0  justify-self-center justify-items-center" >
-    const navigator = useNavigatorData() 
                <GridContainer canEdit={false} items={layout}  setGrid={setGrid} handleClickInCOmponent={handleClickInCOmponent}/>
                 <SalesWizard data={data}/>
             </div>

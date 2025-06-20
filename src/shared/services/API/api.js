@@ -172,6 +172,6 @@ export const unMarkFavorite = async (data) => {
 //// REPORTES de TUNELES:
 
 export const convertions = async (query, data) => {
-  const res = await api.post(`/Conversions/${query}`, data).then(response =>  response).catch(error => {return error.response}); 
+  const res = await api.post(`/FacebookConversions/${query}`, data).then(response =>  response).catch(error => {return error.response}); 
   return res
 }
