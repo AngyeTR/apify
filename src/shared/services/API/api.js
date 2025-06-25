@@ -13,6 +13,9 @@ const api = axios.create({
   (error) => Promise.reject(error)
 );
 
+const noTokenApi = axios.create({
+  baseURL: "https://app.dashwork.co:444/api"});
+
 export const getCountries = async () => {
   const res = await api.get("/Countries/Get").then(response =>  response.data).catch(error => {return error.response.data});
   return res
@@ -173,5 +176,6 @@ export const unMarkFavorite = async (data) => {
 
 export const convertions = async (query, data) => {
   const res = await api.post(`/FacebookConversions/${query}`, data).then(response =>  response).catch(error => {return error.response}); 
+  // const res = await noTokenApi.post(`/FacebookConversions/${query}`, data).then(response =>  response).catch(error => {return error.response}); 
   return res
 }

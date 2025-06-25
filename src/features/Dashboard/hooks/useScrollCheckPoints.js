@@ -19,7 +19,7 @@ export const useScrollCheckpoints = (sections = 5) => {
         const now = Date.now();
         const timeSpent = (now - entryTimeRef.current) / 1000; 
         console.log("!!!!!!!", `Sección ${currentSection} → ${newSection} : ${timeSpent - currentTime}s en pantalla, tiempo total: ${timeSpent}s`);
-        setCurrentSection(prev => prev + 1)
+        setCurrentSection(newSection)
         setCurrentTime( timeSpent)
         if (scrollTop + windowHeight >= docHeight - 1) {
         console.log(' El usuario llegó al final de la página');

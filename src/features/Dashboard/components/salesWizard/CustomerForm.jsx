@@ -40,7 +40,7 @@ export const CustomerForm = ({data, handleClick, dataSet, setDataSet})=>{
             setDataSet(prev=>({...prev, "customerData":buyerInfo})) 
             console.log("creating 2")
             await createCart(product, buyerInfo).then(res=>setDataSet(prev=>({...prev, cart: res})))
-            await reportAddToCart(buyerInfo.email, buyerInfo.cellphone, "fbc", "fbp", product.price)
+            await reportAddToCart(buyerInfo.email, buyerInfo.cellphone, "fbp", product.price)
             handleClick(1)
         }
     }

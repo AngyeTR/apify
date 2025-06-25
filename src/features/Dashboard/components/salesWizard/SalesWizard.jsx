@@ -6,7 +6,6 @@ import { Upsale } from './Upsale'
 import { Downsale } from './Downsale'
 import { Summary } from './Summary'
 import { Thanks } from './Thanks'
-import {  getByID } from '../../../../shared/services/API/api'
 import { useParams } from 'react-router-dom'
 
 

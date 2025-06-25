@@ -8,7 +8,6 @@ const rawStore = window.localStorage.getItem("store")
 const stored = JSON.parse(rawData)
 const store = JSON.parse(rawStore)
 const date = new Date().toISOString();
-console.log(store)
 
 export const adaptWarehouseModel = (dataSet, origin, selectedCity,) =>{
    !dataSet.createdBy && (dataSet["createdBy"] = stored?.user.email)

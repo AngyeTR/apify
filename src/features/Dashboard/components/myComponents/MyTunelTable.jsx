@@ -50,7 +50,7 @@ const Table  = ({data, headers, setModal}) => {
       </DataTable> )} 
 
 export function TunnelTable({data}) {
-  const [dataToShow, setDataToShow] = useState(data? data: [])
+  const [dataToShow, setDataToShow] = useState(data[0]?.domain ? data: [])
   const [modal, setModal] = useState({status:false, id: null, action: null})
   const [filter, setFilter] = useState(null)
   const [newCampaign, setNewCampaign] = useState(null)
@@ -62,7 +62,7 @@ export function TunnelTable({data}) {
     setDataToShow(data)
   },[])
 
-  useEffect(()=>{const filteredD= filter ? data.filter(item=> item.idCampaign == filter) : data
+  useEffect(()=>{const filteredD= filter ? data?.[0]?.domain ? data.filter(item=> item.idCampaign == filter) : [] : data?.[0]?.domain? data : []
   setDataToShow(filteredD) },[data, filter])
   
   useEffect(()=>{ filteredData && render()}, [data])
@@ -80,7 +80,7 @@ export function TunnelTable({data}) {
 
 
   const render = (data)=> {
-    if(data?.length > 0 && headers.length > 0 &&  data[0].length == headers.length){
+    if(data?.length > 0 && headers.length > 0 &&  data[0].length == headers.length ){
       return (
         <div className="w-[99%] overflow-x-scroll">
         <Table  data={data.reverse()} headers={headers} setModal={setModal} />
@@ -105,7 +105,6 @@ export function TunnelTable({data}) {
       </NavbarSection>
     </Navbar>
     <Button   onClick={()=>setModal({status:true, id: null, action: "Crear"})}>Crear Tunel</Button>
-
     { !filteredData  ? <p>Cargando tabla.. </p> : filteredData?.length ==0 ? <p>No se encontraron registros </p> :render(filteredData)}
     {modal.status && <Modal>
       <div className="bg-zinc-50 rounded-lg w-[90%] md:w-[70%] h-[90%] overflow-scroll py-10 justify-items-center"> 

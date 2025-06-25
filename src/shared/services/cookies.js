@@ -37,3 +37,11 @@ export const setStoreUser = async (value) => {
 export const deleteStoreUser = () => {
      cookies.remove("store-user", { path: '/' })
 }
+
+export const  getFbp = () => {
+    return cookies.get("fbp")
+}
+
+export const setFbp =async (value)=> {
+      cookies.set('fbp', value, { path: '/', sameSite: 'Lax' });
+}

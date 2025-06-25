@@ -7,11 +7,14 @@ import { SalesWizard } from "../../components/salesWizard/SalesWizard";
 import { useScrollCheckpoints } from "../../hooks/useScrollCheckPoints";
 import { useReport } from "../../hooks/useReport";
 import { useExit } from "../../hooks/useExit";
+import { useScript } from "../../hooks/useScript";
+import { getFbp } from "../../../../shared/services/cookies";
 
 //Importante: Guardar 
 export const SalesTunnelPage = ()=> {
     useExit()
     useScrollCheckpoints(10)
+    const { reportView} = useReport()
     const params = useParams()
     const nav = useNavigate()
     const [layout, setLayout] = useState(null) 
@@ -21,24 +24,19 @@ export const SalesTunnelPage = ()=> {
     const [stored] = useLocalStorage("data")
     const [store, setStore] = useLocalStorage("store", null)
     const [grid, setGrid] = useState()
-    // const navigator = useNavigatorData() 
-    const { reportView} = useReport()
-
+    const [ fbPixel, setFbPixel] = useState(null)
+    const location = window.location
+    useScript(fbPixel)
     useEffect(()=>{
-        const host = window.location.hostname
-        getByDomain(host == "localhost" || host == "apify-livid.vercel.app" ? "store.apify.com.co": host).then(res=>  {setStore({idStore: res.data.id, idCompany: res.data?.idCompany})
-   console.log(res)})
-        getByID("SalesTunnel", params.tunnel).then(res=> setData(res.data))
-    reportView()},[])
-
-    useEffect(() => { getByCompanyId("Layouts", store.idCompany).then(res => setLayouts(res.data))}, [store]);
-
-
-    
-    const navigate= ()=>{
-        nav(`/designer/editor/${params.id}`)
-        nav(0)}  
-
+        const host = location.hostname
+        getByDomain(host == "localhost" || host == "apify-livid.vercel.app" ? "store.apify.com.co": host).then(res=>  {setStore({idStore: res.data.id, idCompany: res.data?.idCompany});
+        getByCompanyId("Layouts", store.idCompany).then(res => setLayouts(res.data))})
+        getByID("SalesTunnel", params.tunnel).then(res=> {setData(res.data);
+            setFbPixel(res.data.facebookPixel)
+        })
+        reportView("fbp")},[])
+ 
+    // useEffect(()=>{fbPixel && useScript(fbPixel)},[fbPixel])
     useEffect(() => {
         const layoutOBJ = layouts?.filter(item => item.id == params.tunnel)
         const savedLayout = layoutOBJ?.[0]?.content?.replaceAll("'", "\"")
@@ -47,11 +45,10 @@ export const SalesTunnelPage = ()=> {
         if (savedLayout) {
             const layout = JSON.parse(savedLayout);
             layout.forEach((item) => {
-            setLayout(layout)})
-            }
+            setLayout(layout)})}
         }, [layouts]);
     
-        const handleClickInCOmponent = (id)=>{console.log("Click en ", id)}
+    const handleClickInCOmponent = (id)=>{console.log("Click en ", id)}
     
     return (
          <div className="w-screen container mx-auto justify-self-center justify-center pb-5" style={{backgroundColor: color?.["backgroundColor"],  
@@ -61,6 +58,4 @@ export const SalesTunnelPage = ()=> {
                <GridContainer canEdit={false} items={layout}  setGrid={setGrid} handleClickInCOmponent={handleClickInCOmponent}/>
                 <SalesWizard data={data}/>
             </div>
-         </div>
-    )
-} 
+         </div>)} 

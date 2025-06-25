@@ -48,7 +48,7 @@ export function SidebarLayout({ navbar, sidebar, children }) {
   let [showSidebar, setShowSidebar] = useState(false)
 
   return (
-    <div className="relative isolate flex min-h-svh w-full bg-white max-lg:flex-col lg:bg-zinc-100   ">
+    <div className="relative isolate flex min-h-svh w-full bg-white max-lg:flex-col lg:bg-zinc-100">
       {/* Sidebar on desktop */}
       <div className="fixed inset-y-0 left-0 w-64 max-lg:hidden">{sidebar}</div>
 
@@ -70,7 +70,7 @@ export function SidebarLayout({ navbar, sidebar, children }) {
       {/* Content */}
       <main className="flex flex-1 flex-col pb-2 lg:min-w-0 lg:pt-2 lg:pr-2 lg:pl-64">
         <div className="grow p-6 pt-3 lg:rounded-lg lg:bg-white lg:p-10 lg:pt-5 lg:shadow-xs lg:ring-1 lg:ring-zinc-950/5    ">
-          <div className="mx-auto max-w-6xl">{children}</div>
+          <div className="mx-auto max-w-8xl">{children}</div>
         </div>
       </main>
     </div>

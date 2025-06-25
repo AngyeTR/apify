@@ -3,6 +3,7 @@ import {  convertions, } from "../../../shared/services/API/api";
 
 export function useReport() {
     const url = window.location.href
+    const fbc = url.split("=")[1]
 
     const getBrowserInfo = () => {
       const userAgent = navigator.userAgent;
@@ -15,12 +16,11 @@ export function useReport() {
     };
     const browser = getBrowserInfo()
   
-    const reportView = async () => {
+    const reportView = async (fbp) => {
     try {
         const ip = await fetch("https://api.ipify.org?format=json").then((res) => res.json()).then((data) =>  data.ip)
         const unixTimestamp = Math.floor(Date.now() / 1000);
-        const report = {event_name: "PageView", event_time: unixTimestamp, event_source_url: url, userdata:{client_ip_address: ip, client_user_agent:browser}}
-      console.log(report)
+        const report = {event_name: "PageView", event_time: unixTimestamp, event_source_url: url, userdata:{client_ip_address: ip, client_user_agent:browser, fbc: fbc, fbp: fbp}}
         const res = await convertions("AddView", {data:[report], test_event_code:""}).then(res=>console.log(res))
       return res;
     } catch (error) {
@@ -28,15 +28,14 @@ export function useReport() {
       throw error;
     }};
 
-     const reportAddToCart = async (email, phone, fbc, fbp, amount) => {
+     const reportAddToCart = async (email, phone, fbp, amount) => {
     try {
         const ip = await fetch("https://api.ipify.org?format=json").then((res) => res.json()).then((data) =>  data.ip)
         const unixTimestamp = Math.floor(Date.now() / 1000);
         const report = [{event_name: "AddToCart", event_time: unixTimestamp, event_source_url: url, action_source: "string",
-        userdata:{client_ip_address: ip, client_user_agent:browser,  em: email, ph: phone,fbc: fbc,fbp: fbp},
+        userdata:{client_ip_address: ip, client_user_agent:browser,  em: email, ph: phone, fbc: fbc,fbp: fbp},
        custom_data: {currency: "COP", value: amount,content_type: "product"}}]
-        
-      console.log(report)
+  
         const res = await convertions("AddToCart", {data:report}).then(res=>console.log(res))
       return res;
     } catch (error) {
@@ -44,7 +43,7 @@ export function useReport() {
       throw error;
     }};
 
-      const reportPurchase = async (email, phone, fbc, fbp, amount, cartId, quantity ) => {
+      const reportPurchase = async (email, phone,  fbp, amount, cartId, quantity ) => {
     try {
         const ip = await fetch("https://api.ipify.org?format=json").then((res) => res.json()).then((data) =>  data.ip)
         const unixTimestamp = Math.floor(Date.now() / 1000);
@@ -53,8 +52,6 @@ export function useReport() {
        custom_data: {currency: "COP", value: amount,content_type: "product" , order_id: cartId,
         contents: [{id: cartId ,quantity: quantity,item_price: amount}],
        }}]
-        
-      console.log(report)
         const res = await convertions("AddPurchase", {data:report}).then(res=>console.log(res))
       return res;
     } catch (error) {

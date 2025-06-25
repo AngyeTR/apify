@@ -8,7 +8,7 @@ export const Thanks = ({dataSet, setDataSet})=> {
     const {reportPurchase} = useReport()
     const [store] = useLocalStorage("store")
     useEffect(()=>{  getByCompanyId("PreOrders", store.idCompany).then(res=> setDataSet(prev=> ({...prev, cart : res.data.filter(cart=> dataSet.customerData.id == cart.idCustomer)?.reverse()?.[0]}))) 
-    reportPurchase(dataSet.customerData.email, dataSet.customerData.cellphone, "fbc", "fbp", dataSet.cart.docTotal, dataSet.cart.id, dataSet.cart.lines.length  )    
+    reportPurchase(dataSet.customerData.email, dataSet.customerData.cellphone, "fbp", dataSet.cart.docTotal, dataSet.cart.id, dataSet.cart.lines.length  )    
     console.log(dataSet)
 },[])
     
