@@ -8,6 +8,7 @@ import storeRoutes from "./features/Store/routes/routes"
 import designerRoutes from "./features/Designer/routes/routes"
 import { NotFoundPage } from "./shared/pages/NotFoundPage"
 import { ViewPageStatic } from "./features/Designer/Pages/ViewPageStatic"
+import chatRoutes from "./features/Chat/routes/routes"
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
     {token && dashboardRoutes}
     {token && storeRoutes}
     {token && designerRoutes}
+    {token && chatRoutes}
   </Routes>
   )}
 export default App

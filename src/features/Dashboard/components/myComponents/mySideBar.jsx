@@ -59,6 +59,7 @@ export const MySideBar = ()=>{
       <SidebarBody>
       { user.company.id == user.user.company.id ? Object.keys(mods).map((module)=><MySideBarItem data={mods[module]} key={mods[module].id}/>) : <MySideBarItem data={mods["Marketing"]} key={mods["Marketing"].id}/>}
         <MySideBarItem data={{id:3, name: "Tienda"}} key={3}/>
+        <MySideBarItem data={{id:4, name: "Chat"}} key={4}/>
         <SidebarSpacer />
         <SidebarSection>
           <SidebarLabel>Proximos Eventos</SidebarLabel>

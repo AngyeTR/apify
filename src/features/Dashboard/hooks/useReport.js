@@ -20,7 +20,9 @@ export function useReport() {
     try {
         const ip = await fetch("https://api.ipify.org?format=json").then((res) => res.json()).then((data) =>  data.ip)
         const unixTimestamp = Math.floor(Date.now() / 1000);
-        const report = {event_name: "PageView", event_time: unixTimestamp, event_source_url: url, userdata:{client_ip_address: ip, client_user_agent:browser, fbc: fbc, fbp: fbp}}
+        const report = {event_name: "PageView", event_time: unixTimestamp, event_source_url: url, userdata:{client_ip_address: ip, client_user_agent:browser, 
+          fbc: fbc, fbp: fbp
+        }}
         const res = await convertions("AddView", {data:[report], test_event_code:""}).then(res=>console.log(res))
       return res;
     } catch (error) {

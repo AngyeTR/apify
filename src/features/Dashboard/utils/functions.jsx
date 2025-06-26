@@ -1,4 +1,4 @@
-import {  HiCalculator, HiCog, HiBell, HiChartPie, HiGlobeAlt, HiLibrary, HiShoppingBag } from "react-icons/hi";
+import {  HiCalculator,HiChatAlt2 , HiCog, HiBell, HiChartPie, HiGlobeAlt, HiLibrary, HiShoppingBag } from "react-icons/hi";
 
 export const adjustLoginData = (data)=>{
     const newData = {
@@ -39,6 +39,7 @@ export const getModuleIcon = (id)=>{
         1: {icon: <HiCog className="text-zinc-500 size-6 shrink-0  hover:text-zinc-950"/>, url: "/dashboard/settings"},
         2:{icon:   <HiBell className=" text-zinc-500 size-6 shrink-0 hover:text-zinc-950"/> , url:"/dashboard/marketing" }, 
         3:{icon:   <HiShoppingBag className=" text-zinc-500 size-6 shrink-0 hover:text-zinc-950"/> , url:"/dashboard/storemanager" }, 
+        4:{icon:   <HiChatAlt2  className=" text-zinc-500 size-6 shrink-0 hover:text-zinc-950"/> , url:"/chat" }, 
         // analytics: <HiChartPie className="size-6 shrink-0"/>,
         // logistics: <HiGlobeAlt  className="size-6 shrink-0"/>,
         // store: <HiLibrary className="size-6 shrink-0"/>,
