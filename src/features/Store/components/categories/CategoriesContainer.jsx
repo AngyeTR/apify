@@ -29,7 +29,7 @@ export const CategoriesContainer = ()=> {
                 {recommended?.map(item=>{return(
                         <div className="group relative">
                             {console.log(item.images)}
-                            <img src={item.images ? item.images?.[0]?.url : logo} alt={item.name} className="w-full rounded-lg bg-zinc-100 object-cover group-hover:opacity-75 max-sm:h-80 sm:aspect-2/1 lg:aspect-square"/>
+                            <img src={item.images?.[0] ? item.images?.[0]?.url : logo} alt={item.name} className="w-full rounded-lg bg-zinc-100 object-cover group-hover:opacity-75 max-sm:h-80 sm:aspect-2/1 lg:aspect-square"/>
                             <h3 className="mt-6 text-sm text-zinc-500">
                         <NavLink to={`/store/product/${item.id}`}>
                         <span className="absolute inset-0"></span>

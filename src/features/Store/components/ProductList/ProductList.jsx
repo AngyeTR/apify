@@ -38,7 +38,7 @@ export const ProductList =()=>{
         <div className="bg-white">
   <div className="mx-auto max-w-2xl px-1 py-4 sm:px-6 sm:py-4 lg:max-w-7xl lg:px-8">
     <h2 className="sr-only">Products</h2>
-    <div className="justify-end justify-items-end"><input onChange={(e)=>setSearch(e.target.value)} className="w-sm justify-end  m-2 mb-5 p-1 border border-zinc-400 rounded-lg" placeholder="Buscar..."/></div>
+    <div className="justify-end justify-items-end"><input onChange={(e)=>setSearch(e.target.value)} className="w-xs justify-end  m-2 mb-5 p-1 border border-zinc-400 rounded-lg" placeholder="Buscar..."/></div>
     <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
 {     search.length >0 ? filteredProducts?.map((product) => <CardProduct data={product} key={product.id}/>)
 :productsToShow?.map((product) => <CardProduct data={product} key={product.id}/>)}        

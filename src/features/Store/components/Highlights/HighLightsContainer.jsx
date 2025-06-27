@@ -21,14 +21,14 @@ export const HighlightsContainer = ()=> {
     <div className="mt-4 flow-root">
       <div className="-my-2">
       <div className="justify-self-end"><NavLink to={"/store/category/0"} className="font-semibold hover:underline">Ver todos los productos</NavLink></div>
-        <div className="relative box-content h-60 overflow-x-auto py-2 ">
+        <div className="relative box-content h-62 overflow-x-auto py-2 ">
           {/* <div className={`grid grid-cols-${categories.length} px-6 w-full overflow-hidden rounded-lg p-2 hover:opacity-75`}>   */}
-          <div className=" flex-row absolute flex space-x-8 px-4 sm:px-6 lg:px-8 xl:relative xl:grid xl:grid-cols-5 xl:gap-x-8 xl:space-x-0 xl:px-0">  
-            {console.log(categories)}
+          <div className=" flex-row absolute flex space-x-8 px-4">  
+
             {categories?.map((cat, index) => {
               const url = cat.avatar ? cat.avatar : logo 
               return (
-              <NavLink key={index} to={`/store/category/${cat.id}`} className="mx-1 relative flex h-60 w-40 flex-col overflow-hidden rounded-lg p-6 hover:opacity-75 xl:w-auto">
+              <NavLink key={index} to={`/store/category/${cat.id}`} className="mx-1 relative flex h-60 w-40 flex-col overflow-hidden rounded-lg p-6 hover:opacity-75 ">
               <span aria-hidden="true" className="absolute inset-0">
                 <img src={url} alt="" className="size-full object-cover"/>
               </span>

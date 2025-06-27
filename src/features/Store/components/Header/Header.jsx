@@ -32,7 +32,8 @@ const MobileMenu = ({ open, close, data, storeUser, logOut, stored})=>{
         </div>
         {/* <!-- Links --> */}
     <div className="space-y-6 border-t border-zinc-200 px-4 py-6">
-      <NavLink to="/store" className="flex lg:hidden items-center  justify-center">
+      <NavLink to="/store" className="flex lg:hidden items-center ">
+          <img className="h-16 w-auto " src={stored?.company.urlLogo ?  stored?.company.urlLogo : "https://static.wixstatic.com/media/87407a_eff577b9b02c43a3aa41bc18c09b9da4~mv2.png/v1/fill/w_393,h_203,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/87407a_eff577b9b02c43a3aa41bc18c09b9da4~mv2.png"} alt=""/>
           <Text className="justify-self-center" >{stored?.company.name}</Text>
         </NavLink>
       <h3 className="underline">Categorías</h3>
@@ -91,9 +92,9 @@ export const  Header= ()=> {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="border-b border-zinc-200">
             <div className="flex h-16 items-center justify-between">
-                <NavLink to="/store" className="hidden lg:flex  w-xs items-baseline">
-                  <img className="h-8 w-auto " src={stored?.company.urlLogo ?  stored?.company.urlLogo : "https://static.wixstatic.com/media/87407a_eff577b9b02c43a3aa41bc18c09b9da4~mv2.png/v1/fill/w_393,h_203,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/87407a_eff577b9b02c43a3aa41bc18c09b9da4~mv2.png"} alt=""/>
-                  <Text className="" >{stored?.company.name}</Text>
+                <NavLink to="/store" className="hidden lg:flex  items-center w-xs items-baseline">
+                  <img className="h-16 w-auto " src={stored?.company.urlLogo ?  stored?.company.urlLogo : "https://static.wixstatic.com/media/87407a_eff577b9b02c43a3aa41bc18c09b9da4~mv2.png/v1/fill/w_393,h_203,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/87407a_eff577b9b02c43a3aa41bc18c09b9da4~mv2.png"} alt=""/>
+                  <Text className="text-xl font-semibold" >{stored?.company.name}</Text>
                 </NavLink>
               <div className="hidden h-full lg:flex flex-col w-full">
                 <div className="ml-8 ">
@@ -109,7 +110,7 @@ export const  Header= ()=> {
                   <HiOutlineMenu className="size-6" onClick={()=>setShowSidebar(true)}/>
                 </button>
                 <div onClick={()=>nav("/store/")} className="flex lg:hidden items-center mx-1">
-                <img src="https://static.wixstatic.com/media/87407a_eff577b9b02c43a3aa41bc18c09b9da4~mv2.png/v1/fill/w_393,h_203,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/87407a_eff577b9b02c43a3aa41bc18c09b9da4~mv2.png" alt="" className="h-8 w-auto"/>
+                <img src={stored?.company.urlLogo ?  stored?.company.urlLogo : "https://static.wixstatic.com/media/87407a_eff577b9b02c43a3aa41bc18c09b9da4~mv2.png/v1/fill/w_393,h_203,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/87407a_eff577b9b02c43a3aa41bc18c09b9da4~mv2.png"} alt="" className="h-16 w-auto"/>
               </div>
               </div>
               <div className="flex flex-1 items-center justify-end">

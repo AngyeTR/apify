@@ -26,7 +26,7 @@ export const PromoCard = ({data})=>{
       <div className=" w-300 transform text-left text-base transition xs:my-4 xs:max-w-2xl md:px-4 xs:max-w-4xl relative flex flex-col overflow-hidden rounded-lg p-6 hover:opacity-75 xs:w-auto">
         <div className="relative flex w-full items-center overflow-hidden bg-white px-4 pt-14 pb-8 shadow-2xl xs:px-6 xs:pt-8 xs:p-6 lg:p-8">
         <div className="grid w-[22%] sm:w-[50%] md:w-[60%] grid-cols-1 items-start gap-x-6 gap-y-8 sm:grid-cols-12 lg:items-center lg:gap-x-8">
-            <img src={data?.images ? data.images?.[0]?.url : logo}  className="aspect-3/4 md:aspect-2/2 w-full rounded-lg bg-zinc-100 object-cover sm:col-span-4 lg:col-span-5"/>
+            <img src={data?.images?.[0] ? data.images?.[0]?.url : logo}  className="aspect-3/4 md:aspect-2/2 w-full rounded-lg bg-zinc-100 object-cover sm:col-span-4 lg:col-span-5"/>
             <div className="sm:col-span-8 lg:col-span-7">
               <h2 className="text-xl font-medium text-zinc-900 sm:pr-12">{data.name}</h2>
               <section aria-labelledby="information-heading" className="mt-1">
