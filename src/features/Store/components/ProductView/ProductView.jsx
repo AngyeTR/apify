@@ -41,6 +41,7 @@ export const ProductView = ()=>{
     const handleFav = async (e)=>{
       e.preventDefault()
       const cleanData = adaptFavoriteModel(favoriteModel, storeUser, params.prod)
+      console.log(cleanData)
       if(isFavorite == true){
         const res = await unMarkFavorite(cleanData).then(res=> res)
         const newFavs = favorites.filter(item=> item != params.prod)

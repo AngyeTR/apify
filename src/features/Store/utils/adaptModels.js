@@ -81,7 +81,7 @@ export const adaptFavoriteModel= (dataSet, userId, productId ) => {
   dataSet["modifiedBy"]= stored?.user.email
   dataSet["createdBy"]= stored?.user.email
   dataSet["idCompany"]= stored?.company.id
-  dataSet["idCustomer"]= userId.id
+  dataSet["idCustomer"]= userId
   dataSet["idProduct"]= parseInt(productId)
   dataSet["startDate"] = date
   return dataSet

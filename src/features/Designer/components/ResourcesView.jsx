@@ -12,7 +12,7 @@ export const ResourcesView = ({collection, data})=> {
     return ( 
         <>
         {collection ? 
-            <div>
+            <div className="pt-10 px-5">
                 <Heading >{collection.name}</Heading>
                 {collection.files.length == 0 ? <h3 className="my-10">Esta colección aún no tiene recursos</h3>:
                 <div className="flex  flex-wrap gap-2 p-6">
@@ -23,7 +23,7 @@ export const ResourcesView = ({collection, data})=> {
                         <div className="rounded-md content-center size-[90px] p-1"><HiOutlineFilm className="justify-self-center size-16"/></div>}
                     </div>)}
                 </div>}
-                <Button className="block" onClick={()=>setEditor(true) }>Añadir archivo a la colección</Button>
+                <button className="block bg-zinc-900 rounded-lg text-sm text-white font-semibold py-2 px-3 hover:bg-zinc-800" onClick={()=>setEditor(true) }>Añadir archivo a la colección</button>
             </div> 
             : <div className="h-[200px] content-center "><h3>Seleccione una colección para ver sus recursos</h3></div>}     
         {editor && 

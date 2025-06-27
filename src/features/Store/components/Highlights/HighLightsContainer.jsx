@@ -1,9 +1,16 @@
 import { NavLink } from "react-router-dom"
 import { useLocalStorage } from "../../../../shared/hooks/useLocalStorage"
 import logo from "../../../../assets/gallery-icon.png" 
+import { useEffect, useState } from "react"
 
 export const HighlightsContainer = ()=> {
   const [categories] = useLocalStorage("categories")
+  // const [categories, setCategories] = useState([])
+
+   useEffect(() => {
+    console.log('Categorías cargadas desde localStorage:', categories);
+  }, [categories]);
+
     return (
         <div className="bg-white">
           <div className="py-4 sm:py-6 xl:mx-auto xl:max-w-7xl xl:px-8">
