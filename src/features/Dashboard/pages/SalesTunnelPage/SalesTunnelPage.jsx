@@ -63,6 +63,6 @@ export const SalesTunnelPage = ()=> {
               backgroundPosition: 'center', repeat: "no-repeat",  backgroundBlendMode: 'multiply' }} >
             <div className="w-[90vw] sm:w-[70vw] m-0 p-0  justify-self-center justify-items-center" >
                <GridContainer canEdit={false} items={layout}  setGrid={setGrid} handleClickInCOmponent={handleClickInCOmponent} uuid={uuid}/>
-                <SalesWizard data={data}/>
+                <SalesWizard data={data} uuid={uuid}/>
             </div>
          </div>)} 

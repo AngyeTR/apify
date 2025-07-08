@@ -1,14 +1,18 @@
 import { useEffect, useState } from "react"
 import { Heading } from "../../../../shared/components/uikit/heading"
-import { getByCompanyId, getByID, getCities } from "../../../../shared/services/API/api"
+import { getByCompanyId, getByID, getCities, post } from "../../../../shared/services/API/api"
 import { HiOutlineTrash } from "react-icons/hi";
 import { Input } from "../../../../shared/components/uikit/input";
 import { HiOutlinePencil } from "react-icons/hi";
 import { Button } from "../../../../shared/components/uikit/button";
 import { useTunnelCart } from "../../hooks/useTunnelCart";
 import { useLocalStorage } from "../../../../shared/hooks/useLocalStorage";
+import { adaptNavigationModel } from "../../utils/adaptDataModel";
+import { navigationModel } from "../../utils/models";
 
-export const Summary = ({data, dataSet, setDataSet, handleClick})=>{
+export const Summary = ({data, dataSet, setDataSet, handleClick, uuid})=>{
+    console.log(data)
+    console.log(dataSet)
     const [products, setProducts ] = useState({orderBounds:[]})
     const [ total, setTotal] = useState(0)
     const [ editor, setEditor] = useState(false)
@@ -37,6 +41,8 @@ export const Summary = ({data, dataSet, setDataSet, handleClick})=>{
         const carts = await  getByCompanyId("PreOrders", store.idCompany).then(res => res?.data?.filter(order=> order.idCustomer == dataSet.customerData.id))
         carts && setDataSet(prev=> ({...prev, cart: carts[carts.length -1]})) 
         setDataSet(internalData)
+        const adaptedModel = adaptNavigationModel(navigationModel,  "purchase", data.layouts[0].id, uuid, 0, 0, 2, true, dataSet.cart.id )
+       post("Navigation", adaptedModel).then(res=> console.log(res))
         handleClick(1)}
 
     const handleDeleteUpsell = async()=>{

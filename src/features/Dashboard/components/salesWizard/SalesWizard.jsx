@@ -9,7 +9,7 @@ import { Thanks } from './Thanks'
 import { useParams } from 'react-router-dom'
 
 
-export const SalesWizard = ({data})=> {
+export const SalesWizard = ({data, uuid})=> {
     const [dataSet, setDataSet] = useState({upsaleAccepted: false, downsaleAccepted: false})
     const params = useParams()
     const [currentStep, setCurrentStep]  = useState(1)
@@ -25,14 +25,14 @@ const stepsComplete = [
     {component: <div><SalesForm data={data} dataSet={dataSet} setDataSet={setDataSet} handleClick={handleClick}/></div> }, 
     {component: <div> <Upsale data={data} dataSet={dataSet} setDataSet={setDataSet} handleUpsell={handleUpsell}/></div> }, 
     {component: <div> <Downsale data={data} dataSet={dataSet} setDataSet={setDataSet} handleClick={handleClick}/></div> }, 
-    {component: <div> <Summary data={data} dataSet={dataSet} setDataSet={setDataSet} handleClick={handleClick}/></div> }, 
-    {component: <div> <Thanks data={data} dataSet={dataSet} setDataSet={setDataSet}/></div> }, 
+    {component: <div> <Summary data={data} dataSet={dataSet} setDataSet={setDataSet} handleClick={handleClick} uuid={uuid}/></div> }, 
+    {component: <div> <Thanks data={data} dataSet={dataSet} setDataSet={setDataSet} /></div> }, 
 ]
 const stepsWithoutUpsell = [
     {component: <div><CustomerForm data={data} dataSet={dataSet} setDataSet={setDataSet} handleClick={handleClick}/></div> }, 
     {component: <div><SalesForm data={data} dataSet={dataSet} setDataSet={setDataSet} handleClick={handleClick}/></div> }, 
-     {component: <div> <Summary data={data} dataSet={dataSet} setDataSet={setDataSet} handleClick={handleClick}/></div> }, 
-    {component: <div> <Thanks data={data} dataSet={dataSet} setDataSet={setDataSet}/></div> }, 
+     {component: <div> <Summary data={data} dataSet={dataSet} setDataSet={setDataSet} handleClick={handleClick} uuid={uuid}/></div> }, 
+    {component: <div> <Thanks data={data} dataSet={dataSet} setDataSet={setDataSet} /></div> }, 
 ]
 const steps = data?.upsell?.id ? stepsComplete : stepsWithoutUpsell 
     const render = (currentStep)=> {return steps[currentStep-1].component}

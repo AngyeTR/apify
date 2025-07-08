@@ -10,7 +10,6 @@ export function useExit(message = '¿Estás seguro de que quieres salir?', uuid,
     //   return message;
       const adaptedModel = adaptNavigationModel(navigationModel,  "exit", data.layouts[0].id, uuid, 0, 0, 3)
        post("Navigation", adaptedModel).then(res=> console.log(res))
-    console.log(message)
     };
 
     window.addEventListener('beforeunload', handleBeforeUnload);
