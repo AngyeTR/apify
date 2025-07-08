@@ -233,3 +233,18 @@ export const layoutsModel =  {
   app: 0,
   lines: []
 }
+
+
+export const navigationModel = {
+ isActive: true,
+  createdBy: "System",
+  modifiedBy: "System",
+  section: "",
+  idLayout: 0,
+  guid: "",
+  time: 0,
+  totalTime: 0,
+  isPurchase: false,
+  idPreOrder: 0,
+  typeNavigation: 0
+}

@@ -39,7 +39,7 @@ export const deleteStoreUser = () => {
 }
 
 export const  getFbp = () => {
-    return cookies.get("fbp")
+    return cookies.get("_fbp")
 }
 
 export const setFbp =async (value)=> {

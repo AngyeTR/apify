@@ -194,6 +194,7 @@ export const adaptAddingCartModel= (dataSet, product, userId, quantity, origin) 
   const quant = quantity ?  quantity  : 1
   dataSet["app"]= dataSet.app + 1
   dataSet["lines"]= [
+    // ...dataSet.lines, 
     {
       isActive: true,
       idCompany: origin == "salesTunnel" ? store.idCompany : stored?.company.id,
@@ -233,4 +234,16 @@ export const adaptDeleteCartModel= (dataSet, productId) => {
   rest["lines"]= newLines
 
   return rest
+}
+
+export const adaptNavigationModel = (dataSet, section, idLayout, uuid, time, timeSpent, type, isPurchase, idPreOrder ) => {
+    dataSet["section"] = section;
+    dataSet["idLayout"] = idLayout?  idLayout : 1;
+    dataSet["guid"] = uuid;
+    dataSet["time"] = time
+    dataSet["totalTime"] = timeSpent;
+    dataSet["typeNavigation"] = type
+    dataSet["isPurchase"]= isPurchase ? isPurchase : false;
+    dataSet["idPreOrder"]= idPreOrder ? idPreOrder : null;
+    return dataSet
 }

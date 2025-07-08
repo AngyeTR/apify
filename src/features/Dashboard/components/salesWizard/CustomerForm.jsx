@@ -21,7 +21,6 @@ export const CustomerForm = ({data, handleClick, dataSet, setDataSet})=>{
     const [store] = useLocalStorage("store")
     const { reportAddToCart } = useReport()
 
-
     const saveform = async()=>{
         buyerInfo.idCity = buyerInfo.cityData.id
         buyerInfo.idCompany = store
@@ -38,9 +37,9 @@ export const CustomerForm = ({data, handleClick, dataSet, setDataSet})=>{
              const customerID = await getCustomerByPhone(1, buyerInfo.cellphone).then(res=> res.data.id)
             customerID && (buyerInfo.id = customerID)
             setDataSet(prev=>({...prev, "customerData":buyerInfo})) 
-            console.log("creating 2")
+            console.log(buyerInfo)
             await createCart(product, buyerInfo).then(res=>setDataSet(prev=>({...prev, cart: res})))
-            await reportAddToCart(buyerInfo.email, buyerInfo.cellphone, "fbp", product.price)
+            await reportAddToCart(buyerInfo.email, buyerInfo.cellphone,  product.price, data.id, buyerInfo.firstName, buyerInfo.lastName, buyerInfo.cityData.name)
             handleClick(1)
         }
     }

@@ -1,12 +1,16 @@
 import { useEffect, useRef, useState } from "react";
+import { post } from "../../../shared/services/API/api";
+import { navigationModel } from "../utils/models";
+import { adaptNavigationModel } from "../utils/adaptDataModel";
 
-export const useScrollCheckpoints = (sections = 5) => {
+export const useScrollCheckpoints = (sections = 5, uuid, idLayout) => {
   const [currentSection, setCurrentSection] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const entryTimeRef = useRef(Date.now());
 
+
   useEffect(() => {
-    const handleScroll = () => {
+    const handleScroll = async () => {
       const scrollTop = window.scrollY || document.documentElement.scrollTop;
       const docHeight = document.documentElement.scrollHeight
       const windowHeight = window.innerHeight;
@@ -18,11 +22,13 @@ export const useScrollCheckpoints = (sections = 5) => {
       if (newSection !== currentSection) {
         const now = Date.now();
         const timeSpent = (now - entryTimeRef.current) / 1000; 
-        console.log("!!!!!!!", `Sección ${currentSection} → ${newSection} : ${timeSpent - currentTime}s en pantalla, tiempo total: ${timeSpent}s`);
+        const adaptedModel = adaptNavigationModel( navigationModel,  `${currentSection}-${newSection}`, idLayout, uuid, timeSpent - currentTime, timeSpent, 1)
+        await post("Navigation", adaptedModel).then(res=> console.log(res))
         setCurrentSection(newSection)
         setCurrentTime( timeSpent)
         if (scrollTop + windowHeight >= docHeight - 1) {
-        console.log(' El usuario llegó al final de la página');
+          const adaptedModel = adaptNavigationModel( navigationModel, "end", idLayout, uuid, timeSpent - currentTime, timeSpent, 1)
+          await post("Navigation", adaptedModel).then(res=> console.log(res))
   }
       }
     };

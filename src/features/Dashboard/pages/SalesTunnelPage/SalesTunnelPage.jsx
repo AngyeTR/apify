@@ -2,18 +2,20 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom"
 import { useLocalStorage } from "../../../../shared/hooks/useLocalStorage";
 import { GridContainer } from "../../../Designer/components/GridContainer";
-import { getByCompanyId, getByDomain, getByID } from "../../../../shared/services/API/api";
+import { getByCompanyId, getByDomain, getByID, post } from "../../../../shared/services/API/api";
 import { SalesWizard } from "../../components/salesWizard/SalesWizard";
 import { useScrollCheckpoints } from "../../hooks/useScrollCheckPoints";
 import { useReport } from "../../hooks/useReport";
 import { useExit } from "../../hooks/useExit";
 import { useScript } from "../../hooks/useScript";
 import { getFbp } from "../../../../shared/services/cookies";
+ import { v4 as uuidv4 } from 'uuid';
+import { adaptNavigationModel } from "../../utils/adaptDataModel";
+import { navigationModel } from "../../utils/models";
 
 //Importante: Guardar 
 export const SalesTunnelPage = ()=> {
-    useExit()
-    useScrollCheckpoints(10)
+    const [uuid] = useState(uuidv4())
     const { reportView} = useReport()
     const params = useParams()
     const nav = useNavigate()
@@ -26,7 +28,9 @@ export const SalesTunnelPage = ()=> {
     const [grid, setGrid] = useState()
     const [ fbPixel, setFbPixel] = useState(null)
     const location = window.location
+    useExit("", uuid, data?.layouts?.[0]?.id)
     useScript(fbPixel)
+
     useEffect(()=>{
         const host = location.hostname
         getByDomain(host == "localhost" || host == "apify-livid.vercel.app" ? "store.apify.com.co": host).then(res=>  {setStore({idStore: res.data.id, idCompany: res.data?.idCompany});
@@ -34,9 +38,9 @@ export const SalesTunnelPage = ()=> {
         getByID("SalesTunnel", params.tunnel).then(res=> {setData(res.data);
             setFbPixel(res.data.facebookPixel)
         })
-        reportView("fbp")},[])
- 
-    // useEffect(()=>{fbPixel && useScript(fbPixel)},[fbPixel])
+        reportView(params.tunnel)},[])
+        useScrollCheckpoints(10, uuid, data?.layouts?.[0]?.id)
+
     useEffect(() => {
         const layoutOBJ = layouts?.filter(item => item.id == params.tunnel)
         const savedLayout = layoutOBJ?.[0]?.content?.replaceAll("'", "\"")
@@ -48,14 +52,17 @@ export const SalesTunnelPage = ()=> {
             setLayout(layout)})}
         }, [layouts]);
     
-    const handleClickInCOmponent = (id)=>{console.log("Click en ", id)}
+    const handleClickInCOmponent = async (id, uuid)=>{
+        const adaptedModel = adaptNavigationModel(navigationModel,  id, data?.layouts?.[0]?.id, uuid, 0, 0, 2)
+        await post("Navigation", adaptedModel).then(res=> console.log(res))
+    }
     
     return (
          <div className="w-screen container mx-auto justify-self-center justify-center pb-5" style={{backgroundColor: color?.["backgroundColor"],  
               backgroundImage: `url('${color?.["backgroundImage"]}')`,  backgroundSize: 'cover',
               backgroundPosition: 'center', repeat: "no-repeat",  backgroundBlendMode: 'multiply' }} >
             <div className="w-[90vw] sm:w-[70vw] m-0 p-0  justify-self-center justify-items-center" >
-               <GridContainer canEdit={false} items={layout}  setGrid={setGrid} handleClickInCOmponent={handleClickInCOmponent}/>
+               <GridContainer canEdit={false} items={layout}  setGrid={setGrid} handleClickInCOmponent={handleClickInCOmponent} uuid={uuid}/>
                 <SalesWizard data={data}/>
             </div>
          </div>)} 

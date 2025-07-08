@@ -25,11 +25,12 @@ export const SalesForm =({data, setDataSet, dataSet, handleClick})=> {
 
       const save= async()=>{
         console.log(dataSet)
+        console.log(acceptedOrderBounds)
         await updateCart(dataSet.cart, {id: mainProduct.id, name: mainProduct.name, price: dataSet.price.price }, dataSet.customerData.id, dataSet.price.quantity).then(res=> {setDataSet(prev=> ({...prev, cart: res})); setCart(res)})
         setDataSet(prev=>({...prev, orderBounds: acceptedOrderBounds}))
         // dataSet.price.name != "Precio Normal" && await  updateQuantity(cart, data.idProduct, dataSet.price.quantity, dataSet.oldPrice-dataSet.price).then(res=>{setDataSet(prev=> ({...prev, cart: res})); setCart(res)})
-        orderBounds?.map(ob=> updateCart(cart, {id:ob.id, name:ob.name, price:data?.orderBounds.filter(bound=> bound.idProduct == ob.id)?.[0]?.price}, dataSet.customerData.id).then(res => {setDataSet(prev=> ({...prev, cart: res})); setCart(res)}))
-        orderBounds?.map(ob=> console.log("ob ",ob))
+        acceptedOrderBounds?.map(ob=> updateCart(cart, {id:ob.id, name:ob.name, price:data?.orderBounds.filter(bound=> bound.idProduct == ob.id)?.[0]?.price}, dataSet.customerData.id).then(res => {setDataSet(prev=> ({...prev, cart: res})); setCart(res)}))
+        acceptedOrderBounds?.map(ob=> console.log("ob ",ob))
         handleClick(1)
       }
 

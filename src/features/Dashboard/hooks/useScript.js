@@ -151,5 +151,4 @@ export function useScript(pixelId) {
     document.body.appendChild(noscript);
   }, [pixelId]);
 
-
 }

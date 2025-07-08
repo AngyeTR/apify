@@ -1,9 +1,12 @@
 
 import {  convertions, } from "../../../shared/services/API/api";
+import { getFbp } from "../../../shared/services/cookies";
 
 export function useReport() {
-    const url = window.location.href
-    const fbc = url.split("=")[1]
+    let url = window.location.href
+    const fbc = url.split("?")[1]
+    url = url.split("?")[0]
+    const fbp = getFbp()
 
     const getBrowserInfo = () => {
       const userAgent = navigator.userAgent;
@@ -16,45 +19,47 @@ export function useReport() {
     };
     const browser = getBrowserInfo()
   
-    const reportView = async (fbp) => {
+    const reportView = async (idTunnel) => {
     try {
         const ip = await fetch("https://api.ipify.org?format=json").then((res) => res.json()).then((data) =>  data.ip)
         const unixTimestamp = Math.floor(Date.now() / 1000);
-        const report = {event_name: "PageView", event_time: unixTimestamp, event_source_url: url, userdata:{client_ip_address: ip, client_user_agent:browser, 
-          fbc: fbc, fbp: fbp
-        }}
-        const res = await convertions("AddView", {data:[report], test_event_code:""}).then(res=>console.log(res))
+        const report = {event_name: "PageView", event_time: unixTimestamp, event_source_url: url, user_data:{client_ip_address: ip, client_user_agent:browser, 
+          fbc: fbc, fbp: fbp}}
+
+
+        const res = await convertions("AddView", {data:[report], test_event_code:"", "idSalesTunnel": idTunnel}).then(res=>console.log(res))
       return res;
     } catch (error) {
       console.error("Error adding view", error);
       throw error;
     }};
 
-     const reportAddToCart = async (email, phone, fbp, amount) => {
+     const reportAddToCart = async (email, phone, amount, idTunnel, name, lastname, city ) => {
     try {
         const ip = await fetch("https://api.ipify.org?format=json").then((res) => res.json()).then((data) =>  data.ip)
         const unixTimestamp = Math.floor(Date.now() / 1000);
-        const report = [{event_name: "AddToCart", event_time: unixTimestamp, event_source_url: url, action_source: "string",
-        userdata:{client_ip_address: ip, client_user_agent:browser,  em: email, ph: phone, fbc: fbc,fbp: fbp},
+        const report = 
+        [{event_name: "AddToCart", event_time: unixTimestamp, event_source_url: url,
+        user_data:{client_ip_address: ip, client_user_agent:browser,  em: email, ph: phone, fbc: fbc,fbp: fbp, fn:name, ln: lastname, ct:city},
        custom_data: {currency: "COP", value: amount,content_type: "product"}}]
-  
-        const res = await convertions("AddToCart", {data:report}).then(res=>console.log(res))
+          console.log(JSON.stringify(report))
+        const res = await convertions("AddToCart", {data:report, idSalesTunnel: idTunnel}).then(res=>console.log(res))
       return res;
     } catch (error) {
       console.error("Error adding to cart", error);
       throw error;
     }};
 
-      const reportPurchase = async (email, phone,  fbp, amount, cartId, quantity ) => {
+      const reportPurchase = async (email, phone,  amount, cartId, quantity, idTunnel, name, lastname, city ) => {
     try {
         const ip = await fetch("https://api.ipify.org?format=json").then((res) => res.json()).then((data) =>  data.ip)
         const unixTimestamp = Math.floor(Date.now() / 1000);
-        const report = [{event_name: "Purchase", event_time: unixTimestamp, event_source_url: url, action_source: "Purchase",
-        userdata:{client_ip_address: ip, client_user_agent:browser,  em: email, ph: phone,fbc: fbc,fbp: fbp},
+        const report = [{event_name: "Purchase", event_time: unixTimestamp, event_source_url: url,
+        user_data:{client_ip_address: ip, client_user_agent:browser,  em: email, ph: phone,fbc: fbc,fbp: fbp, fn:name, ln: lastname, ct:city},
        custom_data: {currency: "COP", value: amount,content_type: "product" , order_id: cartId,
         contents: [{id: cartId ,quantity: quantity,item_price: amount}],
        }}]
-        const res = await convertions("AddPurchase", {data:report}).then(res=>console.log(res))
+        const res = await convertions("AddPurchase", {data:report, idSalesTunnel: idTunnel}).then(res=>console.log(res))
       return res;
     } catch (error) {
       console.error("Error adding to cart", error);
