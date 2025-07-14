@@ -4,7 +4,7 @@ import { Input } from "../../../../shared/components/uikit/input"
 import { Select } from "../../../../shared/components/uikit/select"
 import { Combobox, ComboboxLabel, ComboboxOption } from "../../../../shared/components/uikit/combobox"
 import { Switch } from "../../../../shared/components/uikit/switch"
-import { edit, getByID, getCities, getCountries, getStates } from "../../../../shared/services/API/api"
+import { edit, getByID, getCities, getCountries, getStates } from "../../../../shared/services/API/landingApi"
 import { Button } from "../../../../shared/components/uikit/button"
 import { useCart } from "../../hooks/UseCart"
 import { useNavigate } from "react-router-dom"
@@ -27,7 +27,7 @@ export const DeliveryForm = ({cart})=>{
         const MyCart = cart
         MyCart.address = address.address
         MyCart.idCity = address.cityData.id
-        address.defaultAddress && await getByID("Customers", cart.idCustomer).then(res=>edit("Customers", {...res.data, address: address.address, idCity: address.cityData.id}).then(res2=>console.log(res2)))
+        address.defaultAddress && await getByID("Customer", cart.idCustomer).then(res=>edit("Customer", {...res.data, address: address.address, idCity: address.cityData.id}).then(res2=>console.log(res2)))
         const res = await updateCartAddress(MyCart).then(res=> res)
         res && console.log(res)
         setAddress({})

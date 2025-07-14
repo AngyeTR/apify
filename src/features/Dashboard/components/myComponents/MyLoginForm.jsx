@@ -27,7 +27,8 @@ export function LoginForm() {
     e.preventDefault()
     setLoading(true)
     setError(null)
-    const response = await getLogin(user, password)
+    console.log("login from my")
+    const response = await getLogin(user, password).then(res=>res)
     if(response?.response?.isValid){
     await setToken(response.token.token.toString(), response.token.expiredDate.toString())
     await setData(adjustLoginData(response))
@@ -37,7 +38,7 @@ export function LoginForm() {
     await setMods(response.options)
     await setModules(adaptedModules)
     setError(null)
-    nav(!response.implementation.success && response.user.idProfile ==1  ? "/dashboard/wizard" : "/dashboard" )
+    nav(!response.implementation?.success && response.user.idProfile ==1  ? "/dashboard/wizard" : "/dashboard" )
     nav(0)
     }   else setError(response?.response?.message ? response.response.message : "Error de red" );
     setLoading(false)    

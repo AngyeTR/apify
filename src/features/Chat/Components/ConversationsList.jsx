@@ -1,23 +1,18 @@
-import {Sidebar, SidebarBody, SidebarFooter, SidebarHeader, SidebarItem, SidebarLabel, SidebarSection, SidebarSpacer } from "../../../shared/components/uikit/sidebar"
+import {Sidebar, SidebarBody, SidebarHeader, SidebarLabel, SidebarSection } from "../../../shared/components/uikit/sidebar"
 import {Avatar} from "../../../shared/components/uikit/avatar"
-import { HiHome, HiOutlineDocumentText, HiOutlinePhotograph , HiOutlineFilm,  } from "react-icons/hi";
-import { BiCheckDouble } from "react-icons/bi";
+import { HiHome,  HiBell } from "react-icons/hi";
 import { useLocalStorage } from "../../../shared/hooks/useLocalStorage"
 import { useNavigate } from "react-router-dom";
+import { Loader } from "../../../shared/components/Loader";
 
-export const ConversationsList = ({conversations, setConversation, conversation})=>{
+export const ConversationsList = ({conversations, setConversation, conversation, loading})=>{
     const selected = conversation
     const [user, setUser] = useLocalStorage("data", null)
     const nav = useNavigate()
 
-    const renderIcon = (type)=> {
-        const icons = {
-            document: <HiOutlineDocumentText/>,
-            image: <HiOutlinePhotograph className=" size-5"/>,
-            video: <HiOutlineFilm className=" size-5"/>,}
-            return icons[type]}
-    
-     return (
+    if (loading) return <div className="place-self-center mt-50"><Loader /></div>
+
+    return (
      <Sidebar >
       <SidebarBody>
         <SidebarHeader className="fixed top-5 w-80 lg:w-70 z-3 h-[10%] ml-5 lg:ml-0 bg-white">
@@ -30,13 +25,18 @@ export const ConversationsList = ({conversations, setConversation, conversation}
         <SidebarSection className="relative mt-[12%] lg:mt-[25%] h-[90%]">
               {!conversations ? <SidebarLabel>Aún no hay conversaciones</SidebarLabel>:
         conversations.map(conversation=>  
-        <div onClick={()=>setConversation(conversation)} key={conversation.id}
-        className={`${conversation.id == selected?.id && "border border-zinc-300"} relative my-1 min-w-0 items-center gap-3 rounded-lg  p-2 text-left text-base/6 font-medium text-zinc-950 hover:text-zinc-950 sm:text-sm/5 hover:bg-zinc-950/5 `}>
-            <div className="flex flex-row"><div><p className="text-md my-1 font-semibold">{conversation.owner}</p></div>  <div><p  className="absolute right-1 text-zinc-500">{conversation.messages.at(-1)?.time}</p></div></div>
+        <div onClick={()=>setConversation(conversation)} key={conversation.to}
+        className={`${conversation.to == selected?.to && "border border-zinc-300"} relative my-1 min-w-0 items-center gap-3 rounded-lg  p-2 text-left text-base/6 font-medium text-zinc-950 hover:text-zinc-950 sm:text-sm/5 hover:bg-zinc-950/5 `}>
+            <div className="flex flex-row"><div><p className="text-md my-1 font-semibold">{conversation.to}</p></div>  
+            {/* <div><p  className="absolute right-1 text-zinc-500">{conversation.messages.at(-1)?.time}</p></div> */}
+            {console.log(conversation)}
+            {conversation.quantity != "0" && <div className='absolute right-3 top-3 h-fit w-fit '><HiBell className='text-shadow-xl text-red-600 size-5 m-2 animate-pulse'/></div>}
+            </div>
             <div className="block flex flex-row">
-                {!conversation.messages.at(-1)?.inbound && <BiCheckDouble className="mx-1 size-5"/>}
-                {conversation.messages.at(-1)?.type == "text" ? <p className="text-sm text-zinc-800 overflow-hidden w-80 h-4">{conversation.messages.at(-1)?.message }</p>: 
-                <div className="flex ">{renderIcon(conversation.messages.at(-1)?.type)}<p className="italic ml-2">{conversation.messages.at(-1)?.type}</p></div>}</div>
+                {/* {!conversation.messages.at(-1)?.inbound && <BiCheckDouble className="mx-1 size-5"/>} */}
+                {conversation.subject.length > 0 ? <p className="text-sm text-zinc-700 pl-5 overflow-hidden w-80 h-4">{conversation.subject}</p>: 
+                <div className="flex "><p className="italic ml-2"> Contenido Multimedia</p></div>}</div>
+                {/* <div className="flex ">{renderIcon(conversation.messages.at(-1)?.type)}<p className="italic ml-2">{conversation.messages.at(-1)?.type}</p></div>}</div> */}
         </div>)}
 
         </SidebarSection>

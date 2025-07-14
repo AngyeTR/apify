@@ -67,11 +67,13 @@ export const adaptUserModel = (dataSet, origin, base64, fileOrigin) => {
 export  const adaptProductModel =  (dataSet, origin, stock) => {
     const modifyColor = (color)=> {
         color["createdBy"] = stored?.user.email
+        color["modifiedBy"] = stored?.user.email
         color["nombre"]= color.name
         color["colorCode"]= color.colorCode
         return color} 
     const modifyStock = (stock)=> {
         stock["createdBy"] = stored?.user.email
+        stock["modifiedBy"] = stored?.user.email
         stock["transaction"] = 1
         stock["transactionDate"] = date
         return stock} 
@@ -91,8 +93,8 @@ export  const adaptProductModel =  (dataSet, origin, stock) => {
             const base64 = await getBase64(images[i].value)
             const url = await postImage({name: `productImage${Date.now()}`, "base64": base64, "imageType": 2}).then(res => {return res.data})
           dataSet["images"][i] = {url: url,  modifiedBy: stored?.user.email, createdBy: stored?.user.email }
-
-            
+          !dataSet["images"][i].createdBy && (dataSet["images"][i]["createdBy"] = stored?.user.email)
+          !dataSet["images"][i].modifiedBy && (dataSet["images"][i]["modifiedBy"] = stored?.user.email)            
           } catch (error) { console.error("Error al convertir:", error)}
 console.log(dataSet)
         }
@@ -124,6 +126,7 @@ export const adaptSalesmanModel = (dataSet, origin, isActive) => {
 }
 
 export const adaptImplementationModel = (step)=>{
+  console.log(step)
   return {
   isActive: true,
   createdBy: stored?.user.email,
@@ -178,6 +181,7 @@ export const adaptLibraryModel = (name) =>{
 
 export const adaptNewCartModel= (dataSet, product, customer, origin) => {
   dataSet["idCompany"]= origin == "salesTunnel" ? store.idCompany : stored?.company.id
+  dataSet["idProduct"] = product.id
   dataSet["idCustomer"]= customer.id
   dataSet["fUllname"] = customer.firstName + " " + customer.lastName
   dataSet["address"] = customer.address != "none" ? customer.address : ""
@@ -185,9 +189,28 @@ export const adaptNewCartModel= (dataSet, product, customer, origin) => {
   dataSet["idCity"]= customer.idCity,
   dataSet["docDate"]= date
   dataSet["app"]= 1
-  dataSet["lines"]= []
+  dataSet["lines"]=   dataSet["lines"]= [
+    // ...dataSet.lines, 
+    {
+      isActive: true,
+      idCompany: origin == "salesTunnel" ? store.idCompany : stored?.company.id,
+      createdBy: origin == "salesTunnel"?  "SalesTunnel": stored?.user.email,
+      modifiedBy: origin == "salesTunnel"?  "SalesTunnel": stored?.user.email,
+      idCustomer: customer.id,
+      idProduct: product.id, 
+      lineNum: 1,
+      productName: product.name,
+      quantity: 1,
+      price: product.price,
+      taxRate: 0,
+      taxValue: 0,
+      discPrcnt: 0,
+      discValue: 0,
+      total: 0,
+      idPreOrder: dataSet.id
+    }]
     console.log(dataSet)
-    return dataSet
+    return dataSet 
 }
 
 export const adaptAddingCartModel= (dataSet, product, userId, quantity, origin) => {
@@ -246,4 +269,10 @@ export const adaptNavigationModel = (dataSet, section, idLayout, uuid, time, tim
     dataSet["isPurchase"]= isPurchase ? isPurchase : false;
     dataSet["idPreOrder"]= idPreOrder ? idPreOrder : null;
     return dataSet
+}
+
+export const adaptFinishCartModel= (dataSet) => {
+  dataSet.status = 1
+  const { lines, ...rest } = dataSet;
+    return rest
 }

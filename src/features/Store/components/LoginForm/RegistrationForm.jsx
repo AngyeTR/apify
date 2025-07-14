@@ -10,7 +10,8 @@ import { validateEmail } from "../../../../shared/utils/utils.jsx"
 import { NavLink, useNavigate } from "react-router-dom"
 import { useLocalStorage } from "../../../../shared/hooks/useLocalStorage.js"
 import { Loader } from "../Loader/Loader.jsx"
-import { getByCompanyId, getFavorites, post } from "../../../../shared/services/API/api.js"
+import { getByCompanyId,  post } from "../../../../shared/services/API/landingApi.js"
+import { getFavorites } from "../../services/storeApi.js"
 import { setStoreUser } from "../../../../shared/services/cookies.js"
 import { filtercarts } from "../../utils/functions.js"
 
@@ -18,7 +19,7 @@ export const RegistrationForm = ()=> {
   const nav = useNavigate()
   const [loading, setLoading] = useState(null)
   const [error, setError] = useState(null)
-  const [stored] = useLocalStorage("data")
+  const [stored] = useLocalStorage("storeCompany")
   const [favorites, setFavorites] = useLocalStorage("favorites")
   const [cart, setCart] = useLocalStorage("cart", null)
   const [dataset, setDataset] = useState({isActive: true, createdBy: "System", modifiedBy: "System", idCompany: stored?.company.id})
@@ -33,9 +34,9 @@ export const RegistrationForm = ()=> {
       }else {
         const fullName = (dataset.firstName && dataset.lastName) ? dataset.firstName + " " + dataset.lastName: null
         setDataset(prev => ({...prev, ["fullname"] : fullName})) 
-        const res = await post("Customers", dataset).then(res=> res)
+        const res = await post("Customer", dataset).then(res=> res)
         res.isValid ? setStoreUser(res.data.id) : setError("algo salió mal. Intenta de nuevo")
-        res.isValid && await getByCompanyId("PreOrders", stored?.company.id).then(response=> setCart(filtercarts(response.data, res.data.id)))
+        res.isValid && await getByCompanyId("Orders", stored?.company.id).then(response=> setCart(filtercarts(response.data, res.data.id)))
         res.isValid &&  await getFavorites(stored?.company.id, res.data.id).then(response => setFavorites(filterFavorites(response.data)))
         res.isValid && nav(-1)
       }

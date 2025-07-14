@@ -3,7 +3,7 @@ import { Input, InputGroup } from "../../../../shared/components/uikit/input"
 import { HiOutlineTrash } from "react-icons/hi";
 import logo from "../../../../assets/gallery-icon.png" 
 import { use, useEffect, useState } from "react";
-import { getByCompanyId, getByCustomerId, getByID } from "../../../../shared/services/API/api"
+import { getByCompanyId, getByID } from "../../../../shared/services/API/landingApi"
 import { HiOutlineShoppingCart } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 import { getStoreUser } from "../../../../shared/services/cookies";
@@ -16,7 +16,7 @@ import { DeliveryForm } from "../DeliveryForm/DeliveryForm";
 export const ShoppingCart = ()=> {
   const [cart, setCart] = useLocalStorage("cart", null)
   const [products, setProducts] = useState([])
-  const [stored] = useLocalStorage("data")
+  const [stored] = useLocalStorage("dastoreCompanyta")
   const [idToDelete, setIdToDelete] = useState(null)
   const [newAddress, setNewAddress] = useState(null)
   const { createCart,updateCart,updateQuantity,removeProduct,}  = useCart()
@@ -24,11 +24,11 @@ export const ShoppingCart = ()=> {
   const nav = useNavigate()
   const storeUserId = getStoreUser()
 
-  useEffect(()=>{getByCompanyId("PreOrders", stored?.company.id).then(res=> saveCart(res.data))},[ ])
+  useEffect(()=>{getByCompanyId("Orders", stored?.company.id).then(res=> saveCart(res.data))},[ ])
 
 const saveCart = async (data)=>{
   setCart(filtercarts(data, storeUserId))
-  const getProduct = async(id)=> {await getByID("Products", id).then(res=> setProducts(prev=> ([...prev, res.data])))}
+  const getProduct = async(id)=> {await getByID("Product", id).then(res=> setProducts(prev=> ([...prev, res.data])))}
   cart.lines.length >= 0  && cart.lines.map(item =>  getProduct(item.idProduct))
 }
     

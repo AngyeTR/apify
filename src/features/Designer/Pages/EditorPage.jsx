@@ -24,11 +24,11 @@ export const EditorPage=()=>{
         layoutOBJ && setItem(layoutOBJ)
         const savedLayout = layoutOBJ?.[0]?.content?.replaceAll("'", "\"")
         const savedColor = layoutOBJ?.[0]?.styles?.replaceAll("'", "\"")
-        if (savedLayout) {
+        if (savedLayout?.length > 2) {
           const layout = JSON.parse(savedLayout);
           setCount(layout.length)
           layout.forEach((item) => {setLayout(layout)})
-        }
+        } else setLayout([])
         savedColor && setLayoutColor(JSON.parse(savedColor))
     }, [layouts ]);
     return(

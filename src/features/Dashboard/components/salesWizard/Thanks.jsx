@@ -1,13 +1,13 @@
 import { useEffect } from "react"
 import { Heading } from "../../../../shared/components/uikit/heading"
-import { getByCompanyId } from "../../../../shared/services/API/api"
+import { getByCompanyId } from "../../../../shared/services/API/landingApi"
 import { useLocalStorage } from "../../../../shared/hooks/useLocalStorage"
 import { useReport } from "../../hooks/useReport"
 
 export const Thanks = ({data, dataSet, setDataSet})=> {
     const {reportPurchase} = useReport()
     const [store] = useLocalStorage("store")
-    useEffect(()=>{  getByCompanyId("PreOrders", store.idCompany).then(res=> setDataSet(prev=> ({...prev, cart : res.data.filter(cart=> dataSet.customerData.id == cart.idCustomer)?.reverse()?.[0]}))) 
+    useEffect(()=>{  getByCompanyId("Orders", store.idCompany).then(res=> setDataSet(prev=> ({...prev, cart : res.data.filter(cart=> dataSet.customerData.id == cart.idCustomer)?.reverse()?.[0]}))) 
     reportPurchase(dataSet.customerData.email, dataSet.customerData.cellphone, dataSet.cart.docTotal, dataSet.cart.id, dataSet.cart.lines.length, data.id, dataSet.customerData.firstName, dataSet.customerData.lastName, dataSet.customerData.cityData.name )    
     console.log(dataSet, dataSet)
 },[])

@@ -9,9 +9,10 @@ import { useState } from "react";
 import { Loader} from "../Loader/Loader.jsx"
 import { validateEmail } from "../../../../shared/utils/utils.jsx"
 import { NavLink,  useNavigate } from "react-router-dom"
-import { getByCompanyId, getFavorites, getLoginCustomer } from "../../../../shared/services/API/api.js"
+import { getByCompanyId, } from "../../../../shared/services/API/landingApi.js"
+import { getFavorites, getLoginCustomer } from "../../services/storeApi.js"
 import { useLocalStorage } from "../../../../shared/hooks/useLocalStorage.js"
-import { setStoreUser } from "../../../../shared/services/cookies.js"
+import { setStoreToken, setStoreUser } from "../../../../shared/services/cookies.js"
 import { filtercarts, filterFavorites } from "../../utils/functions.js"
 
 export const LoginForm = ()=> {
@@ -20,7 +21,7 @@ export const LoginForm = ()=> {
     const [error, setError] = useState(null)
     const [user, setUser] = useState(null)
     const [password, setPassword] = useState(null)
-    const [stored] = useLocalStorage("data")
+    const [stored] = useLocalStorage("storeCompany")
     const [cart, setCart] = useLocalStorage("cart")
     const [favorites, setFavorites] = useLocalStorage("favorites")
     const companyInfo={}
@@ -32,10 +33,11 @@ export const LoginForm = ()=> {
       if(verifyEmail) {setError(verifyEmail)  
       }else {
       const res = await getLoginCustomer(user, password).then(res=> res)
-      if (res.isValid) {
-        setStoreUser(res.data.id); 
-        await getByCompanyId("PreOrders", stored?.company.id).then(response=> setCart(filtercarts(response.data, res.data.id)))
-        await getFavorites(stored?.company.id, res.data.id).then(response => setFavorites(filterFavorites(response.data)))
+      if (res.response.isValid) {
+        setStoreUser(res.response.data.id);
+        setStoreToken(res.token.token) 
+        await getByCompanyId("Orders", stored?.company.id).then(response=> setCart(filtercarts(response.data, res.response.data.id)))
+        await getFavorites(stored?.company.id, res.response.data.id).then(response =>{console.log(response); setFavorites(filterFavorites(response.data))})
         nav("/store")
       }else { setError(res?.message ? res?.message : " ")} 
       setLoading(false)}

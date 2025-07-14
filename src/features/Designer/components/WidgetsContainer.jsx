@@ -6,6 +6,7 @@ import { Controller } from "./Controller";
 import { edit } from "../../../shared/services/API/api";
 
 export const WidgetsContainer =({setItems, items, count, setCount, layoutColor, item, grid})=>{
+    console.log(items)
     const [newItem, setNewItem] = useState(null)
     const nav = useNavigate() 
     const itemsRef = useRef(new Map())

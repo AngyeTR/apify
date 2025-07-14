@@ -1,7 +1,7 @@
 import { NavLink, useNavigate, useParams } from "react-router-dom"
 import { HiOutlineX, HiChevronDown, HiOutlineShoppingCart, HiOutlineSearch, HiOutlineUser, HiOutlineMenu   } from "react-icons/hi";
 import { useEffect, useState } from "react"
-import { getByCompanyId } from "../../../../shared/services/API/api.js"
+import { getByCompanyId } from "../../../../shared/services/API/landingApi.js"
 import { useLocalStorage } from "../../../../shared/hooks/useLocalStorage"
 import { Text } from "../../../../shared/components/uikit/text.jsx";
 import { deleteStoreUser, getStoreUser } from "../../../../shared/services/cookies.js";
@@ -55,7 +55,7 @@ export const  Header= ()=> {
   let [showSidebar, setShowSidebar] = useState(false)
  const [cart, setCart, removeCart] = useLocalStorage("cart")
   // const [data, setData] = useState(null)
-  const [stored] = useLocalStorage("data")
+  const [stored] = useLocalStorage("storeCompany")
   const [data, setData] = useLocalStorage("categories", null)
   const nav = useNavigate()
   const storeUser = getStoreUser()

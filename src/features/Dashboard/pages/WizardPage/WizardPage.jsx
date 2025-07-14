@@ -16,7 +16,7 @@ export const WizardPage = ()=> {
   const [stored] = useLocalStorage("data")
   const [data, setData] = useLocalStorage("data", null)
   // const [currentStep, setCurrentStep]  = useState(stored.implementation.implementationStep  )
-  const [currentStep, setCurrentStep]  = useState(4)
+  const [currentStep, setCurrentStep]  = useState(1)
   const nav = useNavigate()
 
   const handleClick = async()=> { 
@@ -31,15 +31,15 @@ export const WizardPage = ()=> {
     {component: < FormProduct handleClick={handleClick} step={4} origin="wizard"   />}]
     const render = (currentStep)=> {return steps[currentStep-1].component}
 
-  const finish= async(step)=>{
-    await finishWizard(step)
+  const finish= async()=>{
+    await finishWizard(currentStep).then(res=> console.log(res))
     const company =await  getByID("Companies", data.company.id).then((res) =>  res.data)
     let newData = getUpdatedLocalData(data, company)
     setData(newData)
      nav("/dashboard/")
   }
-  const update= async(step)=>{
-    await updateWizard(step)
+  const update= async()=>{
+    await updateWizard(currentStep).then(res=> console.log(res))
     const company =await  getByID("Companies", data.company.id).then((res) => res.data)
     let newData = getUpdatedLocalData(data, company)
     setData(newData)

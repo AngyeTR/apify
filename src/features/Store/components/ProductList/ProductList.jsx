@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { useLocalStorage } from "../../../../shared/hooks/useLocalStorage"
 import { CardProduct } from "./CardProduct"
 import { Text} from "../../../../shared/components/uikit/text"
-import { getByCompanyId} from "../../../../shared/services/API/api"
+import { getByCompanyId} from "../../../../shared/services/API/landingApi"
 import { useParams } from "react-router-dom"
 import { Button } from "../../../../shared/components/uikit/button"
 
@@ -21,7 +21,7 @@ export const ProductList =()=>{
     const [productsToShow, setProductsToShow] = useState(null)
     const [filteredProducts, setFilteredProducts] = useState(null)
     const [search, setSearch] = useState("")
-    const [stored] = useLocalStorage("data")
+    const [stored] = useLocalStorage("storeCompany")
     const params = useParams()
 
     useEffect(()=>{

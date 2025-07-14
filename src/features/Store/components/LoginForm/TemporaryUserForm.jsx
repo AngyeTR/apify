@@ -10,14 +10,15 @@ import { validateEmail } from "../../../../shared/utils/utils.jsx"
 import { NavLink, useNavigate } from "react-router-dom"
 import { useLocalStorage } from "../../../../shared/hooks/useLocalStorage.js"
 import { Loader } from "../Loader/Loader.jsx"
-import { getByCompanyId, getFavorites, post } from "../../../../shared/services/API/api.js"
+import { getByCompanyId, post } from "../../../../shared/services/API/landingApi.js"
+import { getFavorites,} from "../../services/storeApi.js"
 import { setStoreUser} from "../../../../shared/services/cookies.js"
 import { filtercarts, filterFavorites} from "../../utils/functions.js"
 
 export const  TemporaryUserForm = ()=> {
     const nav = useNavigate()
     const [loading, setLoading] = useState(false)
-    const [stored] = useLocalStorage("data")
+    const [stored] = useLocalStorage("storeCompany")
     const [error, setError] = useState(null)
     const [favorites, setFavorites] = useLocalStorage("favorites")
     const [cart, setCart] = useLocalStorage("cart", null)
@@ -30,10 +31,10 @@ export const  TemporaryUserForm = ()=> {
         const verifyEmail = validateEmail(dataset?.email)
       if(verifyEmail) {setError(verifyEmail) 
       }else {
-        const res = await post("Customers", dataset).then(res => res)
+        const res = await post("Customer", dataset).then(res => res)
         if (res.isValid) {
             await setStoreUser(res.data.id.toString()) 
-            await getByCompanyId("PreOrders", stored?.company.id).then(response=> setCart(filtercarts(response.data, res.data.id)))
+            await getByCompanyId("Orders", stored?.company.id).then(response=> setCart(filtercarts(response.data, res.data.id)))
             await getFavorites(stored?.company.id, res.data.id).then(response => setFavorites(filterFavorites(response.data)))
             nav(-1)
         }else { setError(res?.errorMessages[0] ? res?.errorMessages[0] : " ")

@@ -5,13 +5,13 @@ import { Input } from '../../../../shared/components/uikit/input'
 import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom"
 import { useLocalStorage } from "../../../../shared/hooks/useLocalStorage.js"
-import { post } from "../../../../shared/services/API/api.js"
+import { post } from "../../../../shared/services/API/landingApi.js"
 import { setStoreUser } from "../../../../shared/services/cookies.js";
 
 export const  TemporaryUserForm = ()=> {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
-    const [stored] = useLocalStorage("data")
+    const [stored] = useLocalStorage("storeCompany")
     const [dataset, setDataset] = useState({isActive: true, createdBy: "System", modifiedBy: "System", idCompany: stored?.company.id,
         firstName: "Usuario", lastName: "Temporal",fullname: "Usuario Temporal", email : "noemail@noemail.com", password: "temporalPass2025.", dni: "none", address: "none",})
     
@@ -19,7 +19,7 @@ export const  TemporaryUserForm = ()=> {
 
     const handleRes= async() =>{
         setLoading(true)
-        const res = await post("Customers", dataset).then(res => res)
+        const res = await post("Customer", dataset).then(res => res)
         console.log(res)
         res.isValid ? setStoreUser(res.data.id) : setError("algo salió mal. Intenta de nuevo")
         res.isValid ? nav(-1) : setLoading(false)}

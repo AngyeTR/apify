@@ -32,14 +32,14 @@ export const OrderBound = ({data, setData})=>{
         <Field>
             <Label>Producto</Label>
             <Combobox className="my-3 w-sm sm:w-md" name="product" options={products ? products : []} displayValue={(product) => product?.name} 
-       onChange={(e)=> e && setNewItem(prev=> ({...prev, "idProduct": parseInt(e.id), price: parseFloat(e.price)}))} placeholder={newItem?.idProduct ? products?.filter(prod=>prod.id == newItem?.idProduct)?.[0].name  :"Buscar y Seleccionar producto"}>
+       onChange={(e)=> e && setNewItem(prev=> ({...prev, "idProduct": parseInt(e.id), quantity: 1, price: parseFloat(e.price)}))} placeholder={newItem?.idProduct ? products?.filter(prod=>prod.id == newItem?.idProduct)?.[0].name  :"Buscar y Seleccionar producto"}>
         {(product) => (
           <ComboboxOption value={product}>
             <ComboboxLabel>{product.name}</ComboboxLabel>
           </ComboboxOption>)}
       </Combobox>
         {newItem.idProduct && <> <Label>Precio</Label>
-            <Input defaultValue={newItem.price} type="number" placeholder="Precio final del producto" className="my-3" onChange={(e)=>setNewItem(prev => ({...prev, "price" : parseFloat(e.target.value), quantity: 1})) }/>
+            <Input defaultValue={newItem.price} type="number" placeholder="Precio final del producto" className="my-3" onChange={(e)=>setNewItem(prev => ({...prev, "price" : parseFloat(e.target.value)})) }/>
            </>}
         <Button onClick={()=>handleInternal("add", newItem.idProduct)} disabled={!newItem.idProduct || !newItem.price} className="my-5">Añadir</Button>
         </Field>

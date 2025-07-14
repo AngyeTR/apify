@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { hexToRgba } from "../../../../shared/utils/utils"
-import { getByCompanyId } from "../../../../shared/services/API/api"
+import { getByCompanyId } from "../../../../shared/services/API/landingApi"
 import { NavLink } from "react-router-dom"
 import logo from "../../../../assets/gallery-icon.png"
 import { useLocalStorage } from "../../../../shared/hooks/useLocalStorage"
@@ -10,11 +10,12 @@ const color = hexToRgba("#ff0000", 0.2)
 export const CategoriesContainer = ()=> {
     const [categories, setCategories] = useState(null)
     const [products, setProducts] = useState(null)
-    const [stored]  = useLocalStorage("data")
+    const [storeCompany]  = useLocalStorage("storeCompany")
+    console.log(storeCompany)
 
     useEffect(()=>{
-        getByCompanyId("Categories", stored?.company.id).then(res=>setCategories(res.data));
-        getByCompanyId("Products", stored?.company.id).then(res=>setProducts([res.data?.at(-1), res.data?.at(-2), res.data?.at(-3)]))
+        getByCompanyId("Categories", storeCompany?.company.id).then(res=>setCategories(res.data));
+        getByCompanyId("Products", storeCompany?.company.id).then(res=>setProducts([res.data?.at(-1), res.data?.at(-2), res.data?.at(-3)]))
     },[ ])
     let category = categories?.filter(cat=> cat.id == 1)[0]
     const recommended = products

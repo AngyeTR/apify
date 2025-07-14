@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Heading } from "../../../../shared/components/uikit/heading";
-import { getByCompanyId, getByID } from "../../../../shared/services/API/api";
+import {  getByID } from "../../../../shared/services/API/landingApi";
 import { Button } from "../../../../shared/components/uikit/button";
 import { useTunnelCart } from "../../hooks/useTunnelCart"
 
@@ -10,7 +10,7 @@ export const Upsale = ({data, dataSet, setDataSet, handleUpsell})=> {
     const [accepted, setAccepted] = useState(false)
     const { updateQuantity, updateCart }  = useTunnelCart()
 
-    useEffect(()=>{const res = getByID("Products", data.upsell.idProduct).then(res => setProduct(res.data))},[])
+    useEffect(()=>{const res = getByID("Product", data.upsell.idProduct).then(res => setProduct(res.data))},[])
     
     const handleUpdateCart =async ()=>{
     await updateCart(dataSet.cart, {id: product.id, name: product.name, price: data.upsell.price }, dataSet.customerData.id).then(res=>console.log(res))

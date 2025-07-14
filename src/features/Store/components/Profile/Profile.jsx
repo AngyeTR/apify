@@ -7,7 +7,7 @@ import { Field } from "../../../../shared/components/uikit/fieldset"
 import { Heading } from "../../../../shared/components/uikit/heading"
 import { Input } from "../../../../shared/components/uikit/input"
 import { useEffect, useState } from "react"
-import { edit, getByID } from "../../../../shared/services/API/api"
+import { edit, getByID } from "../../../../shared/services/API/landingApi"
 import { validateEmail } from "../../../../shared/utils/utils"
 import { deleteStoreUser, getStoreUser } from "../../../../shared/services/cookies"
 
@@ -24,7 +24,7 @@ export const Profile = ()=> {
         nav("/store/login")
     }
 
-    useEffect(()=>{storeUserId && getByID("Customers", storeUserId).then(res=>setStoreUser(res?.data))},[])
+    useEffect(()=>{storeUserId && getByID("Customer", storeUserId).then(res=>setStoreUser(res?.data))},[])
 
     const save = async()=>{
         setEditor(prev=> ({...prev, ["fullname"] : editor.firstName + " " + editor.lastName}))
@@ -32,7 +32,7 @@ export const Profile = ()=> {
         if(verifyEmail) {setError(verifyEmail) }
         else if(editor.cellphone == ""){setError("El campo teléfono se encuentra vacío")}
         else {
-        const res = await edit("Customers", editor).then(res=> res)
+        const res = await edit("Customer", editor).then(res=> res)
         res.isValid ? setStoreUser(res.data) :setError("")
         res.isValid ? nav(-1): setError("")
         setEditor(false)}

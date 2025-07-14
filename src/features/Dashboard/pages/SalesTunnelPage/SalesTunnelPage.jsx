@@ -34,7 +34,8 @@ export const SalesTunnelPage = ()=> {
     useEffect(()=>{
         const host = location.hostname
         getByDomain(host == "localhost" || host == "apify-livid.vercel.app" ? "store.apify.com.co": host).then(res=>  {setStore({idStore: res.data.id, idCompany: res.data?.idCompany});
-        getByCompanyId("Layouts", store.idCompany).then(res => setLayouts(res.data))})
+        getByCompanyId("Layouts", 3).then(res => setLayouts(res.data))})
+        // getByCompanyId("Layouts", store.idCompany).then(res => setLayouts(res.data))})
         getByID("SalesTunnel", params.tunnel).then(res=> {setData(res.data);
             setFbPixel(res.data.facebookPixel)
         })
@@ -42,7 +43,8 @@ export const SalesTunnelPage = ()=> {
         useScrollCheckpoints(10, uuid, data?.layouts?.[0]?.id)
 
     useEffect(() => {
-        const layoutOBJ = layouts?.filter(item => item.id == params.tunnel)
+        // const layoutOBJ = layouts?.filter(item => item.id == params.tunnel)
+        const layoutOBJ = layouts?.filter(item => item.id == data?.layouts?.[0]?.idLayout)
         const savedLayout = layoutOBJ?.[0]?.content?.replaceAll("'", "\"")
         const savedColor = layoutOBJ?.[0]?.styles?.replaceAll("'", "\"")
         savedColor && setColor(JSON.parse(savedColor))

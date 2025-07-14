@@ -12,13 +12,16 @@ import { pricesModel } from "../../utils/models"
 const paymentOptions = [{name:"Efectivo Contraentrega", id:"paymentOnDelivery"}, {name: "Pago online", id:"paymentGateway"}]
 const colors = [ {name: "Verde", value:"green"}, {name: "Rojo", value: "red"}, {name: "Amarillo", value: "ambar"}]
 export const ProductStep = ({data, setData})=>{
+  console.log(data)
     const [stored] = useLocalStorage("data")
     const [prices, setPrices] = useState([])
     const [price, setPrice] = useState(pricesModel)
     const methods = [{name:"Efectivo Contraentrega", id:"paymentOnDelivery"}, {name: "Pago online", id:"paymentGateway"}]
   useEffect(()=>{getByID("Products", data.idProduct).then(res=> setPrice(prev=>({...prev, oldPrice: res.data.price + 20000, price: res.data.price})))},[])
 
-const handleprice = ()=>{ setData(prev => ({...prev, prices: [...prev.prices, price]}))
+const handleprice = ()=>{ 
+  price.idProduct = data.idProduct
+  setData(prev => ({...prev, prices: [...prev.prices, price]}))
     setPrice(pricesModel)}
 
 const handlePaymentMethod = (name, value) => {name == "Efectivo Contraentrega" ? setData(prev=>({...prev, paymentOnDelivery: value})): setData(prev=>({...prev, paymentGateway: value}))}
@@ -31,7 +34,7 @@ const handlePaymentMethod = (name, value) => {name == "Efectivo Contraentrega" ?
         {methods?.map(method=> <CheckboxField className="my-3" key={method.name}>
           <Checkbox checked={data[method.id]} onChange={(e)=> handlePaymentMethod(method.name, e)} name={method.name} value={method.name} />
           <Label>{method.name}</Label>
-        </CheckboxField>)}
+        </CheckboxField>)} 
       </CheckboxGroup>
         <Field className="my-5 bg-zinc-100 p-2 rounded-lg">
         <Heading>Crear Precios</Heading>
@@ -59,7 +62,7 @@ const handlePaymentMethod = (name, value) => {name == "Efectivo Contraentrega" ?
       </Field>
         <h2 className="font-medium my-2">Tus compradores verán estos precios especiales:</h2>
         {data.prices?.length > 0 ? data.prices?.map(price=> 
-        <p className="my-2">{price.name} {price.tagName && <span className={`bg-${price.tagColor}-600 text-white`}> {price.tagName}</span>}</p>) : 
+        <p className="my-2">{price.name} {price.tagName && <span className={`bg-${price.tagColor}-600 text-white`}> {price.tagName}</span>} - {price.price}</p>) : 
         <p className="my-2"> Aún no hay precios creados</p>}
     </div>
    )

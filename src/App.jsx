@@ -24,8 +24,8 @@ function App() {
     <Route  path="/prueba-de-carga" element={<ViewPageStatic />} />
     <Route  path="" element={token ? <Navigate replace to={"/dashboard"}/> :<Navigate replace to={"/login"}/>} />
     <Route path="*" element={token ? <NotFoundPage logged={true}/> : <Navigate replace to={"/login"}/>} />
-    {token && dashboardRoutes}
-    {token && storeRoutes}
+    {dashboardRoutes}
+    {storeRoutes}
     {token && designerRoutes}
     {token && chatRoutes}
   </Routes>

@@ -2,14 +2,14 @@ import { useEffect, useState } from "react"
 import { useLocalStorage } from "../../../../shared/hooks/useLocalStorage"
 import { CardProduct } from "./CardProduct"
 import { Text} from "../../../../shared/components/uikit/text"
-import {  getByID} from "../../../../shared/services/API/api"
+import {  getByID} from "../../../../shared/services/API/landingApi"
 import { Heading } from "../../../../shared/components/uikit/heading"
 
 export const FavoritesList =()=>{
     const [productsToShow, setProductsToShow] = useState([])
     const favorites = useLocalStorage("favorites")
 
-    useEffect(()=>{favorites[0]  && favorites[0].map(fav => getByID("Products", fav).then(res => setProductsToShow(prev =>([...prev, res.data]) )))},[ ])
+    useEffect(()=>{favorites[0]  && favorites[0].map(fav => getByID("Product", fav).then(res => setProductsToShow(prev =>([...prev, res.data]) )))},[ ])
     return (
     <div className="bg-white">
         <div className="mx-auto max-w-2xl px-1 py-4 sm:px-6 sm:py-4 lg:max-w-7xl lg:px-8">

@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react"
 import { Carousel } from "../Carousel/Carousel"
-import { getByCompanyId } from "../../../../shared/services/API/api"
+import { getByCompanyId } from "../../../../shared/services/API/landingApi"
 import { useLocalStorage } from "../../../../shared/hooks/useLocalStorage"
 
 export const PromosContainer= ()=> {
     const [promoProducts, setPromoProducts] = useState([])
-    const [stored] = useLocalStorage("data")
+    const [stored] = useLocalStorage("storeCompany")
 
     useEffect(()=>{
             getByCompanyId("Products", stored?.company.id).then(res=>setPromoProducts([res.data?.at(-1), res.data?.at(-2), res.data?.at(-3)]))

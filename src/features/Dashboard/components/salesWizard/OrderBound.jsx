@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react"
-import { getByCompanyId, getByID } from "../../../../shared/services/API/api"
+import {  getByID } from "../../../../shared/services/API/landingApi"
 import { HiArrowCircleRight } from "react-icons/hi";
 import { Button } from "../../../../shared/components/uikit/button";
 
 
 export const OrderBound = ({id, price, orderBounds, setOrderBounds})=> {
     const [product, setProduct] = useState(null)
-    useEffect(()=>{const res = getByID("Products", id).then(res => setProduct(res.data))},[])
+    useEffect(()=>{const res = getByID("Product", id).then(res => setProduct(res.data))},[])
     return (
        <>
        {product && 

@@ -5,7 +5,7 @@ import { PriceCard } from "./PriceCard"
 import { OrderBound } from "./OrderBound"
 import { Switch } from "../../../../shared/components/uikit/switch"
 import { useEffect, useState } from "react"
-import { getByID } from "../../../../shared/services/API/api"
+import { getByID } from "../../../../shared/services/API/landingApi"
 import { Button } from "../../../../shared/components/uikit/button"
 import { useTunnelCart } from "../../hooks/useTunnelCart"
 
@@ -18,17 +18,18 @@ export const SalesForm =({data, setDataSet, dataSet, handleClick})=> {
     const { updateQuantity, updateCart }  = useTunnelCart()
 
     useEffect(()=>{
-      getByID("Products", data?.idProduct).then(res=>{setMainProduct(res.data);console.log(res)})
+      getByID("Product", data?.idProduct).then(res=>{setMainProduct(res.data);console.log(res)})
       !dataSet.customerScore.isEnabled && setDataSet(prev=> ({...prev, paymentMethod: "paymentGateway"}))
       console.log(data.orderBounds)
-      data?.orderBounds?.map(bound=> getByID("Products", bound.idProduct).then(res=>setOrderBounds(prev=> [...prev,res.data])))},[ , data])
+      data?.orderBounds?.map(bound=> getByID("Product", bound.idProduct).then(res=>setOrderBounds(prev=> [...prev,res.data])))},[ , data])
 
       const save= async()=>{
         console.log(dataSet)
         console.log(acceptedOrderBounds)
-        await updateCart(dataSet.cart, {id: mainProduct.id, name: mainProduct.name, price: dataSet.price.price }, dataSet.customerData.id, dataSet.price.quantity).then(res=> {setDataSet(prev=> ({...prev, cart: res})); setCart(res)})
+        const result = await updateQuantity(dataSet.cart, mainProduct.id, dataSet.price.quantity, 0).then(res=> {console.log(res);()=> res; setDataSet(prev=> ({...prev, cart: res})); setCart(res)})
         setDataSet(prev=>({...prev, orderBounds: acceptedOrderBounds}))
         // dataSet.price.name != "Precio Normal" && await  updateQuantity(cart, data.idProduct, dataSet.price.quantity, dataSet.oldPrice-dataSet.price).then(res=>{setDataSet(prev=> ({...prev, cart: res})); setCart(res)})
+        result?.status && console.log(result)
         acceptedOrderBounds?.map(ob=> updateCart(cart, {id:ob.id, name:ob.name, price:data?.orderBounds.filter(bound=> bound.idProduct == ob.id)?.[0]?.price}, dataSet.customerData.id).then(res => {setDataSet(prev=> ({...prev, cart: res})); setCart(res)}))
         acceptedOrderBounds?.map(ob=> console.log("ob ",ob))
         handleClick(1)
@@ -37,9 +38,6 @@ export const SalesForm =({data, setDataSet, dataSet, handleClick})=> {
     return (
         <div className="justify-center  justify-items-center bg-zinc-50 mt-5 w-[px] md:w-[600px] rounded-lg p-5">
         <Field>
-             {console.log(dataSet)}
-             {console.log(mainProduct)}
-             {console.log(orderBounds)}
             <Heading className="text-center my-5">Información de Venta</Heading>
             <Label>Selecciona el precio que deseas pagar</Label>
             <PriceCard  price={{name: "Precio Normal", price: mainProduct?.price}} setDataSet={setDataSet} setPriced={setPriced} selected={priced == "Precio Normal"}/> 

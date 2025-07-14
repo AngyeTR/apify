@@ -33,7 +33,7 @@ export function FormProduct(props) {
       const { name, value } = e.target;
       setDataSet(prev=>({...prev, [name]: value}))
       const dispo =  props.origin == "editor" ? true :((dataSet.name && dataSet.description && dataSet.prices ) ? true : false) 
-      setAva(dispo)};
+      setAva(dispo)}; 
 
     useEffect(() => {
       getByCompanyId("Warehouses", stored?.company.id).then((res) => {setWarehouses(res.data)})

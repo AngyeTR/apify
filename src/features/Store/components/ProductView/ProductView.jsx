@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from "react"
-import { getByID, markFavorite, unMarkFavorite } from "../../../../shared/services/API/api"
+import { markFavorite, unMarkFavorite } from "../../services/storeApi"
+import { getByID} from "../../../../shared/services/API/landingApi"
 import { useNavigate, useParams } from "react-router-dom"
 import { Carousel } from "../Carousel/Carousel"
 import { Stars } from "../Stars/Stars"
@@ -33,7 +34,7 @@ export const ProductView = ()=>{
         : await updateCart(cart, product, storeUser)  )
         : await createCart(product, storeUser) 
         await new Promise(resolve => setTimeout(resolve, 1000));
-        nav(0)
+        // nav(0)
       } 
       else {nav("/store/temporary")}}
 
@@ -58,7 +59,7 @@ export const ProductView = ()=>{
 
     const scrollToReviews = () => {reviewsRef.current?.scrollIntoView({ behavior: "smooth" })}
 
-    useEffect(()=>{getByID("Products", params.prod).then(res=> setProduct(res.data))
+    useEffect(()=>{getByID("Product", params.prod).then(res=> setProduct(res.data))
       storeUser && setIsFavorite(favorites?.includes(parseInt(params.prod)))
     },[ , params])
 

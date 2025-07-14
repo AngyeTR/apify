@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Field, Label } from "../../../../shared/components/uikit/fieldset"
 import { Input } from "../../../../shared/components/uikit/input"
-import { getCities, getCountries, getStates, getByID, edit, post, postFile, getCustomerByPhone, getCustomerScore } from "../../../../shared/services/API/api"
+import { getCities, getCountries, getStates, getByID,  post,  getCustomerByPhone, getCustomerScore } from "../../../../shared/services/API/landingApi"
 import { HiExclamation } from "react-icons/hi";
 import { useTunnelCart } from "../../hooks/useTunnelCart"
 import { Combobox, ComboboxLabel, ComboboxOption } from "../../../../shared/components/uikit/combobox";
@@ -30,14 +30,12 @@ export const CustomerForm = ({data, handleClick, dataSet, setDataSet})=>{
         else if (buyerInfo.cellphone?.length < 10 || buyerInfo.cellphone[0] != 3) 
             {setError("Formato de teléfono inválido")}
         else {
-            console.log("Customer data: ", buyerInfo)
             await getCustomerScore(buyerInfo.cellphone).then(res=> setDataSet(prev=>({...prev, "customerScore": res})))
-             const res = await post("Customers", buyerInfo).then(res=> res)
+             const res = await post("Customer", buyerInfo).then(res=> res)
              res.isValid && setDataSet(prev=>({...prev, "customerId": res.data.id})) 
              const customerID = await getCustomerByPhone(1, buyerInfo.cellphone).then(res=> res.data.id)
             customerID && (buyerInfo.id = customerID)
             setDataSet(prev=>({...prev, "customerData":buyerInfo})) 
-            console.log(buyerInfo)
             await createCart(product, buyerInfo).then(res=>setDataSet(prev=>({...prev, cart: res})))
             await reportAddToCart(buyerInfo.email, buyerInfo.cellphone,  product.price, data.id, buyerInfo.firstName, buyerInfo.lastName, buyerInfo.cityData.name)
             handleClick(1)
@@ -45,7 +43,7 @@ export const CustomerForm = ({data, handleClick, dataSet, setDataSet})=>{
     }
 
     useEffect(() => {
-            data && getByID("Products", data?.idProduct).then(res=>setProduct(res.data))
+            data && getByID("Product", data?.idProduct).then(res=>setProduct(res.data))
             getCountries().then((res) => setLocation(prev=> ({...prev, "countries": res.data})));
             location?.country && getStates(location.country.id).then((res) => setLocation(prev=> ({...prev, "states": res.data})));
             location?.state && getCities(location.state.id).then((res) => setLocation(prev=> ({...prev, "cities": res.data})));

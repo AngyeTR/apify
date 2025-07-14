@@ -4,17 +4,21 @@ import { getByCompanyId } from "../../../../shared/services/API/api"
 import { useLocalStorage } from "../../../../shared/hooks/useLocalStorage"
 import { Heading } from "../../../../shared/components/uikit/heading"
 import { MyDomainList, MyDomainValidator } from "../../components/myComponents/MyDomainValidator"
+import { Loader } from "../../../../shared/components/Loader"
 
 
 export const DomainsPage = ()=>{
     const [stored] = useLocalStorage("data")
     const [domains, setDomains] = useState(null)
-    useEffect(()=>{getByCompanyId("Domains", stored.company.id).then(res=> setDomains(res.data.reverse()))},[])
+    const [loading, setLoading] = useState(false)
+    useEffect(()=>{
+        setLoading(true)
+        getByCompanyId("Domains", stored.company.id).then(res=> setDomains(res.data.reverse())).finally(()=>setLoading(false))},[])
     return (
         <MyLayout>
             {console.log(domains)}
         <Heading>Dominios</Heading>
-        <MyDomainValidator />
+         <MyDomainValidator />
         {/* <ul className="mt-10">
             {domains?.map(domain=><li className="border border-zinc-400 rounded-lg m-2" key={domain.id} onClick={()=>setShow(domain.id)}>
                  <div className="flex flex-row content-center items-center"><GrDomain className="mx-3"/><h2 className="font-semibold my-3 row hover:underline cursor-pointer"> {domain.domain}</h2></div>
@@ -25,7 +29,7 @@ export const DomainsPage = ()=>{
                 {domain.status == "draft" && <Button className="my-1" onClick={()=>console.log("Validar", domain.domain)}>Validar Dominio</Button>}
                 </div>}</li>)}
         </ul> */}
-        <MyDomainList domains={domains}/>
+        {loading ? <div className="place-self-center mt-50"><Loader /></div> : <MyDomainList domains={domains}/>}
         </MyLayout>
     )
 }

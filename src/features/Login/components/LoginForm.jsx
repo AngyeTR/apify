@@ -2,7 +2,7 @@ import {  useState } from "react";
 import { useLocalStorage } from "../../hooks/useLocalStorage.js";
 import { getLogin } from "../../../../shared/services/API/api/";
 import logo from "../logo.avif"
-import { adjustLoginData, validateEmail } from "../../utils/functions.jsx";
+import { adjustLoginData } from "../../utils/functions.jsx";
 import { useNavigate } from "react-router-dom";
 import { MyLoader } from "./MyLoader";
 import { setToken } from "../../services/cookies.js";
@@ -25,8 +25,10 @@ export function LoginForm() {
   const handleClick = async (e)=>{
     e.preventDefault()
     setLoading(true)
+    console.log("login")
     setError(null)
-    const response = await getLogin(user, password)
+    const response = await getLogin(user, password).then(res=>res)
+    console.log(response)
     if(response?.response?.isValid){
     await setToken(response.token.token.toString(), response.token.expiredDate.toString())
     await setData(adjustLoginData(response))

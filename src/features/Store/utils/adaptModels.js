@@ -4,8 +4,8 @@ const date = new Date().toISOString();
 
 export const adaptNewCartModel= (dataSet, product, customer) => {
   console.log(customer)
-  dataSet["modifiedBy"]= stored?.user.email
-  dataSet["createdBy"]= stored?.user.email
+  dataSet["modifiedBy"]= "system"
+  dataSet["createdBy"]= "system"
   dataSet["idCompany"]= stored?.company.id
   dataSet["idCustomer"]= customer
   // dataSet["fUllname"] = customer.firstName + " " + customer.lastName
@@ -18,8 +18,8 @@ export const adaptNewCartModel= (dataSet, product, customer) => {
     {
       isActive: true,
       idCompany: stored?.company.id,
-      createdBy: stored?.user.email,
-      modifiedBy: stored?.user.email,
+      createdBy: "system",
+      modifiedBy: "system",
       idCustomer: customer,
       idProduct: product.id,
       lineNum: 1,
@@ -78,8 +78,8 @@ export const adaptDeleteCartModel= (dataSet, productId) => {
 }
 
 export const adaptFavoriteModel= (dataSet, userId, productId ) => {
-  dataSet["modifiedBy"]= stored?.user.email
-  dataSet["createdBy"]= stored?.user.email
+  dataSet["modifiedBy"]= "system"
+  dataSet["createdBy"]= "system"
   dataSet["idCompany"]= stored?.company.id
   dataSet["idCustomer"]= userId
   dataSet["idProduct"]= parseInt(productId)

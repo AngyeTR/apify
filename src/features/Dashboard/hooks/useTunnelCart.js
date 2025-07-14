@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { edit, getByCompanyId, post } from "../../../shared/services/API/api";
+import { edit, getByCompanyId, post } from "../../../shared/services/API/landingApi";
 import { CartModel } from "../utils/models";
-import { adaptAddingCartModel,  adaptDeleteCartModel,  adaptNewCartModel, adaptquantityChangeCartModel } from "../utils/adaptDataModel"
+import { adaptAddingCartModel,  adaptDeleteCartModel,  adaptFinishCartModel,  adaptNewCartModel, adaptquantityChangeCartModel } from "../utils/adaptDataModel"
 import { useLocalStorage } from "../../../shared/hooks/useLocalStorage";
 import { getStoreUser } from "../../../shared/services/cookies";
 
@@ -18,10 +18,10 @@ export function useTunnelCart(initialCart = null) {
 //   }
 
   const createCart = async (product, customerData) => {
-    console.log(product, customerData)
     try {
        const adaptedProduct = adaptNewCartModel(CartModel, product, customerData)
-      const res = await post("PreOrders", adaptedProduct)
+       console.log(JSON.stringify(adaptedProduct))
+      const res = await post("Preorder", adaptedProduct)
       setCart(res.data);
       return res.data;
     } catch (error) {
@@ -35,7 +35,8 @@ export function useTunnelCart(initialCart = null) {
     console.log(cart)
     try {
     const adaptedProduct = adaptAddingCartModel(cart, product, userId, quantity, "salesTunnel")
-      const res = await edit("PreOrders", adaptedProduct)
+     console.log(JSON.stringify(adaptedProduct))
+      const res = await edit("PreOrder", adaptedProduct)
       setCart(res.data);
       return res.data;
     } catch (error) {
@@ -49,7 +50,8 @@ export function useTunnelCart(initialCart = null) {
     console.log(cart)
     try {
       const adaptedProduct = adaptquantityChangeCartModel(cart, productId, quantity, discount)
-      const res = await edit("PreOrders", adaptedProduct)
+       console.log(JSON.stringify(adaptedProduct))
+      const res = await edit("PreOrder", adaptedProduct)
       setCart(res.data);
       return res.data;
     } catch (error) {
@@ -61,11 +63,26 @@ export function useTunnelCart(initialCart = null) {
   const removeProduct = async (cartModel, productId) => {
     try {
        const adaptedProduct = adaptDeleteCartModel(cartModel, productId)
-      const res = await post("PreOrders", adaptedProduct)
+        console.log(JSON.stringify(adaptedProduct))
+      const res = await post("PreOrder", adaptedProduct)
       setCart(res.data);
       return res.data;
     } catch (error) {
       console.error("Error removing product", error);
+      throw error;
+    }
+  };
+
+
+   const finishCart = async (cart) => {
+    try {
+       const adaptedProduct = adaptFinishCartModel(cart)
+       console.log(JSON.stringify(adaptedProduct))
+      const res = await edit("PreOrder", adaptedProduct)
+      setCart(res.data);
+      return res.data;
+    } catch (error) {
+      console.error("Error creating cart", error);
       throw error;
     }
   };
@@ -76,6 +93,6 @@ export function useTunnelCart(initialCart = null) {
     updateQuantity,
     removeProduct,
     setCart,
-    
+    finishCart
   };
 }

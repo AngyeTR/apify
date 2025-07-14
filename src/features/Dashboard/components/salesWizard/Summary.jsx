@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { Heading } from "../../../../shared/components/uikit/heading"
-import { getByCompanyId, getByID, getCities, post } from "../../../../shared/services/API/api"
+import { getByCompanyId, getByID, post } from "../../../../shared/services/API/landingApi"
 import { HiOutlineTrash } from "react-icons/hi";
 import { Input } from "../../../../shared/components/uikit/input";
 import { HiOutlinePencil } from "react-icons/hi";
@@ -10,16 +10,16 @@ import { useLocalStorage } from "../../../../shared/hooks/useLocalStorage";
 import { adaptNavigationModel } from "../../utils/adaptDataModel";
 import { navigationModel } from "../../utils/models";
 
+
 export const Summary = ({data, dataSet, setDataSet, handleClick, uuid})=>{
-    console.log(data)
-    console.log(dataSet)
+    
     const [products, setProducts ] = useState({orderBounds:[]})
     const [ total, setTotal] = useState(0)
     const [ editor, setEditor] = useState(false)
     const [ toDelete, setToDelete] = useState(null)
     const [internalData, setInternalData] = useState(dataSet)
     const [store] = useLocalStorage("store")
-    const { removeProduct, updateCart, updateQuantity }  = useTunnelCart() 
+    const { removeProduct, updateCart, updateQuantity, finishCart }  = useTunnelCart() 
     const sumar = ()=>{
     setTotal(dataSet?.price?.price)
     internalData?.orderBounds?.map(bound=> setTotal(prev=> (prev + data?.orderBounds.filter(orderbound=> orderbound.idProduct == bound.id)?.[0]?.price)))
@@ -27,19 +27,20 @@ export const Summary = ({data, dataSet, setDataSet, handleClick, uuid})=>{
     internalData?.downsaleAccepted && setTotal(prev=> (prev + data.downsell.price))}
 
     useEffect(()=>{
-        getByID("Products", data?.idProduct).then(res=> setProducts(prev=> ({...prev, "product": res.data} )))
+        getByID("Product", data?.idProduct).then(res=> setProducts(prev=> ({...prev, "product": res.data} )))
         const bounds = []
-        getByID("PreOrders", dataSet.cart.id).then(res=> setDataSet(prev=>({...prev, cart:res.data})))
-        internalData?.orderBounds?.map(bound =>getByID("Products", bound.id).then(res=> bounds.push(res.data)))
-        internalData?.upsaleAccepted || internalData?.downsaleAccepted ? getByID("Products", data.upsell.idProduct).then(res=> setProducts(prev=> ({...prev, "upsellProduct": res.data} ))): setProducts(prev=> ({...prev, "upsellProduct": null}))   
+        getByID("Order", dataSet.cart.id).then(res=> setDataSet(prev=>({...prev, cart:res.data})))
+        internalData?.orderBounds?.map(bound =>getByID("Product", bound.id).then(res=> bounds.push(res.data)))
+        internalData?.upsaleAccepted || internalData?.downsaleAccepted ? getByID("Product", data.upsell.idProduct).then(res=> setProducts(prev=> ({...prev, "upsellProduct": res.data} ))): setProducts(prev=> ({...prev, "upsellProduct": null}))   
         setProducts(prev=> ({...prev, orderBounds: bounds}))
         sumar()},[ ])
 
     useEffect(()=>{sumar()},[internalData])
 
     const finishSale= async()=>{
-        const carts = await  getByCompanyId("PreOrders", store.idCompany).then(res => res?.data?.filter(order=> order.idCustomer == dataSet.customerData.id))
-        carts && setDataSet(prev=> ({...prev, cart: carts[carts.length -1]})) 
+        const carts = await  getByCompanyId("Orders", store.idCompany).then(res => res?.data?.filter(order=> order.idCustomer == dataSet.customerData.id))
+        carts && setDataSet(prev=> ({...prev, cart: carts[carts.length -1]}))
+        carts && finishCart(carts[carts.length -1]) 
         setDataSet(internalData)
         const adaptedModel = adaptNavigationModel(navigationModel,  "purchase", data.layouts[0].id, uuid, 0, 0, 2, true, dataSet.cart.id )
        post("Navigation", adaptedModel).then(res=> console.log(res))
