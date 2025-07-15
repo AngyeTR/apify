@@ -17,7 +17,7 @@ export function useTunnelCart(initialCart = null) {
 //     await getByCompanyId("PreOrders", stored?.company.id).then(response=> setNewCart(filtercarts(response.data, storeUser))) 
 //   }
 
-  const createCart = async (product, customerData) => {
+  const createCart = async (product, customerData, status) => {
     try {
        const adaptedProduct = adaptNewCartModel(CartModel, product, customerData)
        console.log(JSON.stringify(adaptedProduct))

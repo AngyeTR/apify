@@ -1,5 +1,5 @@
 
-import {  convertions, } from "../../../shared/services/API/api";
+import {  convertions, } from "../../../shared/services/API/landingApi";
 import { getFbp } from "../../../shared/services/cookies";
 
 export function useReport() {

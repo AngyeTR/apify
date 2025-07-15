@@ -14,3 +14,11 @@ export const stringToTime = (isoString) => {
     return formatted
 
 }
+
+export const  Check24hRange = (dateString)=> {
+  const receivedDate = new Date(dateString);
+  const now = new Date();
+  const diffInMs = now - receivedDate;
+  const diffInHours = diffInMs / (1000 * 60 * 60);
+  return diffInHours <= 24;
+}

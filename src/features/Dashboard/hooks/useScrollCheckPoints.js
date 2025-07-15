@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { post } from "../../../shared/services/API/api";
+import { postNavigation } from "../../../shared/services/API/landingApi";
 import { navigationModel } from "../utils/models";
 import { adaptNavigationModel } from "../utils/adaptDataModel";
 
@@ -23,12 +23,12 @@ export const useScrollCheckpoints = (sections = 5, uuid, idLayout) => {
         const now = Date.now();
         const timeSpent = (now - entryTimeRef.current) / 1000; 
         const adaptedModel = adaptNavigationModel( navigationModel,  `${currentSection}-${newSection}`, idLayout, uuid, timeSpent - currentTime, timeSpent, 1)
-        await post("Navigation", adaptedModel).then(res=> console.log(res))
+        await postNavigation( adaptedModel).then(res=> console.log(res))
         setCurrentSection(newSection)
         setCurrentTime( timeSpent)
         if (scrollTop + windowHeight >= docHeight - 1) {
           const adaptedModel = adaptNavigationModel( navigationModel, "end", idLayout, uuid, timeSpent - currentTime, timeSpent, 1)
-          await post("Navigation", adaptedModel).then(res=> console.log(res))
+          await postNavigation( adaptedModel).then(res=> console.log(res))
   }
       }
     };

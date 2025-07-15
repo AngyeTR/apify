@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom"
 import { useLocalStorage } from "../../../../shared/hooks/useLocalStorage";
 import { GridContainer } from "../../../Designer/components/GridContainer";
-import { getByCompanyId, getByDomain, getByID, post } from "../../../../shared/services/API/api";
+import { getByCompanyId, getByDomain, getByID, postNavigation } from "../../../../shared/services/API/landingApi";
 import { SalesWizard } from "../../components/salesWizard/SalesWizard";
 import { useScrollCheckpoints } from "../../hooks/useScrollCheckPoints";
 import { useReport } from "../../hooks/useReport";
@@ -23,7 +23,6 @@ export const SalesTunnelPage = ()=> {
     const [data, setData] = useState(null) 
     const [color, setColor] = useState({backgroundColor: "#ffffff"}) 
     const [ layouts, setLayouts] = useState(null)
-    const [stored] = useLocalStorage("data")
     const [store, setStore] = useLocalStorage("store", null)
     const [grid, setGrid] = useState()
     const [ fbPixel, setFbPixel] = useState(null)
@@ -34,10 +33,11 @@ export const SalesTunnelPage = ()=> {
     useEffect(()=>{
         const host = location.hostname
         getByDomain(host == "localhost" || host == "apify-livid.vercel.app" ? "store.apify.com.co": host).then(res=>  {setStore({idStore: res.data.id, idCompany: res.data?.idCompany});
-        // getByCompanyId("Layouts", 3).then(res => setLayouts(res.data))})
-        getByCompanyId("Layouts", store.idCompany).then(res => setLayouts(res.data))})
+        // getByDomain(host == "localhost" || host == "apify-livid.vercel.app" ? "store.apify.com.co": host).then(res=>  {setStore({idStore: 3, idCompany: 3});
+        // getByCompanyId("Layout", 3).then(res => setLayouts(res.data))})
+        getByCompanyId("Layout", res.data?.idCompany).then(res => setLayouts(res.data))})
         getByID("SalesTunnel", params.tunnel).then(res=> {setData(res.data);
-            setFbPixel(res.data.facebookPixel)
+        setFbPixel(res.data.facebookPixel)
         })
         reportView(params.tunnel)},[])
         useScrollCheckpoints(10, uuid, data?.layouts?.[0]?.id)
@@ -56,7 +56,7 @@ export const SalesTunnelPage = ()=> {
     
     const handleClickInCOmponent = async (id, uuid)=>{
         const adaptedModel = adaptNavigationModel(navigationModel,  id, data?.layouts?.[0]?.id, uuid, 0, 0, 2)
-        await post("Navigation", adaptedModel).then(res=> console.log(res))
+        await postNavigation(adaptedModel).then(res=> console.log(res))
     }
     
     return (

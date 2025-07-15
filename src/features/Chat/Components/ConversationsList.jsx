@@ -12,7 +12,7 @@ export const ConversationsList = ({conversations, setConversation, conversation,
 
     if (loading) return <div className="place-self-center mt-50"><Loader /></div>
 
-    return (
+    return ( 
      <Sidebar >
       <SidebarBody>
         <SidebarHeader className="fixed top-5 w-80 lg:w-70 z-3 h-[10%] ml-5 lg:ml-0 bg-white">
@@ -30,7 +30,8 @@ export const ConversationsList = ({conversations, setConversation, conversation,
             <div className="flex flex-row"><div><p className="text-md my-1 font-semibold">{conversation.to}</p></div>  
             {/* <div><p  className="absolute right-1 text-zinc-500">{conversation.messages.at(-1)?.time}</p></div> */}
             {console.log(conversation)}
-            {conversation.quantity != "0" && <div className='absolute right-3 top-3 h-fit w-fit '><HiBell className='text-shadow-xl text-red-600 size-5 m-2 animate-pulse'/></div>}
+            {/* {conversation.quantity != "0" && <div className='absolute right-3 top-3 h-fit w-fit '><HiBell className='text-shadow-xl text-red-600 size-5 m-2 animate-pulse'/></div>} */}
+            {conversation.quantity != "0" && <div className='absolute right-3 top-3 text-white h-5 w-5 justify-items-center bg-green-500 rounded-full'><p className="text-xs my-1">{conversation.quantity}</p></div>}
             </div>
             <div className="block flex flex-row">
                 {/* {!conversation.messages.at(-1)?.inbound && <BiCheckDouble className="mx-1 size-5"/>} */}

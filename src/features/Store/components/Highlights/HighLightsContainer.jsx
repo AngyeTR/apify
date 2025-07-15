@@ -4,7 +4,7 @@ import logo from "../../../../assets/gallery-icon.png"
 import { useEffect, useState } from "react"
 
 export const HighlightsContainer = ()=> {
-  const [categories] = useLocalStorage("categories")
+  const [categories] = useLocalStorage("category")
   // const [categories, setCategories] = useState([])
 
    useEffect(() => {

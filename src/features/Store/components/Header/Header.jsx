@@ -56,10 +56,10 @@ export const  Header= ()=> {
  const [cart, setCart, removeCart] = useLocalStorage("cart")
   // const [data, setData] = useState(null)
   const [stored] = useLocalStorage("storeCompany")
-  const [data, setData] = useLocalStorage("categories", null)
+  const [data, setData] = useLocalStorage("category", null)
   const nav = useNavigate()
   const storeUser = getStoreUser()
-  useEffect(()=>{getByCompanyId("Categories", stored?.company.id).then(res => setData(res.data))},[ , showSidebar ])
+  useEffect(()=>{getByCompanyId("Category", stored?.company.id).then(res => setData(res.data))},[ , showSidebar ])
   const params = useParams()
 
    const logOut = ()=>{

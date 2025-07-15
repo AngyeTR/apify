@@ -14,7 +14,7 @@ export const CategoriesContainer = ()=> {
     console.log(storeCompany)
 
     useEffect(()=>{
-        getByCompanyId("Categories", storeCompany?.company.id).then(res=>setCategories(res.data));
+        getByCompanyId("Category", storeCompany?.company.id).then(res=>setCategories(res.data));
         getByCompanyId("Products", storeCompany?.company.id).then(res=>setProducts([res.data?.at(-1), res.data?.at(-2), res.data?.at(-3)]))
     },[ ])
     let category = categories?.filter(cat=> cat.id == 1)[0]

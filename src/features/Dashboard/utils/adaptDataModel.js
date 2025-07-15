@@ -179,8 +179,9 @@ export const adaptLibraryModel = (name) =>{
    return library
 }
 
-export const adaptNewCartModel= (dataSet, product, customer, origin) => {
-  dataSet["idCompany"]= origin == "salesTunnel" ? store.idCompany : stored?.company.id
+export const adaptNewCartModel= (dataSet, product, customer) => {
+  dataSet["status"] = 0
+  dataSet["idCompany"]=  store.idCompany
   dataSet["idProduct"] = product.id
   dataSet["idCustomer"]= customer.id
   dataSet["fUllname"] = customer.firstName + " " + customer.lastName
@@ -193,9 +194,9 @@ export const adaptNewCartModel= (dataSet, product, customer, origin) => {
     // ...dataSet.lines, 
     {
       isActive: true,
-      idCompany: origin == "salesTunnel" ? store.idCompany : stored?.company.id,
-      createdBy: origin == "salesTunnel"?  "SalesTunnel": stored?.user.email,
-      modifiedBy: origin == "salesTunnel"?  "SalesTunnel": stored?.user.email,
+      idCompany: store.idCompany,
+      createdBy: "SalesTunnel",
+      modifiedBy:"SalesTunnel",
       idCustomer: customer.id,
       idProduct: product.id, 
       lineNum: 1,
@@ -214,6 +215,7 @@ export const adaptNewCartModel= (dataSet, product, customer, origin) => {
 }
 
 export const adaptAddingCartModel= (dataSet, product, userId, quantity, origin) => {
+  dataSet["status"] = 0
   const quant = quantity ?  quantity  : 1
   dataSet["app"]= dataSet.app + 1
   dataSet["lines"]= [
@@ -241,12 +243,14 @@ export const adaptAddingCartModel= (dataSet, product, userId, quantity, origin) 
 
 export const adaptquantityChangeCartModel= (dataSet, productId, quantity, discount) => {
 const index = dataSet.lines.findIndex(item => item.idProduct == productId);
+  dataSet["status"] = 0
  dataSet["lines"][index].quantity= quantity
  discount && (dataSet["lines"][index].discValue = discount)
   return dataSet 
 }
 
 export const adaptDeleteCartModel= (dataSet, productId) => {
+    dataSet["status"] = 0
   console.log(dataSet.lines)
     const newLines = dataSet.lines.filter(item => item.idProduct != productId)
     console.log(newLines)

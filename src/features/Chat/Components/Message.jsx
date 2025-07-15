@@ -1,13 +1,11 @@
 import { stringToTime } from "../utils/utils"
 
-export const Message =({message})=>{
-    console.log(message)
-
+export const Message =({message, setModal})=>{
     const render = (message) =>{
         const items= {
               2: <p className="text-sm">{message.text}</p>,
-              5:  <img src={message.url} className="w-50 h-50 justify-self-center"/>,
-              6: <iframe src= {message.url} allow="autoplay; encrypted-media" allowFullScreen title="Video de presentación"className={`w-60 h-80 justify-self-center`} ></iframe>,
+              5:  <img onClick={()=>setModal(message)} src={message.url} className="w-50 h-50 justify-self-center"/>,
+              6: <iframe onClick={()=>setModal(message)} src= {message.url} allow="autoplay; encrypted-media" allowFullScreen title="Video de presentación"className={`w-60 h-80 justify-self-center`} ></iframe>,
               7: <audio controls className="w-[260px] sm:w-xs"> <source  src={message.url} type="audio/mpeg" />Tu navegador no soporta el elemento de audio.</audio>,
               10: <button disabled={true} className="border border-gray-300 px-2 py-1 rounded-lg shadow-md bg-zinc-200">{message.text}</button>,
               11: <p className="text-sm italic">Contenido no disponible: <span className="font-semibold">Sticker</span></p>,
@@ -21,4 +19,5 @@ export const Message =({message})=>{
             <p className="text-align-right justify-self-end text-zinc-600 text-xs"> {stringToTime(message.createdDate)}</p>
         </div>
     )
+
 }

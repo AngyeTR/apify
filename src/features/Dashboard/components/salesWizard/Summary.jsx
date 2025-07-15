@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { Heading } from "../../../../shared/components/uikit/heading"
-import { getByCompanyId, getByID, post } from "../../../../shared/services/API/landingApi"
+import { getByCompanyId, getByID, postNavigation } from "../../../../shared/services/API/landingApi"
 import { HiOutlineTrash } from "react-icons/hi";
 import { Input } from "../../../../shared/components/uikit/input";
 import { HiOutlinePencil } from "react-icons/hi";
@@ -42,8 +42,8 @@ export const Summary = ({data, dataSet, setDataSet, handleClick, uuid})=>{
         carts && setDataSet(prev=> ({...prev, cart: carts[carts.length -1]}))
         carts && finishCart(carts[carts.length -1]) 
         setDataSet(internalData)
-        const adaptedModel = adaptNavigationModel(navigationModel,  "purchase", data.layouts[0].id, uuid, 0, 0, 2, true, dataSet.cart.id )
-       post("Navigation", adaptedModel).then(res=> console.log(res))
+        const adaptedModel = adaptNavigationModel(navigationModel,  "purchase", data.layouts[0].id, uuid, 0, 0, 4, true, dataSet.cart.id )
+       postNavigation( adaptedModel).then(res=> console.log(res))
         handleClick(1)}
 
     const handleDeleteUpsell = async()=>{

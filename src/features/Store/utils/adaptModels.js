@@ -3,7 +3,7 @@ const stored = JSON.parse(rawData)
 const date = new Date().toISOString();
 
 export const adaptNewCartModel= (dataSet, product, customer) => {
-  console.log(customer)
+  dataSet["status"]= 0
   dataSet["modifiedBy"]= "system"
   dataSet["createdBy"]= "system"
   dataSet["idCompany"]= stored?.company.id
@@ -85,4 +85,10 @@ export const adaptFavoriteModel= (dataSet, userId, productId ) => {
   dataSet["idProduct"]= parseInt(productId)
   dataSet["startDate"] = date
   return dataSet
+}
+
+export const adaptFinishCartModel= (dataSet) => {
+  dataSet.status = 1
+  const { lines, ...rest } = dataSet;
+    return rest
 }

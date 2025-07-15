@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { edit, getByCompanyId, post } from "../../../shared/services/API/landingApi";
 import { CartModel } from "../utils/models";
-import { adaptAddingCartModel, adaptDeleteCartModel, adaptNewCartModel, adaptquantityChangeCartModel } from "../utils/adaptModels";
+import { adaptAddingCartModel, adaptDeleteCartModel, adaptFinishCartModel, adaptNewCartModel, adaptquantityChangeCartModel } from "../utils/adaptModels";
 import { useLocalStorage } from "../../../shared/hooks/useLocalStorage";
 import { filtercarts } from "../utils/functions";
 import { getStoreUser } from "../../../shared/services/cookies";
@@ -80,12 +80,27 @@ export function useCart(initialCart = null) {
     }
   };
 
+const finishCart = async ()=> {
+  try {
+         const adaptedProduct = adaptFinishCartModel(cart)
+         console.log(JSON.stringify(adaptedProduct))
+        const res = await edit("PreOrder", adaptedProduct)
+        setCart(res.data);
+        return res.data;
+      } catch (error) {
+        console.error("Error editing cart", error);
+        throw error;
+      }
+}
+
+
   return {
     createCart,
     updateCart,
     updateQuantity,
     removeProduct,
     setCart,
-    updateCartAddress
+    updateCartAddress,
+    finishCart
   };
 }

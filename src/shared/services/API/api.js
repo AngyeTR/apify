@@ -174,14 +174,6 @@ export const postFile = async (data)=>{
   return res.data
 }
 
- ////// Reportes  //////
-
-export const convertions = async (query, data) => {
-  const res = await api.post(`/FacebookConversions/${query}`, data).then(response =>  response).catch(error => {return error.response}); 
-  // const res = await noTokenApi.post(`/FacebookConversions/${query}`, data).then(response =>  response).catch(error => {return error.response}); 
-  return res
-}
-
  ////// WhatsApp Cloud  //////
 
  export const getChatByPhone = async (idCompany, phoneNumber)=>{
@@ -195,8 +187,8 @@ export const convertions = async (query, data) => {
 }
 
 export const sendMessage = async (data) =>{
-  const res = await api.post(`WhatsAppCloud/GetsGeneral`, data).then(response => response).catch(error => {return error.response}); 
-  // return res.data
+  const res = await api.post(`WhatsAppCloud/sendTextMessage`, data).then(response => response).catch(error => {return error.response}); 
+  return res.data
 }
 
 

@@ -53,3 +53,23 @@ export const getCustomerScore = async (phone)=>{
   return res.data
 }
 
+////// Domains  //////
+
+export const getByDomain = async (domain)=>{
+  const res = await api.get(`Landing/GetCompanyByDomain/${domain}`).then(response =>  response?.data).catch(error => {return error.response?.data});
+  return res
+}
+
+////// Navigation  //////
+
+export const postNavigation = async ( data)=>{
+  const res = await api.post(`Navigation/Add`, data).then(response =>  response.data).catch(error => {return error.response.data});
+  return res
+}
+
+ ////// Reportes  //////
+
+export const convertions = async (query, data) => {
+  const res = await api.post(`/FacebookConversions/${query}`, data).then(response =>  response).catch(error => {return error.response}); 
+  return res
+}

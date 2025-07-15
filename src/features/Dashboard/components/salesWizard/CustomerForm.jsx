@@ -36,7 +36,7 @@ export const CustomerForm = ({data, handleClick, dataSet, setDataSet})=>{
              const customerID = await getCustomerByPhone(1, buyerInfo.cellphone).then(res=> res.data.id)
             customerID && (buyerInfo.id = customerID)
             setDataSet(prev=>({...prev, "customerData":buyerInfo})) 
-            await createCart(product, buyerInfo).then(res=>setDataSet(prev=>({...prev, cart: res})))
+            await createCart(product, buyerInfo, 0).then(res=>setDataSet(prev=>({...prev, cart: res})))
             await reportAddToCart(buyerInfo.email, buyerInfo.cellphone,  product.price, data.id, buyerInfo.firstName, buyerInfo.lastName, buyerInfo.cityData.name)
             handleClick(1)
         }

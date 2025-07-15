@@ -16,11 +16,10 @@ import { DeliveryForm } from "../DeliveryForm/DeliveryForm";
 export const ShoppingCart = ()=> {
   const [cart, setCart] = useLocalStorage("cart", null)
   const [products, setProducts] = useState([])
-  const [stored] = useLocalStorage("dastoreCompanyta")
+  const [stored] = useLocalStorage("storeCompany")
   const [idToDelete, setIdToDelete] = useState(null)
   const [newAddress, setNewAddress] = useState(null)
-  const { createCart,updateCart,updateQuantity,removeProduct,}  = useCart()
-
+  const { createCart,updateCart,updateQuantity,removeProduct, finishCart}  = useCart()
   const nav = useNavigate()
   const storeUserId = getStoreUser()
 
@@ -44,6 +43,11 @@ const saveCart = async (data)=>{
       await new Promise(resolve => setTimeout(resolve, 1000));
       nav(0)
     }
+  }
+
+  const purchase = async ()=> {
+    const carts = await  getByCompanyId("Orders", stored.company.id).then(res => res?.data?.filter(order=> order.idCustomer == storeUserId))
+    carts && finishCart(carts.at(-1)) 
   }
 
   return (
@@ -131,7 +135,7 @@ const saveCart = async (data)=>{
         </dl>
 
         <div className="mt-6">
-          <Button type="submit" disabled={!cart.address} className="w-full ">Proceder a Pagar</Button>
+          <Button type="submit" disabled={!cart.address} onClick={purchase} className="w-full ">Proceder a Pagar</Button>
         </div>
       </section>
     </form>}
