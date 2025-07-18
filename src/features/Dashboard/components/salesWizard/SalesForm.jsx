@@ -4,6 +4,7 @@ import { Heading } from "../../../../shared/components/uikit/heading"
 import { PriceCard } from "./PriceCard"
 import { OrderBound } from "./OrderBound"
 import { Switch } from "../../../../shared/components/uikit/switch"
+import { Divider } from "../../../../shared/components/uikit/divider"
 import { useEffect, useState } from "react"
 import { getByID } from "../../../../shared/services/API/landingApi"
 import { Button } from "../../../../shared/components/uikit/button"
@@ -16,6 +17,8 @@ export const SalesForm =({data, setDataSet, dataSet, handleClick})=> {
     const [orderBounds, setOrderBounds] = useState([])
     const [cart, setCart] = useState(dataSet.cart)
     const { updateQuantity, updateCart }  = useTunnelCart()
+    const checked = data?.paymentOnDelivery && data?.paymentGateway
+    console.log(checked, data?.paymentOnDelivery, data?.paymentGateway )
 
     useEffect(()=>{
       getByID("Product", data?.idProduct).then(res=>{setMainProduct(res.data);console.log(res)})
@@ -40,17 +43,37 @@ export const SalesForm =({data, setDataSet, dataSet, handleClick})=> {
         <Field>
             <Heading className="text-center my-5">Información de Venta</Heading>
             <Label>Selecciona el precio que deseas pagar</Label>
-            <PriceCard  price={{name: "Precio Normal", price: mainProduct?.price}} setDataSet={setDataSet} setPriced={setPriced} selected={priced == "Precio Normal"}/> 
+            <RadioGroup name="price"  className="m-2" 
+            // onChange={e=>{setDataSet(prev=> ({...prev, price: e })); setPriced(e.name)}}
+            defaultValue="Precio Normal"
+  onChange={(selectedName) => {
+    const selectedPrice = [
+      { name: "Precio Normal", price: mainProduct?.price, quantity: 1 },
+      ...data?.prices ?? []
+    ].find(p => p.name === selectedName);
+
+    setDataSet(prev => ({ ...prev, price: selectedPrice }));
+    setPriced(selectedName);
+  }}
+            
+            >
+            <PriceCard  price={{name: "Precio Normal", price: mainProduct?.price, quantity: 1}} setDataSet={setDataSet} setPriced={setPriced} selected={priced == "Precio Normal"}/> 
             {data?.prices?.map(price => <PriceCard price={price} setDataSet={setDataSet} selected={priced == price.name} setPriced={setPriced}/>)}
-            <RadioGroup name="resale" defaultValue="permit" className="m-2" onChange={e=>setDataSet(prev=> ({...prev, paymentMethod: e}))}>
+            </RadioGroup>
+            <Divider className="my-6"/>
+            <RadioGroup name="paymentMethod" defaultValue={data?.paymentOnDelivery ? "paymentOnDelivery" : "paymentGateway"} className="m-2" onChange={e=>setDataSet(prev=> ({...prev, paymentMethod: e}))}>
             {dataSet.customerScore.isEnabled ? <>
             <Label>Seleccione Método de pago</Label>
-             {data?.paymentGateway && <RadioField><Radio value="paymentGateway" /><Label>Pago Online</Label></RadioField>}
+            {data?.paymentGateway && <RadioField><Radio value="paymentGateway" /><Label>Pago Online</Label></RadioField>}
             {data?.paymentOnDelivery && <RadioField><Radio value="paymentOnDelivery" /><Label>Pago contraentrega</Label></RadioField>}
             </>: <p className="my-3 underline">Pago anticipado requerido</p>}
             </RadioGroup>
+            <Divider className="my-6"/>
+
       {data?.orderBounds && <Label>¿Deseas incluir este producto en tu compra? </Label>}
+            <RadioGroup>
            {data?.orderBounds?.map(bound=> <OrderBound id={bound.idProduct} price={bound.price} orderBounds={acceptedOrderBounds} setOrderBounds={setAcceptedOrderBounds}/>)}
+        </RadioGroup>
           {/* {!accepted ?  <p className="hover:underline" onClick={()=>{setDataSet(prev=> ({...prev, orderBoundAccepted: !accepted})); setAccepted(!accepted)}}>Añadir a mi compra</p> : <p className="text-center text-green-700">Añadido</p>} */}
         </Field>
         <Button disabled={  !dataSet.price || !dataSet.paymentMethod } color="yellow" onClick={save}>Siguiente</Button>

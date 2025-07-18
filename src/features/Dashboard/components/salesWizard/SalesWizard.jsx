@@ -38,7 +38,7 @@ const steps = data?.upsell?.id ? stepsComplete : stepsWithoutUpsell
     const render = (currentStep)=> {return steps[currentStep-1].component}
 
   return (
-      <div className='justify-self-center bg-zinc-50 p-2 pt-10  mt-5 rounded-lg'>
+      <div className='justify-self-center justify-items-center  justify-center bg-zinc-50 p-2 pt-10  mt-5 rounded-lg'>
         <div className='w-[400px]'>
             <MyProgressBar currentStep={currentStep} steps={steps.length} /></div>
         {render(currentStep)}

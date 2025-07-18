@@ -13,7 +13,7 @@ export const NewMessage=({inRange, owner, setMessages})=>{
     const sendText =async ()=>{
         await sendMessage({ cellphone: owner, message: content, idCompany: stored.company.id}).then(res=>console.log(res)).finally(()=>{ setContent(null);
         getChatByPhone(stored.company.id, owner).then(res=> setMessages(res.data) )
-        })
+        })  
 
     }
 

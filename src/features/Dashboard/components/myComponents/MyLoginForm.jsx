@@ -17,6 +17,7 @@ import { Strong, Text, TextLink } from '../../../../shared/components/uikit/text
 export function LoginForm() {
   const [user, setUser] = useState(null);
   const [password, setPassword] = useState(null);
+  const [hide, setHide] =  useState(true)
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(false)
   const [data, setData] = useLocalStorage("data", null)
@@ -53,7 +54,8 @@ export function LoginForm() {
           <Label className="my-0 ">Email</Label>
           <Input type="email" className="my-0 " name="email" disabled={loading} required onChange={(e)=> setUser(e.target.value)}/>
           <Label className="my-0 py-0">Contraseña</Label>
-          <Input type="password" id="password" className="my-0 py-0" name="password" disabled={loading} required  onChange={(e)=> setPassword(e.target.value)}/>
+          <Input type={hide? "password": "text"} id="password" className="my-0 py-0" name="password" disabled={loading} required  onChange={(e)=> setPassword(e.target.value)}/>
+                    {/* <Button disabled={!password} onClick={()=>setHide(prev=> !prev)}>{hide ? "Show" : "hide"}</Button> */}
         </Field>
         <div className="flex items-center justify-between">
           <Text>

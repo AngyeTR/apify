@@ -15,7 +15,7 @@ import { Modal } from "../../../../shared/components/Modal"
 import { CollectionSelector } from '../../../Designer/components/CollectionSelector'
 
 export function FormCompany(props) {
-    const [loading, setloading] = useState(false)
+  const [loading, setloading] = useState(false)
   const [error, setError] = useState(false)
   const [dataSet, setDataSet] = useState(false)
   const [imgUrl, setImgUrl] = useState("")
@@ -25,27 +25,29 @@ export function FormCompany(props) {
   const [fileOrigin, setFileOrigin] = useState(null)
   const [stored, setStored] = useLocalStorage("data", null)
 
-    const upLoadImage = async (value)=> 
-      {const url = URL.createObjectURL(value)
-        setImgUrl(url)
-        let base64 = null
-        try {
-          base64 = await getBase64(value).then(res => {return res})
-          setBase64( base64)
-        } catch (error) {console.log(error) } }
+  const upLoadImage = async (value)=> 
+    {const url = URL.createObjectURL(value)
+    setImgUrl(url)
+    let base64 = null
+    try {
+      base64 = await getBase64(value).then(res => {return res})
+      setBase64( base64)
+    } catch (error) {console.log(error) } }
        
-     useEffect(() => {
+  useEffect(() => {
     getSegments().then((res) => {setSegments(res.data)})
     getByID("Companies", stored?.company.id).then((res) => {setDataSet(res.data)})}, [imgUrl])
     
   const handleChange = (e) => {
     const { name, value } = e.target;
+    console.log(name, value)
     setDataSet(prev=> ({...prev, [name] : value}))}
-   const updateCompany=  async ( data)=>{
-        const info =  getUpdatedLocalData(stored, data)
-        await setStored(info)}
+  
+  const updateCompany=  async ( data)=>{
+    const info =  getUpdatedLocalData(stored, data)
+    await setStored(info)}
 
-   const handleSave= async()=>{
+  const handleSave= async()=>{
     setloading(true)
     setError(null)
     const cleanData = await adaptCompanymodel(dataSet, props.origin, base64, fileOrigin)
@@ -53,8 +55,8 @@ export function FormCompany(props) {
     setloading(false)
     res.isValid  && await updateCompany(cleanData)  
     res.isValid ? props.handleClick() : setError("Por favor revise que todos los campos sean correctos")}
-  return (
-    <>
+  
+    return (<>
     <div className="flex w-full flex-wrap items-end justify-between gap-4 border-b border-zinc-950/10 pb-6 my-5">
       <Heading>Información de la Tienda</Heading>
     </div>
@@ -67,9 +69,9 @@ export function FormCompany(props) {
         {segments && segments.map((segment)=> <option value={parseInt(segment.id)} key={segment.name}>{segment.name}</option>)}
       </Select>
       <Label for="favcolor">Selecciona el color primario:</Label>
-      <input type="color" name="colorPrimary"  value={dataSet.colorPrimary} onChange={handleChange} className='my-2 block  w-50'/> 
+      <input type="color" name="principalColor"  value={dataSet.principalColor} onChange={handleChange} className='my-2 block  w-50'/> 
       <Label for="favcolor">Selecciona el color secundario:</Label>
-      <input type="color" value={dataSet.colorSecondary} className='block  w-50 my-2' name='colorSecondary'  onChange={handleChange} />
+      <input type="color" value={dataSet.secondaryColor} className='block  w-50 my-2' name='secondaryColor'  onChange={handleChange} />
       <Label className="block">Imagen de Tienda</Label>
       <Button onClick={()=>setModalMode("external")} className="m-1">Desde URL</Button>
       <Button onClick={()=>setModalMode("local")} className="m-1">Desde El equipo</Button>

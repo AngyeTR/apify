@@ -27,7 +27,7 @@ export const HomePage = ()=>{
         <MyLayout >
         {(layouts && products) && <div className="w-full " >
             <DesignerManager products={products} layouts={layouts}/>
-            <Divider />
+            {/* <Divider /> */}
             {loading ? <div className="place-self-center mt-50"><Loader /></div> : 
             <LayoutsTable lay={layouts} prod={products}/>}
         </div>}

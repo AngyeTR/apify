@@ -7,6 +7,7 @@ import { useLocalStorage } from "../../../../shared/hooks/useLocalStorage"
 import { post, validateDomain } from "../../../../shared/services/API/api"
 import { Loader } from "../../../../shared/components/Loader"
 import { MyLoader } from "./MyLoader";
+import { CopyButton } from "./MyCopyButton";
 
 export const MyDomainValidator = ()=>{
     const [error, setError] = useState(null)
@@ -48,9 +49,10 @@ export const MyDomainList = ({domains})=>{
          <ul className="mt-10">
         {domains?.map(domain=><li className="border border-zinc-400 rounded-lg m-2" key={domain.id} onClick={()=>setShow(domain.id)}>
             <div className="flex flex-row content-center items-center"><GrDomain className="mx-3"/><h2 className="font-semibold my-3 row hover:underline cursor-pointer"> {domain.domain}</h2></div>
-            {domain.id == show && <div className="bg-zinc-100 border-t-zinc-600 p-5 pl-8"> <p className="overflow-auto  font-medium">CName Parte 1: <span className="overflow-scroll italic text-sm font-normal ml-3">{domain.cnamePt1}</span></p>
-            <p className=" overflow-auto font-medium w-full">CName Parte 2: <span className="italic text-sm font-normal ml-3 ">{domain.cnamePt2}</span></p>
-            <p className="font-medium overflow-auto ">SSL: <span className="italic text-sm font-normal ml-3 overflow-scroll">{domain.idZeroSSL}</span></p>
+            {domain.id == show && <div className="bg-zinc-100 border-t-zinc-600 p-5 pl-8"> 
+            <div className="w-full flex items-center flex-row"><p className="overflow-hidden  font-medium">CName Nombre: </p> <p className="overflow-scroll italic text-sm font-normal ml-3">{domain.cnamePt1} </p><CopyButton textToCopy={domain.cnamePt1}/></div>
+            <div className="w-full flex items-center flex-row"><p className=" overflow-hidden font-medium min-w-[130px] w-[180px] mx-0 px-0 ">CName Valor: </p><p className="italic text-sm font-normal ml-2 overflow-hidden">{domain.cnamePt2} </p><CopyButton textToCopy={domain.cnamePt2}/></div>
+            <div className="w-full flex items-center flex-row"><p className="font-medium overflow-hidden ">SSL: </p><p className="italic text-sm font-normal ml-3 overflow-scroll">{domain.idZeroSSL}</p> <CopyButton textToCopy={domain.idZeroSSL}/></div>
             <p className="font-medium overflow-auto ">Estado: <span className="italic text-sm font-normal ml-3 overflow-scroll">{domain.status}</span></p>
             {domain.status == "draft" && <>
             {loading ? <MyLoader/> :<Button className="my-1" onClick={()=>validate(domain)}>Validar Dominio</Button>}

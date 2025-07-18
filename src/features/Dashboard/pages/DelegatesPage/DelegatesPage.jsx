@@ -7,6 +7,7 @@ import { Heading } from "../../../../shared/components/uikit/heading"
 import { useLocalStorage } from "../../../../shared/hooks/useLocalStorage"
 import { MyDelegatesInvitationForm } from "../../components/myComponents/MyDelegatesInvitationForm"
 import { Loader } from "../../../../shared/components/Loader"
+import { NewTable } from "../../components/newTable"
 
 export const DelegatesPage = ()=> { 
     const [profiles, setProfiles] = useState(null)
@@ -21,11 +22,12 @@ export const DelegatesPage = ()=> {
 
     return (
         <MyLayout >
+            <Heading>Delegados</Heading>
              <MyDelegatesInvitationForm />
             <div className=" mt-6">
-            <Heading>Delegados</Heading>
             {loading ? <div className="place-self-center mt-50"><Loader /></div> :
-            <MyDelegatesTable profiles={profiles} data={data}/>}
+            <NewTable  data={data}/>}
+            {/* <MyDelegatesTable profiles={profiles} data={data}/>} */}
             </div>
         </MyLayout>
     )

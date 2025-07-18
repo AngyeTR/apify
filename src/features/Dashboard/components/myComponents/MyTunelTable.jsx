@@ -20,12 +20,12 @@ import { getByCompanyId, post } from "../../../../shared/services/API/api.js";
 import { campaignModel } from "../../utils/models.js";
 import { FaFacebook, FaTiktok  } from "react-icons/fa";
 import { DropdownButton, DropdownMenu, Dropdown, DropdownItem} from "../../../../shared/components/uikit/dropdown.jsx"
+import { FormNewCampaign } from "../forms/FormNewCampaign.jsx";
 
 const Table  = ({data, headers, setModal}) => {
     const params = useParams()
     const nav = useNavigate()
     const tableRef = useRef(null);
-    const [stored] = useLocalStorage("data")
 
   return (
     <DataTable data={data} className="display "  key={params.option} ref={tableRef}  id="myTable"
@@ -53,31 +53,27 @@ export function TunnelTable({data}) {
   const [dataToShow, setDataToShow] = useState(data[0]?.domain ? data: [])
   const [modal, setModal] = useState({status:false, id: null, action: null})
   const [filter, setFilter] = useState(null)
-  const [newCampaign, setNewCampaign] = useState(null)
   const [loading, setLoading] = useState(false) 
   const [camps, setCamps] = useState(null) 
   const [stored] = useLocalStorage("data")
 
- useEffect(()=>{getByCompanyId("CampaingCompanies", stored.company.id).then(res=>setCamps(res.data))
+ useEffect(()=>{ setLoading(true)
+    getByCompanyId("CampaingCompanies", stored.company.id).then(res=>setCamps(res.data))
     setDataToShow(data)
-  },[])
+    setLoading(false)},[])
 
-  useEffect(()=>{const filteredD= filter ? data?.[0]?.domain ? data.filter(item=> item.idCampaign == filter) : [] : data?.[0]?.domain? data : []
-  setDataToShow(filteredD) },[data, filter])
+  useEffect(()=>{setLoading(true)
+    const filteredD= filter ? data?.[0]?.domain ? data.filter(item=> item.idCampaign == filter) : [] : data?.[0]?.domain? data : []
+  setDataToShow(filteredD) 
+  setLoading(false)},[data, filter])
   
-  useEffect(()=>{ filteredData && render()}, [data])
+  useEffect(()=>{setLoading(true) 
+  filteredData && render()
+  setLoading(false)}, [data])
   const filteredData = dataToShow?.map(item => [item.id, item.name, item.description ? item.description: " ", camps?.filter(camp=> camp.id==item.idCampaign)[0] ? camps?.filter(camp=> camp.id==item.idCampaign)[0].name: "", item.initialDate, item.endDate, item.domain, [item.facebookPixel, item.tikTokPixel], item?.prices?.length, item?.orderBounds?.length, item?.upsell?.idProduct? "Si": "No", item?.downsell?.idLayout? "Si": "No"] )
   const headers = ["Acciones", "Nombre", "Descripción", "Campaña", "Fecha de Inicio", "Fecha de Fin", "Dominio", "Pixel", "precios", "orderBounds", "upsell", "downsell"]
   
   const clone = async () =>{console.log("clonning")}
-
-  const createCampaign = async()=>{
-    const camp = campaignModel
-    camp.name = newCampaign
-    const res = await post("CampaingCompanies", camp).then(res=>console.log(res))
-    res.isValid && setNewCampaign(null)
-  }
-
 
   const render = (data)=> {
     if(data?.length > 0 && headers.length > 0 &&  data[0].length == headers.length ){
@@ -90,22 +86,29 @@ export function TunnelTable({data}) {
   return (
     <>
      <Navbar className="grid grid-flow-col justify-items-end" >
-      <NavbarSection className="w-full flex-wrap">
-          <div className="flex-wrap">
-            <input className="w-[150px] sm:w-sm border border-zinc-400 rounded-lg p-1 mr-2" placeholder="Nueva campaña" onChange={(e)=>setNewCampaign(e.target.value)}/>
-          <Button  onClick={createCampaign} disabled={!newCampaign} className="mx-2">Crear</Button>
-          <Dropdown>
-            <DropdownButton outline> Filtrar</DropdownButton>
+      <NavbarSection className="w-full flex-wrap sm:grid sm:grid-cols-5">
+      {/* <NavbarSection className="w-full flex-wrap"> */}
+        <div className="flex col-span-4">
+        <FormNewCampaign/>
+         <Dropdown>
+          <DropdownButton outline> Filtrar</DropdownButton>
           <DropdownMenu>
             <DropdownItem onClick={() => setFilter(null)}>Ver todos</DropdownItem>
             {camps?.map(camp =>  <DropdownItem onClick={() => setFilter(camp.id)}>{camp.name}</DropdownItem>)}
-          </DropdownMenu>
-    </Dropdown>
+            </DropdownMenu>
+        </Dropdown>
+        </div>
+        <div className="col-span-1 flex justify-end items-center w-full">
+          <Button className="justify-self-right"  onClick={()=>setModal({status:true, id: null, action: "Crear"})}>Crear Tunel</Button>
           </div> 
       </NavbarSection>
     </Navbar>
-    <Button   onClick={()=>setModal({status:true, id: null, action: "Crear"})}>Crear Tunel</Button>
-    { !filteredData  ? <p>Cargando tabla.. </p> : filteredData?.length ==0 ? <p>No se encontraron registros </p> :render(filteredData)}
+    
+
+    {loading || !filteredData  ? <Loader/> : 
+    filteredData?.length ==0 ? <p>No se encontraron registros </p> :
+    render(filteredData)}
+    
     {modal.status && <Modal>
       <div className="bg-zinc-50 rounded-lg w-[90%] md:w-[70%] h-[90%] overflow-scroll py-10 justify-items-center"> 
         <div className="grid grid-cols-6 w-full"><div/><Heading className="mb-5 col-span-4 justify-self-center">{modal.action} Tunel de Ventas </Heading>

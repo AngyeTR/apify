@@ -27,8 +27,8 @@ export const CustomerForm = ({data, handleClick, dataSet, setDataSet})=>{
         buyerInfo.fullName = buyerInfo.firstName + " " + buyerInfo.lastName
         const verifyEmail = validateEmail(buyerInfo.email)
         if(verifyEmail){setError(verifyEmail)}
-        else if (buyerInfo.cellphone?.length < 10 || buyerInfo.cellphone[0] != 3) 
-            {setError("Formato de teléfono inválido")}
+        else if (buyerInfo.cellphone?.length < 10 || buyerInfo.cellphone[0] != 3) {setError("Formato de teléfono inválido")}
+        else if (buyerInfo.address?.length < 8){setError("Dirección incompleta")}
         else {
             await getCustomerScore(buyerInfo.cellphone).then(res=> setDataSet(prev=>({...prev, "customerScore": res})))
              const res = await post("Customer", buyerInfo).then(res=> res)
@@ -63,7 +63,7 @@ export const CustomerForm = ({data, handleClick, dataSet, setDataSet})=>{
             <Label>Email <span className="text-red-600">*</span></Label>
             <Input invalid={error?.includes("email")} placeholder="ejemplo@ejemplo.com" type="email" onChange={e=> setBuyerInfo(prev=>({...prev, email: e.target.value}))}/>
              <Label>Dirección de entrega  <span className="text-red-600">*</span></Label>
-            <Input placeholder="Ejemplo: calle 1 # 23-45 apartamento 67" onChange={e=> setBuyerInfo(prev=>({...prev, address: e.target.value}))}/>
+            <Input invalid={error?.includes("Dirección")} placeholder="Ejemplo: calle 1 # 23-45 apartamento 67" onChange={e=> setBuyerInfo(prev=>({...prev, address: e.target.value}))}/>
              <Label>Pais*</Label>
             <Select name="country" onChange={(e)=> e.target.value && setLocation(prev => ({...prev, "country": JSON.parse(e.target.value)}))}>
                 <option value="">Selecciona una opcion</option>
@@ -87,7 +87,7 @@ export const CustomerForm = ({data, handleClick, dataSet, setDataSet})=>{
             <p>{data.description}</p></div>}
         </Field>
         <Button disabled={!buyerInfo.firstName || !buyerInfo.lastName || !buyerInfo.cellphone || !buyerInfo.email || !buyerInfo.address || !buyerInfo.cityData} 
-        color="yellow" onClick={saveform}>Siguiente</Button>
+        color="yellow" className="justify-self-center justify-center" onClick={saveform}>Siguiente</Button>
         {error && <p className="text-sm text-red-600">Algo salió mal: {error}</p>}
         </div>
     )

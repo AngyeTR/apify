@@ -36,9 +36,9 @@ const sendInvitation = async () =>{
 
     return (
          <Fieldset className="my-6">
-            <Heading >Enviar invitación como delegado</Heading>
+            <h3 className="text-md font-semibold">Enviar invitación como delegado</h3>
             {!user ? <>
-            <input  placeholder="Email"className="group relative w-xs m-2 p-1 border border-zinc-400 rounded-lg" onChange={(e)=>setEmail(e.target.value)}/>
+            <input  placeholder="Email"className="group relative bg-white text-md w-xs m-2 ml-0 p-1 border border-zinc-300 rounded-lg" onChange={(e)=>setEmail(e.target.value)}/>
             {loading ? <MyLoader /> : <Button disabled={!email } onClick={checkEmail}>Validar correo</Button>}
             </>: <>
             <p className="my-2">Usuario encontrado: <strong> {user?.fullname} </strong></p>

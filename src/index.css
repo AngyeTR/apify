@@ -4,20 +4,24 @@
 /* @tailwind utilities; */
 
 :root {
-  font-family: "Inter", Inter,  sans-serif;
+  font-family: "Poppins", Inter,  sans-serif;
+  /* font-family: "Inter", Inter,  sans-serif; */
   line-height: 1.5;
   font-weight: 400;
   font-synthesis: none;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-size: 0.95em;
 }
 
-
-
+table.dataTable{
+  font-size: 0.9em;
+}
 
 table.dataTable td.dt-control {
   text-align: center;
+  font-size: 0.7em;
   cursor: pointer;
 }
 table.dataTable td.dt-control:before {
@@ -58,6 +62,7 @@ div.dt-scroll {
 div.dt-scroll-body thead tr,
 div.dt-scroll-body tfoot tr {
   height: 0;
+  font-size: 0.7em;
 }
 div.dt-scroll-body thead tr th, div.dt-scroll-body thead tr td,
 div.dt-scroll-body tfoot tr th,
@@ -66,6 +71,7 @@ div.dt-scroll-body tfoot tr td {
   padding-top: 0px !important;
   padding-bottom: 0px !important;
   border-top-width: 0px !important;
+  font-size: 0.7em;
   border-bottom-width: 0px !important;
 }
 div.dt-scroll-body thead tr th div.dt-scroll-sizing, div.dt-scroll-body thead tr td div.dt-scroll-sizing,
@@ -73,6 +79,7 @@ div.dt-scroll-body tfoot tr th div.dt-scroll-sizing,
 div.dt-scroll-body tfoot tr td div.dt-scroll-sizing {
   height: 0 !important;
   overflow: hidden !important;
+  font-size: 0.7em;
 }
 
 table.dataTable thead > tr > th:active,
@@ -104,6 +111,7 @@ table.dataTable thead > tr > td.dt-ordering-asc,
 table.dataTable thead > tr > td.dt-ordering-desc {
   position: relative;
   padding-right: 30px;
+  font-size: 0.9em;
 }
 table.dataTable thead > tr > th.dt-orderable-asc span.dt-column-order, table.dataTable thead > tr > th.dt-orderable-desc span.dt-column-order, table.dataTable thead > tr > th.dt-ordering-asc span.dt-column-order, table.dataTable thead > tr > th.dt-ordering-desc span.dt-column-order,
 table.dataTable thead > tr > td.dt-orderable-asc span.dt-column-order,
@@ -114,6 +122,7 @@ table.dataTable thead > tr > td.dt-ordering-desc span.dt-column-order {
   right: 12px;
   top: 0;
   bottom: 0;
+  font-size: 0.9em;
   width: 12px;
 }
 table.dataTable thead > tr > th.dt-orderable-asc span.dt-column-order:before, table.dataTable thead > tr > th.dt-orderable-asc span.dt-column-order:after, table.dataTable thead > tr > th.dt-orderable-desc span.dt-column-order:before, table.dataTable thead > tr > th.dt-orderable-desc span.dt-column-order:after, table.dataTable thead > tr > th.dt-ordering-asc span.dt-column-order:before, table.dataTable thead > tr > th.dt-ordering-asc span.dt-column-order:after, table.dataTable thead > tr > th.dt-ordering-desc span.dt-column-order:before, table.dataTable thead > tr > th.dt-ordering-desc span.dt-column-order:after,
@@ -127,8 +136,8 @@ table.dataTable thead > tr > td.dt-ordering-desc span.dt-column-order:before,
 table.dataTable thead > tr > td.dt-ordering-desc span.dt-column-order:after {
   left: 0;
   opacity: 0.125;
-  line-height: 9px;
-  font-size: 0.8em;
+  line-height: px;
+  font-size: 0.9em;
 }
 table.dataTable thead > tr > th.dt-orderable-asc, table.dataTable thead > tr > th.dt-orderable-desc,
 table.dataTable thead > tr > td.dt-orderable-asc,
@@ -140,11 +149,13 @@ table.dataTable thead > tr > td.dt-orderable-asc:hover,
 table.dataTable thead > tr > td.dt-orderable-desc:hover {
   outline: 2px solid rgba(0, 0, 0, 0.05);
   outline-offset: -2px;
+  font-size: 0.9em;
 }
 table.dataTable thead > tr > th.dt-ordering-asc span.dt-column-order:before, table.dataTable thead > tr > th.dt-ordering-desc span.dt-column-order:after,
 table.dataTable thead > tr > td.dt-ordering-asc span.dt-column-order:before,
 table.dataTable thead > tr > td.dt-ordering-desc span.dt-column-order:after {
   opacity: 0.6;
+  
 }
 table.dataTable thead > tr > th.sorting_desc_disabled span.dt-column-order:after, table.dataTable thead > tr > th.sorting_asc_disabled span.dt-column-order:before,
 table.dataTable thead > tr > td.sorting_desc_disabled span.dt-column-order:after,
@@ -159,6 +170,7 @@ table.dataTable thead > tr > td:active {
 div.dt-scroll-body > table.dataTable > thead > tr > th,
 div.dt-scroll-body > table.dataTable > thead > tr > td {
   overflow: hidden;
+  font-size: 0.9em;
 }
 
 :root.dark table.dataTable thead > tr > th.dt-orderable-asc:hover, :root.dark table.dataTable thead > tr > th.dt-orderable-desc:hover,

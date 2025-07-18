@@ -1,13 +1,21 @@
-import { HiArrowCircleRight } from "react-icons/hi";
+import { RadioField, Radio } from "../../../../shared/components/uikit/radio";
 
-export const PriceCard = ({price, setDataSet, selected, setPriced})=>{
+export const PriceCard = ({price, selected})=>{
+    console.log(price)
     return (
-        <div key={price.name} className={`border border-dotted border-zinc-400 hover:border-solid rounded-lg w-[350px] p-3 m-2 justify-self-center ${selected && "bg-zinc-200"}`} onClick={()=>{setDataSet(prev=> ({...prev, price: price })); setPriced(price.name)}}>
-            <h1 className="mb-2">{price.name} <span className={`bg-${price.tagColor}-600 p-1 rounded-sm shadow-md text-white`}>{price.tagName}</span></h1>
-            {price.price ? <p className="text-sm text-start justify-self-start font-medium">Total: {price.price}</p> :
-            <div className="grid grid-cols-4 items-center"><p className="text-xs italic"> Antes : <span className="line-through">{price.oldPrice}</span></p>
-            <HiArrowCircleRight className="size-5 justify-self-center" />
-            <p className="text-sm text-start justify-self-start font-medium"> Ahora : <span >{price.price}</span></p></div>}
-        </div>
+        <RadioField><Radio 
+        // value={price} 
+        value={price.name}
+        />
+        <div key={price.name} className={`relative   rounded-lg w-[350px] p-3 m-2 justify-self-center ${selected ? "border-3 border-solid  border-green-400": "border border-dotted border-zinc-400 "}`} 
+        // onClick={()=>{setDataSet(prev=> ({...prev, price: price })); setPriced(price.name)}}
+        >
+            {price.tagName && <div><p className={`absolute -top-1 -right-2  bg-${price.tagColor}-600 p-1 rounded-sm shadow-lg/30 text-white`}>{price.tagName}</p></div>}            
+            <h1 className="mb-2 text-lg font-semibold">{price.name} </h1>
+            {!price.oldPrice ? <p className="text-md text-start justify-self-start font-medium"><span className="font-semibold"> ${Number(price.price).toLocaleString('es-CO')}</span></p> :
+            <div className="">
+            <p><span className="line-through text-zinc-600">${Number(price.oldPrice).toLocaleString('es-CO')}</span>  <span className="font-semibold text-md"> ${Number(price.price).toLocaleString('es-CO')}</span></p>    
+            </div>}
+        </div></RadioField>
     )
 } 

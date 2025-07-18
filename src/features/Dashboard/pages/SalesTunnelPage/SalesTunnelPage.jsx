@@ -32,7 +32,7 @@ export const SalesTunnelPage = ()=> {
 
     useEffect(()=>{
         const host = location.hostname
-        getByDomain(host == "localhost" || host == "apify-livid.vercel.app" ? "store.apify.com.co": host).then(res=>  {setStore({idStore: res.data.id, idCompany: res.data?.idCompany});
+        getByDomain(host == "localhost" ||  host == "apify-livid.vercel.app" ? "store.apify.com.co": host).then(res=>  {setStore({idStore: res.data.id, idCompany: res.data?.idCompany});
         // getByDomain(host == "localhost" || host == "apify-livid.vercel.app" ? "store.apify.com.co": host).then(res=>  {setStore({idStore: 3, idCompany: 3});
         // getByCompanyId("Layout", 3).then(res => setLayouts(res.data))})
         getByCompanyId("Layout", res.data?.idCompany).then(res => setLayouts(res.data))})
@@ -40,7 +40,7 @@ export const SalesTunnelPage = ()=> {
         setFbPixel(res.data.facebookPixel)
         })
         reportView(params.tunnel)},[])
-        useScrollCheckpoints(10, uuid, data?.layouts?.[0]?.id)
+        useScrollCheckpoints(10, uuid, data?.layouts?.[0]?.idLayout)
 
     useEffect(() => {
         // const layoutOBJ = layouts?.filter(item => item.id == params.tunnel)
@@ -63,8 +63,9 @@ export const SalesTunnelPage = ()=> {
          <div className="w-screen container mx-auto justify-self-center justify-center pb-5" style={{backgroundColor: color?.["backgroundColor"],  
               backgroundImage: `url('${color?.["backgroundImage"]}')`,  backgroundSize: 'cover',
               backgroundPosition: 'center', repeat: "no-repeat",  backgroundBlendMode: 'multiply' }} >
-            <div className="w-[90vw] sm:w-[70vw] m-0 p-0  justify-self-center justify-items-center" >
+            <div className="w-[90vw] sm:w-[70vw] m-0 p-0  justify-self-center justify-center justify-items-center" >
                <GridContainer canEdit={false} items={layout}  setGrid={setGrid} handleClickInCOmponent={handleClickInCOmponent} uuid={uuid}/>
+                {console.log(data)}
                 <SalesWizard data={data} uuid={uuid}/>
             </div>
          </div>)} 

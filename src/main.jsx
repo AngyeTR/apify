@@ -8,7 +8,7 @@ import 'datatables.net-dt/css/dataTables.dataTables.min.css';
 import "tailwindcss/index.css"
 
 createRoot(document.getElementById('root')).render(
-  <Router>
+  <Router >
     <App />
   </Router>,
 )
