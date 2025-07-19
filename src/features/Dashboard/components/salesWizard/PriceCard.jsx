@@ -1,7 +1,7 @@
 import { RadioField, Radio } from "../../../../shared/components/uikit/radio";
 
 export const PriceCard = ({price, selected})=>{
-    console.log(price)
+    console.log(price, selected)
     return (
         <RadioField><Radio 
         // value={price} 

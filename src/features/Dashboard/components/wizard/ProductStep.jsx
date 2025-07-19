@@ -18,7 +18,7 @@ export const ProductStep = ({data, setData})=>{
     const [price, setPrice] = useState(pricesModel)
     const methods = [{name:"Efectivo Contraentrega", id:"paymentOnDelivery"}, {name: "Pago online", id:"paymentGateway"}]
   useEffect(()=>{getByID("Products", data.idProduct).then(res=> setPrice(prev=>({...prev, oldPrice: res.data.price + 20000, price: res.data.price})))},[])
-
+ 
 const handleprice = ()=>{ 
   price.idProduct = data.idProduct
   setData(prev => ({...prev, prices: [...prev.prices, price]}))

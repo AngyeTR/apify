@@ -24,18 +24,19 @@ export const Wizard = ({action, id})=> {
 useEffect(()=>{action == "Crear" ? setData(prev=>({...salesTunnelModel, prices : prev.prices})) : getByID("SalesTunnel", id ).then(res=> {setData(res.data); console.log(res)})},[])
 
 const saveTunnel = async ()=>{
+  console.log(data)
  const res = action == "Crear" ? await post("SalesTunnel", data).then(res=> res) :
   await edit("SalesTunnel", data).then(res=> res) 
- res.isValid && nav(0)
-}
+//  res.isValid && nav(0)
+} 
 
 const steps = [
     {component: <div><CampaignStep data={data} setData={setData}/><Button disabled={!data.idCampaign || !data.idProduct || !data.domain || !(!!data.facebookPixel || !!data.tikTokPixel)} color="yellow" onClick={handleClick}>Siguiente</Button></div> }, 
-    {component: <div><TunnelStep data={data} setData={setData}/><Button color="yellow" disabled={!data.name || data.layouts.length == 0 || !data.initialDate || !data.endDate} onClick={handleClick}>Siguiente</Button></div> },
-    {component:  <div><ProductStep data={data} setData={setData}/><Button color="yellow" disabled={ data?.prices?.length==0 } onClick={handleClick}>Siguiente</Button></div>},
-    {component: <div><OrderBound data={data} setData={setData}/><Button color="yellow"  onClick={handleClick}>Siguiente</Button><Button onClick={handleClick} className="mx-1">Omitir</Button></div>},
-    {component: <div><UpsellStep data={data} setData={setData}/><Button color="yellow" disabled={!!data?.upsell?.idProduct && (!data?.upsell?.idProduct || !data?.upsell?.idLayout || !data?.upsell?.price)  }  onClick={handleClick}>Siguiente</Button><Button onClick={handleClick} className="mx-1">Omitir</Button></div>},
-    {component: <div><DownsellStep data={data} setData={setData}/><Button disabled={!!data?.downsell?.idLayout && (!data?.downsell?.idLayout || !data.downsell?.price)} onClick={saveTunnel}>Guardar Tunel</Button></div>},]
+    {component: <div><TunnelStep data={data} setData={setData}/><Button color="red" disabled={!data.name || data.layouts.length == 0 || !data.initialDate || !data.endDate} onClick={handleBack}>Atrás</Button><Button color="yellow" className="ml-2" disabled={!data.name || data.layouts.length == 0 || !data.initialDate || !data.endDate} onClick={handleClick}>Siguiente</Button></div> },
+    {component:  <div><ProductStep data={data} setData={setData}/><Button color="red" disabled={!data.name || data.layouts.length == 0 || !data.initialDate || !data.endDate} onClick={handleBack}>Atrás</Button><Button color="yellow" className="ml-2" disabled={ data?.prices?.length==0 } onClick={handleClick}>Siguiente</Button></div>},
+    {component: <div><OrderBound data={data} setData={setData}/><Button color="red" disabled={!data.name || data.layouts.length == 0 || !data.initialDate || !data.endDate} onClick={handleBack}>Atrás</Button><Button color="yellow"  className="ml-2" onClick={handleClick}>Siguiente</Button><Button onClick={handleClick} className="mx-1">Omitir</Button></div>},
+    {component: <div><UpsellStep data={data} setData={setData}/><Button color="red" disabled={!data.name || data.layouts.length == 0 || !data.initialDate || !data.endDate} onClick={handleBack}>Atrás</Button><Button color="yellow" className="ml-2" disabled={!!data?.upsell?.idProduct && (!data?.upsell?.idProduct || !data?.upsell?.idLayout || !data?.upsell?.price)  }  onClick={handleClick}>Siguiente</Button><Button onClick={handleClick} className="mx-1">Omitir</Button></div>},
+    {component: <div><DownsellStep data={data} setData={setData}/><Button color="red" disabled={!data.name || data.layouts.length == 0 || !data.initialDate || !data.endDate} onClick={handleBack}>Atrás</Button><Button className="ml-2" disabled={!!data?.downsell?.idLayout && (!data?.downsell?.idLayout || !data.downsell?.price)} onClick={saveTunnel}>Guardar Tunel</Button></div>},]
 
     const render = (currentStep)=> {return steps[currentStep-1].component}
 

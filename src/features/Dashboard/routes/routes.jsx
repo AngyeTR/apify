@@ -10,6 +10,7 @@ import { CampaignWizard } from "../pages/CampaignWizard/CampaignWizard"
 import { SalesTunnelPage } from "../pages/SalesTunnelPage/SalesTunnelPage"
 import { DomainsPage } from "../pages/DomainsPage/DomainsPage"
 import { getToken } from "../../../shared/services/cookies"
+import { LayoutPage } from "../components/salesWizard/Layout"
 
 
   let token  = getToken()
@@ -26,6 +27,7 @@ const dashboardRoutes =[
       <Route path="/dashboard/domains" element={token ?  <DomainsPage />  : <Navigate replace to={"/login"}/>} />,
       <Route path="/dashboard/storemanager" element={token ?  <StoreManagerPage /> : <Navigate replace to={"/login"}/>} />,
       <Route path="/dashboard/salestunnel/:tunnel" element={<SalesTunnelPage/> } />,
+      <Route path="/dashboard/layout/:layout" element={<LayoutPage/> } />,
       <Route path="/*" element={<h1>No se encontraron resultados</h1>  } />,
 ]
 

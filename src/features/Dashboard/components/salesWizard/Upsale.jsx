@@ -5,7 +5,7 @@ import { Button } from "../../../../shared/components/uikit/button";
 import { useTunnelCart } from "../../hooks/useTunnelCart"
 
 export const Upsale = ({data, dataSet, setDataSet, handleUpsell})=> {
-    console.log(dataSet)
+    const host = window.location.origin
     const [product, setProduct] = useState(null)
     const [accepted, setAccepted] = useState(false)
     const { updateQuantity, updateCart }  = useTunnelCart()
@@ -18,10 +18,11 @@ export const Upsale = ({data, dataSet, setDataSet, handleUpsell})=> {
 }
 
     return (
-    <div className="justify-center justify-items-center bg-zinc-50 mt-5 w-[px] md:w-[600px] rounded-lg p-5">
+    <div className="justify-center justify-items-center text-center bg-zinc-50 mt-5 w-[px] md:w-[600px] rounded-lg p-5">
 <Heading className="text-center">Tenemos una gran oportunidad para ti</Heading>
+{console.log(`${host}/dashboard/layout/${data.upsell.idLayout}`)}
  <iframe
-      src={`http://localhost:5173/designer/view/${data.upsell.idLayout}`}
+      src={`${host}/dashboard/layout/${data.upsell.idLayout}`}
       width="100%"
       height="400"
       title="Ejemplo iframe"
@@ -33,7 +34,7 @@ export const Upsale = ({data, dataSet, setDataSet, handleUpsell})=> {
 <h2 className="font-semibold text-center text-md">Por tan solo ${data.upsell.price}</h2>
 {!accepted ?  <Button color="green" className="my-2 justify-self-center" onClick={()=>{setDataSet(prev=> ({...prev, upsaleAccepted: true})); setAccepted(true)}}>Añadir a mi compra</Button> : <p className="text-green-700">Añadido</p>}
 
-<div className="justify-center"><Button   color="yellow" onClick={handleUpdateCart}>Siguiente</Button></div>
+<div className="justify-center justify-self-center"><Button   color="yellow" onClick={handleUpdateCart}>Siguiente</Button></div>
 
 </div>
     )

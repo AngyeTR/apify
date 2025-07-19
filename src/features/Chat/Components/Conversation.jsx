@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import { Message } from "./Message"
 import { NewMessage } from "./NewMessage"
 import { getChatByPhone } from "../../../shared/services/API/api"
@@ -13,6 +13,16 @@ export const Conversation =({conversation})=>{
    const [loading, setLoading] = useState(true)
    const [stored] = useLocalStorage("data")
    const [modal, setModal] = useState(null)
+
+    const contenedorRef = useRef(null);
+
+  useEffect(() => {
+    if (contenedorRef.current) {
+      contenedorRef.current.scrollTo({ top: contenedorRef.current.scrollHeight, behavior: 'smooth' });
+
+    }
+  }, [messages]); // se actualiza cada vez que cambian los mensajes
+
 
    useEffect(()=>{
     setLoading(true)
@@ -31,9 +41,9 @@ return (
         {modal.typeMessage == 2 ? <img src="https://images.pexels.com/photos/2486168/pexels-photo-2486168.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" className="h-[100%]  justify-self-center"/>:
         <iframe src= {modal.url} allow="autoplay; encrypted-media" allowFullScreen title="Video de presentación"className={`w-60 h-80 justify-self-center`} ></iframe>} </div> 
         </Modal>:
-        <> {conversation ? <div className="">
+        <> {conversation ? <div className="" >
         <div className="fixed top-3 ml-6 lg:ml-0 flex items-center p-3 bg-zinc-100 w-[75%]"><div className="mr-5 bg-blue-500 h-10 w-10 rounded-full"/><h1>{conversation.to}</h1></div>
-        <div className="fixed w-[90%] lg:w-[65%] xl:w-[70%] top-20 bottom-28 overflow-y-scroll px-3">{messages.length>0 ? messages?.map(message=> <Message  message={message} key={message.id} setModal={setModal}/>): 
+        <div ref={contenedorRef} className="fixed w-[90%] lg:w-[65%] xl:w-[70%] top-20 bottom-28 overflow-y-scroll px-3">{messages.length>0 ? messages?.map(message=> <Message  message={message} key={message.id} setModal={setModal}/>): 
         <p className="text-center  mt-15">Aun no hay mensajes disponibles</p>}</div>
         <NewMessage inRange={inRange} owner={conversation.to} setMessages={setMessages}/>
     </div> 

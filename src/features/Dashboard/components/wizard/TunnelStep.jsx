@@ -14,7 +14,7 @@ export const TunnelStep = ({data, setData})=>{
     const [total, setTotal] = useState(0)
     const [dates, setDates] = useState(false)
     const [ error, setError] = useState(null)
-  
+   
   useEffect(()=>{getByCompanyId("Layouts", stored?.company.id).then(res=> setLayouts(res?.data?.filter(item=> item.idProduct== data.idProduct))) },[])
   useEffect(()=>{handleDefaultDate()},[ dates])
 

@@ -23,6 +23,7 @@ export const OrderBound = ({data, setData})=>{
         action == "add" && filtered.push(newItem)
         setInternalData(filtered)
         setNewItem(orderBoundModel)
+        console.log(filtered  )
         setData(prev=>({...prev, "orderBounds": filtered}))}
 
    return (
@@ -36,7 +37,7 @@ export const OrderBound = ({data, setData})=>{
         {(product) => (
           <ComboboxOption value={product}>
             <ComboboxLabel>{product.name}</ComboboxLabel>
-          </ComboboxOption>)}
+          </ComboboxOption>)} 
       </Combobox>
         {newItem.idProduct && <> <Label>Precio</Label>
             <Input defaultValue={newItem.price} type="number" placeholder="Precio final del producto" className="my-3" onChange={(e)=>setNewItem(prev => ({...prev, "price" : parseFloat(e.target.value)})) }/>

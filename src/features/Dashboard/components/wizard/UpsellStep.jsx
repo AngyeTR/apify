@@ -13,7 +13,7 @@ export const UpsellStep = ({data, setData})=>{
     const [ layouts, setLayouts] = useState(null)
     const [filteredLayouts, setFilteredLayouts] = useState([])
     const [ stored] = useLocalStorage("data")
-    
+     
     useEffect(()=>{
         getByCompanyId("Products", stored?.company.id).then(res=>setProducts(res.data))
         getByCompanyId("Layouts", stored?.company.id).then(res=>setLayouts(res.data))

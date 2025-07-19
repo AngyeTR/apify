@@ -10,7 +10,7 @@ import { Field, Label } from "../../../../shared/components/uikit/fieldset"
 export const DownsellStep = ({data, setData})=>{
     const [ products, setProducts] = useState(null)
     const [ layouts, setLayouts] = useState(null)
-    const [ stored] = useLocalStorage("data")
+    const [ stored] = useLocalStorage("data") 
     
     useEffect(()=>{ getByCompanyId("Products", stored?.company.id).then(res=>setProducts(res.data))
         data.upsell?.idProduct && getByCompanyId("Layouts", stored?.company.id).then(res=>setLayouts(res.data.filter(layout=> data.upsell?.idProduct == layout.idProduct)))},[])
