@@ -24,19 +24,19 @@ export function LoginForm() {
   const [mods, setMods] = useLocalStorage("modules", null)
   const [modules, setModules] = useLocalStorage("alteredModules", null)
   const nav = useNavigate()
+  
   const handleClick = async (e)=>{
     e.preventDefault()
     setLoading(true)
     setError(null)
-    console.log("login from my")
     const response = await getLogin(user, password).then(res=>res)
     if(response?.response?.isValid){
     await setToken(response.token.token.toString(), response.token.expiredDate.toString())
     await setData(adjustLoginData(response))
     let adaptedModules = {}
-    response.options.map(module=>{adaptedModules[module.module.name] = {options:[], id: module.module.id, name:module.module.name}})
-    response.options.map(module => adaptedModules[module.module.name].options.push(module.name))
-    await setMods(response.options)
+    console.log(response.options)
+    response?.modules.map(module=>{adaptedModules[module.description] = {options:module.options.map(opt=> opt.name), id: module.id, name:module.description}})
+    await setMods(response.modules)
     await setModules(adaptedModules)
     setError(null)
     nav(!response.implementation?.success && response.user.idProfile ==1  ? "/dashboard/wizard" : "/dashboard" )

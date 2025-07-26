@@ -8,7 +8,6 @@ import { Summary } from './Summary'
 import { Thanks } from './Thanks'
 import { useParams } from 'react-router-dom'
 
-
 export const SalesWizard = ({data, uuid})=> {
     const [dataSet, setDataSet] = useState({upsaleAccepted: false, downsaleAccepted: false})
     const params = useParams()

@@ -1,5 +1,5 @@
 import { HiChevronLeft, HiChevronRight } from "react-icons/hi2";
-import { HiOutlinePencil } from "react-icons/hi";
+import { HiChevronDown , HiOutlinePencil } from "react-icons/hi";
 import { useState } from 'react';
 import { Field } from "../../../../shared/components/uikit/fieldset"
 import { Input } from "../../../../shared/components/uikit/input";
@@ -15,6 +15,7 @@ export const CarouselWidget = ({content, id, edit, editable, toEdit}) => {
   const [first, setFirst] = useState("")
   const [second, setSecond] = useState("")
   const [third, setThird] = useState("")
+  const [display, setDisplay] = useState(null)
   const [firstOrigin, setFirstOrigin] = useState(true)
   const [secondOrigin, setSecondOrigin] = useState(true)
   const [thirdOrigin, setThirdOrigin] = useState(true)
@@ -36,50 +37,55 @@ export const CarouselWidget = ({content, id, edit, editable, toEdit}) => {
     setEditor(false)}
     
   return (
-    <>
-    { items.length == 0 ?  
+    <> {editor  ? (
+      <Modal > 
+        <Field className="w-[90vw] h-[90vh] justify-items-center bg-zinc-50 p-5 m-3 rounded-lg shadow-xl border border-zinc-200 overflow-scroll">
+          <Heading >Carusel </Heading>
+          <div className='border border-zinc-200 p-2 rounded-lg m-2 w-full'>
+            <div className="flex items-center gap-2" onClick={()=>setDisplay(1)}><Heading >Primera Imagen </Heading>
+            {display != 1 && <HiChevronDown className="size-6"/>}</div>
+            {display== 1 && <>
+            <p>Seleccionar desde las Colecciones guardadas  <Switch checked={firstOrigin} onChange={setFirstOrigin}/> </p>
+              {!firstOrigin ? <Input name="url" placeholder="Ingrese URL de la imagen" onChange={e=> setFirst(e.target.value)}/>
+              :<CollectionSelector variable={first} setVariable={setFirst} type="image"/>}</>}
+          </div>
+          <div className='border border-zinc-200 p-2 rounded-lg m-2 w-full'>
+            <div className="flex items-center gap-2"   onClick={()=>setDisplay(2)}><Heading>Segunda Imagen</Heading>
+            {display != 2 && <HiChevronDown className="size-6"/>}</div>
+            {display== 2 && <>
+            <p>Seleccionar desde las Colecciones guardadas  <Switch checked={secondOrigin} onChange={setSecondOrigin}/> </p>
+              {!secondOrigin ? <Input name="url" placeholder="Ingrese URL de la imagen" onChange={e=> setSecond(e.target.value)}/>
+              :<CollectionSelector variable={second} setVariable={setSecond} type="image"/>}</>}
+          </div>
+          <div className='border border-zinc-200 p-2 rounded-lg m-2 w-full'>
+            <div className="flex items-center gap-2" onClick={()=>setDisplay(3)}><Heading >Tercera Imagen</Heading>
+            {display != 3 && <HiChevronDown className="size-6"/>}</div>
+            {display== 3 && <>
+              <p>Seleccionar desde las Colecciones guardadas  <Switch checked={thirdOrigin} onChange={setThirdOrigin}/> </p>
+                {!thirdOrigin ? <Input className="w-full" name="url" placeholder="Ingrese URL de la imagen" onChange={e=> setThird(e.target.value)} />
+                :<CollectionSelector variable={third} setVariable={setThird} type="image"/>}</>}
+          </div>
+          <div className="justify-items-center">
+          <Button type="submit" className="mx-1 my-2" onClick={save}>Guardar</Button>
+          <Button className="mx-1 my-2" onClick={()=> setEditor(false)}>Cancelar</Button></div>
+        </Field>
+      </Modal>):
+      <>
+      { items.length == 0 ?  
       <div className=" w-[400px] md:w-[600px] flex  justify-self-center place-content-center bg-white/5">        
         {toEdit == id && <button onClick={()=>setEditor(true)} className="absolute top-1 right-10 bg-blue-500 text-white px-2 py-1  h-6 text-[6px] rounded z-300 hover:border hover:border-zinc-500 cursor-pointer"><HiOutlinePencil className="size-4"/></button>}
         <img src="https://i.pinimg.com/736x/a5/11/32/a511323ec9460a20e7b78bd5e64bc20b.jpg" alt="Image not available" className="h-fit w-fit" /></div> :
-      <div className={`relative rounded-lg w-[400px] md:w-[600px] overflow-hidden max-w-6xl mx-auto`}>
-        {toEdit == id &&  <button onClick={()=>setEditor(true)} className="absolute top-1 right-10 bg-blue-500 text-white px-2 py-1  h-6 text-[6px] rounded z-300 hover:border hover:border-zinc-500 cursor-pointer"><HiOutlinePencil className="size-4"/></button>}
-      <div className="w-[95%] mx-auto flex transition-transform duration-500 ease-in-out" style={{ transform: `translateX(-${current * 100}%)` }}>
-        { items.map((item, index) => (
-          <div key={index} className="bg-white/20 w-full flex-shrink-0 p-4 content-center">
+        <div className={`relative rounded-lg w-[400px] md:w-[600px] overflow-hidden max-w-6xl mx-auto`}>
+          {toEdit == id &&  <button onClick={()=>setEditor(true)} className="absolute top-1 right-10 bg-blue-500 text-white px-2 py-1  h-6 text-[6px] rounded z-300 hover:border hover:border-zinc-500 cursor-pointer"><HiOutlinePencil className="size-4"/></button>}
+        <div className="w-[95%] mx-auto flex transition-transform duration-500 ease-in-out" style={{ transform: `translateX(-${current * 100}%)` }}>
+          { items.map((item, index) => (
+        <div key={index} className="bg-white/20 w-full flex-shrink-0 p-4 content-center">
          <img src={item ? item : "https://i.pinimg.com/736x/a5/11/32/a511323ec9460a20e7b78bd5e64bc20b.jpg"} className=" w-full object-cover" />
-         </div>
-        ))}
+         </div>))}
       </div>
       <button onClick={prev} className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow"><HiChevronLeft/></button>
       <button onClick={next} className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow"><HiChevronRight/></button>
-    </div>}
-    {editor  && (
-           <Modal > 
-            <Field className="w-[90vw] h-[90vh] justify-items-center bg-zinc-50 p-5 m-3 rounded-lg shadow-xl border border-zinc-200 overflow-scroll">
-                <Heading >Carusel</Heading>
-                <div className='border border-zinc-200 p-2 rounded-lg m-2'>
-                    <Label>Primera Imagen</Label>
-                    <p>Seleccionar desde las Colecciones guardadas  <Switch checked={firstOrigin} onChange={setFirstOrigin}/> </p>
-                    {!firstOrigin ? <Input name="url" placeholder="Ingrese URL de la imagen" onChange={e=> setFirst(e.target.value)}/>
-                    :<CollectionSelector variable={first} setVariable={setFirst} type="image"/>}
-                </div>
-                <div className='border border-zinc-200 p-2 rounded-lg m-2'>
-                    <Heading>Segunda Imagen</Heading>
-                    <p>Seleccionar desde las Colecciones guardadas  <Switch checked={secondOrigin} onChange={setSecondOrigin}/> </p>
-                    {!secondOrigin ? <Input name="url" placeholder="Ingrese URL de la imagen" onChange={e=> setSecond(e.target.value)}/>
-                    :<CollectionSelector variable={second} setVariable={setSecond} type="image"/>}
-                </div>
-                <div className='border border-zinc-200 p-2 rounded-lg m-2'>
-                    <Heading>Tercera Imagen</Heading>
-                    <p>Seleccionar desde las Colecciones guardadas  <Switch checked={thirdOrigin} onChange={setThirdOrigin}/> </p>
-                    {!thirdOrigin ? <Input name="url" placeholder="Ingrese URL de la imagen" onChange={e=> setThird(e.target.value)} />
-                    :<CollectionSelector variable={third} setVariable={setThird} type="image"/>}
-                </div>
-                <Button type="submit" className="mx-1 my-2" onClick={save}>Guardar</Button>
-                <Button className="mx-1 my-2" onClick={()=> setEditor(false)}>Cancelar</Button>
-            </Field>
-           </Modal>
-          )}   
+    </div>}</>}   
   </>
   );
 };

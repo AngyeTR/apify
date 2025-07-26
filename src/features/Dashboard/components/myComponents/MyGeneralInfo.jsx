@@ -12,6 +12,14 @@ export const MyGeneralInfo = ()=>{
     const status = new Date() >= new Date(stored.subscription.startDate) && new Date() <= new Date(stored.subscription.endDate) ? "Activo" : "Inactivo"
     const secColor = stored?.company.secondaryColor ? hexToRgba(stored?.company.secondaryColor, 0.3) : null
 
+    const stats = [
+  { id: 1, name: 'Cargar información de clientes, stocks o precios.', value: 'Carga Masiva', to: "/dashboard/upload"},
+  { id: 2, name: 'Consultar, autorizar y retirar permisos', value: 'Usuarios Delegados', to:"/dashboard/delegates" },
+  { id: 3, name: 'Consultar, verificar y eliminar Dominios', value: 'Dominios', to:"/dashboard/domains" },
+  { id: 4, name: 'Consultar y gestionar Políticas de compra', value: 'Políticas', to:"/dashboard/policies" },
+  { id: 5, name: 'Gestionar el teléfono de contacto asociado a la tienda', value: 'Teléfono', to:"/dashboard/phones" },
+  { id: 6, name: 'Integrar la plataforma con Redes Sociales', value: 'Redes Sociales', to:"/dashboard/socials" },
+]
     return (
   <div className="mx-auto max-w-7xl px-6  py-4 text-center lg:px-8">
     <div className="mx-auto max-w-2xl">
@@ -35,21 +43,27 @@ export const MyGeneralInfo = ()=>{
         <Button className="my-6" onClick={()=> nav(`/dashboard/${params.module}/edit/users/${stored?.user.id}`)}>Editar</Button>
       </li>
     </ul>
-    <div className="mt-2 rounded-lg" >
-        <h3 className={`pt-6  font-semibold  tracking-tight `} >Carga Masiva</h3>
-        <p className="text-sm/6 text-gray-600 mx-4">Cargar información de clientes, stocks o precios que hayan sido previamente almacenados en otro medio.</p>
-        <Button className="my-2" onClick={()=>nav("/dashboard/upload")}>Realizar carga masiva</Button>
+  <div className="py-3 justify-self-center">
+      <div className=" px-6 lg:px-8">
+        <div className=" max-w-2xl lg:max-w-none bg-zinc-100">
+          <dl className="mt-6 grid grid-cols-1 gap-0.5 overflow-hidden rounded-2xl text-center sm:grid-cols-2 lg:grid-cols-3">
+            {stats.map((stat) => (
+              <div key={stat.id} onClick={()=>nav(stat.to)} className="flex flex-col bg-gray-400/5 p-8 cursor-pointer hover:border hover:border-zinc-300">
+                <dt className="text-sm  text-gray-600">{stat.name}</dt>
+                <dd className="order-first text-xl font-semibold tracking-tight text-gray-900">{stat.value}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
       </div>
-      <div className="mt-1 rounded-lg" >
-        <h3 className={`pt-6  font-semibold  tracking-tight `} >Gestionar Usuarios Delegados</h3>
-        <p className="text-sm/6 text-gray-600 mx-4">Consultar, autorizar y retirar permisos a delegados</p>
-        <Button className="my-2" onClick={()=>nav("/dashboard/delegates")}>Delegados</Button>
-      </div>
-      <div className="mt-1 rounded-lg" >
-        <h3 className={`pt-6  font-semibold  tracking-tight `} >Gestionar Dominios</h3>
-        <p className="text-sm/6 text-gray-600 mx-4">Consultar, verificar y eliminar Dominios</p>
-        <Button className="my-2" onClick={()=>nav("/dashboard/domains")}>Dominios</Button>
-      </div>
+    </div>
+
+
+
+
+
+
+
 </div>
 
     )

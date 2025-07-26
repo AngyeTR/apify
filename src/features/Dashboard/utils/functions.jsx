@@ -1,4 +1,4 @@
-import {  HiCalculator,HiChatAlt2 , HiCog, HiBell, HiChartPie, HiGlobeAlt, HiLibrary, HiShoppingBag } from "react-icons/hi";
+import {  HiClipboardList ,HiChatAlt2 , HiCog, HiBell, HiShoppingBag } from "react-icons/hi";
 
 export const adjustLoginData = (data)=>{
     const newData = {
@@ -35,14 +35,11 @@ export const adjustLoginData = (data)=>{
 
 export const getModuleIcon = (id)=>{
     const modules = {
-        // calculator: <HiCalculator className="size-6 shrink-0"/> ,
         1: {icon: <HiCog className="text-zinc-500 size-6 shrink-0  hover:text-zinc-950"/>, url: "/dashboard/settings"},
         2:{icon:   <HiBell className=" text-zinc-500 size-6 shrink-0 hover:text-zinc-950"/> , url:"/dashboard/marketing" }, 
         3:{icon:   <HiShoppingBag className=" text-zinc-500 size-6 shrink-0 hover:text-zinc-950"/> , url:"/dashboard/storemanager" }, 
         4:{icon:   <HiChatAlt2  className=" text-zinc-500 size-6 shrink-0 hover:text-zinc-950"/> , url:"/chat" }, 
-        // analytics: <HiChartPie className="size-6 shrink-0"/>,
-        // logistics: <HiGlobeAlt  className="size-6 shrink-0"/>,
-        // store: <HiLibrary className="size-6 shrink-0"/>,
+        5:{icon:   <HiClipboardList   className=" text-zinc-500 size-6 shrink-0 hover:text-zinc-950"/> , url:"/dashboard/orders" }, 
       }
       return modules[id] 
 }
@@ -50,6 +47,7 @@ export const getModuleIcon = (id)=>{
 export const getTranslate= (name)=>{
     const dictionary = {
         general: "general",
+        bodegas: "warehouses",
         sedes: "offices",
         usuarios: "users",
         campañas: "salestunnel",
@@ -58,7 +56,8 @@ export const getTranslate= (name)=>{
         configuración: "settings",
         vendedores: "salesman", 
         "not-found": "not-found",
-        tienda: "store"
+        tienda: "store",
+        pedidos: "orders"
     }
     return dictionary[name] ?  dictionary[name] : "not-found"
 }
@@ -67,7 +66,9 @@ export const getModuleId = (name)=>{
     const dictionary = {
         settings: {id: 1, name:"Configuración"} ,
         marketing:{id: 2, name: "Marketing"},
-        store:{id: 3, name: "Tienda"}
+        store:{id: 3, name: "Tienda"},
+        chat:{id: 4, name: "Chat"},
+        orders: {id:5, name:"Pedidos"}
     }
     return dictionary[name]
 }
@@ -112,6 +113,32 @@ export const getUpdatedLocalUser = (data, newData)=>{
     data.user.avatar = newData.avatar
     return data
 }
+
+export const sanitize = (obj)=>{
+  const rootKeysToRemove = ['facebook_Access_Token']; 
+  const nestedKeysToRemove = ['id', ];
+  const clone = structuredClone(obj);
+  const mainId = clone.id;
+
+  for (const key of rootKeysToRemove) {delete clone[key]}
+
+  const deepClean = (value) => {
+    if (Array.isArray(value)) { return value.map(deepClean)} 
+    else if (value && typeof value === 'object') {
+      const cleaned = {};
+      for (const key in value) {
+        if (!nestedKeysToRemove.includes(key)) {cleaned[key] = deepClean(value[key]);}
+      }
+      return cleaned;
+    }
+    return value;
+  };
+
+  const cleaned = deepClean(clone);
+  cleaned.id = mainId; 
+  return cleaned;
+}
+
 
 
 

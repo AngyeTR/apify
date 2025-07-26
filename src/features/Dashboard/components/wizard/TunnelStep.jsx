@@ -8,6 +8,7 @@ import { Description, Field, Label } from "../../../../shared/components/uikit/f
 import { Switch } from "../../../../shared/components/uikit/switch"
 
 export const TunnelStep = ({data, setData})=>{
+  console.log(data)
     const [stored] = useLocalStorage("data")
     const [layouts, setLayouts] = useState(null)
     const [layoutsPercent, setLayoutsPercent] = useState([])
@@ -18,14 +19,13 @@ export const TunnelStep = ({data, setData})=>{
   useEffect(()=>{getByCompanyId("Layouts", stored?.company.id).then(res=> setLayouts(res?.data?.filter(item=> item.idProduct== data.idProduct))) },[])
   useEffect(()=>{handleDefaultDate()},[ dates])
 
-
   const handlePercent=(id, percent) => {
     const filtered = layoutsPercent?.filter(percent=> percent.idLayout != id)
     filtered.push({idLayout: id, percent: percent})
     setLayoutsPercent(filtered)
     const suma = filtered.reduce((subTotal, current) => subTotal + current.percent, 0);
     setTotal(suma)
-  addLayout(id, percent)}
+  addLayout(id, percent)} 
 
     const handleDate=(value, type) =>{
        const now = new Date();
@@ -64,7 +64,7 @@ export const TunnelStep = ({data, setData})=>{
         <p>Layout de Producto<span className="text-red-600">*</span></p>
         <Select onChange={(e)=> addLayout(parseInt(e.target.value)) } className="my-3">
             <option>Selecciona un Layout</option>
-            {layouts?.map(layout => <option value={layout.id} key={layout.id}>{layout.name}</option>)}
+            {layouts?.map(layout => <option value={layout.id} key={layout.id} selected={layout.id == data.layouts?.[0]?.idLayout}>{layout.name}</option>)}
         </Select></>)}}
 
    return (

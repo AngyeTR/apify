@@ -234,7 +234,6 @@ export const layoutsModel =  {
   lines: []
 }
 
-
 export const navigationModel = {
  isActive: true,
   createdBy: "System",
@@ -248,3 +247,35 @@ export const navigationModel = {
   idPreOrder: 0,
   typeNavigation: 0
 }
+
+export const phoneModel = {
+ isActive: true,
+  createdBy: "System",
+  modifiedBy: "System",
+  idCompany:  stored?.company.id,
+  validate: true,
+  validateDate: today,
+}
+
+export const policyModel = {
+  isActive: true,
+  createdBy: "System",
+  modifiedBy: "System",
+  idCompany:  stored?.company.id,
+}
+
+export const pixelModel = {
+ isActive: true,
+  createdBy: "System",
+  modifiedBy: "System",
+  idCompany:  stored?.company.id,
+}
+
+ 
+
+
+
+  
+
+  
+ 

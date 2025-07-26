@@ -24,12 +24,12 @@ export const HomePage = ()=>{
         getByCompanyId("Products", stored?.company.id).then(res => setProducts(res.data))
     }, [, params]);
     return (
-        <MyLayout >
+        <>
         {(layouts && products) && <div className="w-full " >
             <DesignerManager products={products} layouts={layouts}/>
-            {/* <Divider /> */}
             {loading ? <div className="place-self-center mt-50"><Loader /></div> : 
             <LayoutsTable lay={layouts} prod={products}/>}
         </div>}
-        </MyLayout>
+        </>
+
     )}

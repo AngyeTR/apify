@@ -12,6 +12,7 @@ import { Divider } from "../../../../shared/components/uikit/divider";
 
 
 export const Summary = ({data, dataSet, setDataSet, handleClick, uuid})=>{
+    console.log(data, dataSet)
     const [error, setError] = useState(null)
     const [products, setProducts ] = useState({orderBounds:[]})
     const [ total, setTotal] = useState(0)
@@ -43,9 +44,9 @@ export const Summary = ({data, dataSet, setDataSet, handleClick, uuid})=>{
     const finishSale= async()=>{
         const carts = await  getByCompanyId("Orders", store.idCompany).then(res => res?.data?.filter(order=> order.idCustomer == dataSet.customerData.id))
         carts && setDataSet(prev=> ({...prev, cart: carts[carts.length -1]}))
-        carts && finishCart(carts[carts.length -1]) 
+        carts && finishCart(carts[carts.length -1], dataSet.customerScore.score, `${internalData.customerData.address}, ${internalData.customerData.cityData.name}`) 
         setDataSet(internalData)
-        const adaptedModel = adaptNavigationModel(navigationModel,  "purchase", data.layouts[0].id, uuid, 0, 0, 4, true, dataSet.cart.id )
+        const adaptedModel = adaptNavigationModel(navigationModel,  "purchase", data.layouts[0].idLayout, uuid, 0, 0, 4, true, dataSet.cart.id )
        postNavigation( adaptedModel).then(res=> console.log(res))
         handleClick(1)}
 
@@ -116,7 +117,7 @@ export const Summary = ({data, dataSet, setDataSet, handleClick, uuid})=>{
                 </div> 
             </div> }
             
-            <Heading>Total: ${Number(total).toLocaleString('es-CO')}</Heading>
+            <h1 className="text-2xl font-semibold">Total: ${Number(total).toLocaleString('es-CO')}</h1>
             <Divider className="m-6 "/>
             <div className=" relative w-[350px] justify-self-center my-2 p-3">
              <Heading className="text-start justify-self-start font-medium my-2">Dirección de Entrega: </Heading>
@@ -126,7 +127,7 @@ export const Summary = ({data, dataSet, setDataSet, handleClick, uuid})=>{
             <p>{internalData?.customerData?.address}, {internalData?.customerData?.cityData.name}</p>}
             {error && <p className="text-xs text-red-500 italic">{error}</p>}
            </div>
-        <Button className="my-3 " onClick={finishSale}>Finalizar Compra</Button>
+        <button className="my-3 text-xl font-semibold bg-zinc-900 py-2 px-4 rounded-lg text-white hover:bg-zinc-800" onClick={finishSale}>Finalizar Compra</button>
         </div>
     )
 }

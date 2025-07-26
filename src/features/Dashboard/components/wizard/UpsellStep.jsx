@@ -7,13 +7,18 @@ import { useLocalStorage } from "../../../../shared/hooks/useLocalStorage"
 import { Combobox, ComboboxLabel, ComboboxOption } from '../../../../shared/components/uikit/combobox'
 import { upsellModel } from "../../utils/models"
 import { Field, Label } from "../../../../shared/components/uikit/fieldset"
+import { Switch } from "../../../../shared/components/uikit/switch"
 
 export const UpsellStep = ({data, setData})=>{
     const [ products, setProducts] = useState(null)
+    const [ hasUpsell, setHasUpsell] = useState(null)
     const [ layouts, setLayouts] = useState(null)
     const [filteredLayouts, setFilteredLayouts] = useState([])
     const [ stored] = useLocalStorage("data")
-     
+    
+    useEffect(()=>{!hasUpsell && setData(prev => ({...prev, upsell: null})) },[hasUpsell])
+    useEffect(()=>{setHasUpsell(!!data.upsell)},[ ,  data])
+
     useEffect(()=>{
         getByCompanyId("Products", stored?.company.id).then(res=>setProducts(res.data))
         getByCompanyId("Layouts", stored?.company.id).then(res=>setLayouts(res.data))
@@ -31,8 +36,10 @@ export const UpsellStep = ({data, setData})=>{
    return (
      <div className="my-3 mt-10 ">
         <Heading className="my-5 text-center">Upsell </Heading>
-        <Field>
-        <Label>Producto de Upsell</Label>
+        <p className=" text-lg">Incluir Upsell <Switch checked={hasUpsell} onChange={()=>setHasUpsell(prev=> !prev)}/></p>
+        {hasUpsell && 
+        <Field> 
+        <Label>Producto Upsell</Label>
         <Combobox className="my-3 w-sm sm:w-md" name="upsell" options={products ? products : []} displayValue={(product) => product?.name} 
                onChange={(e)=> e && handleProduct(e)} placeholder={data?.upsell?.idProduct ? products?.filter(prod=>prod.id == data.upsell?.idProduct)?.[0].name  :"Buscar y Seleccionar producto"}>
                 {(product) => (
@@ -51,6 +58,6 @@ export const UpsellStep = ({data, setData})=>{
             <Input defaultValue={data?.upsell?.price} placeholder={"Precio final del producto"} type="number" onChange={(e)=> setData(prev => ({...prev, "upsell": {...prev.upsell, "price": parseFloat(e.target.value)}})) }/> </>
         : <p className="my-3 text-zinc-700">Aún no se encontraron Layouts para este producto </p>
         }
-    </Field></div>
+    </Field>}</div>
    )
 }

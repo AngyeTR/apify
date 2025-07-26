@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Button } from "../../../../shared/components/uikit/button"
-import { HiOutlinePencil } from "react-icons/hi";
+import { HiChevronDown, HiOutlinePencil } from "react-icons/hi";
 import { Input } from "../../../../shared/components/uikit/input"
 import { Field, Label } from "../../../../shared/components/uikit/fieldset" 
 import { Modal } from '../Modal';
@@ -12,6 +12,7 @@ export const ComparerWidget = ({ content, id, edit, editable, toEdit}) => {
   const [editor, setEditor] = useState(false)
   const [left, setLeft] =  useState("")
   const [right, setRight] =  useState("")
+  const [display, setDisplay] =  useState(null)
   const [sliderValue, setSliderValue] = useState(50);
   const [leftInternalOrigin, setLeftInternalOrigin] = useState(true)
   const [rightInternalOrigin, setRightInternalOrigin] = useState(true)
@@ -28,7 +29,32 @@ export const ComparerWidget = ({ content, id, edit, editable, toEdit}) => {
 
   const handleSliderChange = (e) => {setSliderValue(e.target.value)}
 
-  return (
+  return (<>
+    {editor ? 
+    <Modal> 
+       <Field className="w-[90vw] h-[90vh] justify-items-center bg-zinc-50 p-5 m-3 rounded-lg shadow-xl  overflow-scroll border border-zinc-200">
+        <Heading >Comparador</Heading>
+        <div className='border border-zinc-200 p-2 rounded-lg m-1 w-full'>
+          <div className="flex items-center gap-2" onClick={()=>setDisplay(1)}><Heading>Imagen de la izquierda</Heading>
+          {display != 1 && <HiChevronDown className="size-6"/>}</div>
+          {display== 1 && <>
+          <p>Seleccionar desde las Colecciones guardadas  <Switch checked={leftInternalOrigin} onChange={setLeftInternalOrigin}/> </p>
+          {!leftInternalOrigin ? <Input name="url" placeholder="Ingrese URL de la imagen" onChange={e=> setLeft(e.target.value)}/>
+          :<CollectionSelector variable={left} setVariable={setLeft} type="image"/>}</>}
+        </div>
+        <div className='border border-zinc-200 p-2 rounded-lg m-1 w-full'>
+          <div className="flex items-center gap-2" onClick={()=>setDisplay(2)}><Heading>Imagen de la Derecha</Heading>
+          {display != 2 && <HiChevronDown className="size-6"/>}</div>
+          {display== 2 && <>
+          <p>Seleccionar desde las Colecciones guardadas  <Switch checked={rightInternalOrigin} onChange={setRightInternalOrigin}/> </p>
+          {!rightInternalOrigin ? <Input name="url" placeholder="Ingrese URL de la imagen" onChange={e=> setRight(e.target.value)}/>
+          :<CollectionSelector variable={right} setVariable={setRight} type="image"/>}</>}
+        </div>
+        <div className="justify-items-center">
+        <Button type="submit" className="mx-1 my-2" onClick={save}>Guardar</Button>
+        <Button className="mx-1 my-2" onClick={()=> setEditor(false)}>Cancelar</Button></div>
+      </Field>
+    </Modal>: 
     <>
     {(!editor && editable )&& <button onClick={()=>setEditor(true)} className="absolute top-1 right-10 bg-blue-500 text-white px-2 py-1  h-6 text-[6px] rounded z-300 hover:border hover:border-zinc-500 cursor-pointer"><HiOutlinePencil className="size-4"/></button>}
     <div className="slider-container relative  w-[400px] md:w-[600px] h-[100%] overflow-hidden rounded-[8px]" ref={containerRef}>
@@ -42,27 +68,7 @@ export const ComparerWidget = ({ content, id, edit, editable, toEdit}) => {
       <div
         className="slider-handle absolute top-0 bottom-0 w-[2px] bg-black border border-amber-50 z-1 -translate-x-[50%]"
         style={{ left: `${sliderValue}%` }}/>
-    </div>
-    {editor && 
-    <Modal> 
-       <Field className="w-[90vw] h-[90vh] justify-items-center bg-zinc-50 p-5 m-3 rounded-lg shadow-xl  overflow-scroll border border-zinc-200">
-        <Heading >Comparador</Heading>
-        <div className='border border-zinc-200 p-2 rounded-lg m-1'>
-          <Label>Imagen de la izquierda</Label>
-          <p>Seleccionar desde las Colecciones guardadas  <Switch checked={leftInternalOrigin} onChange={setLeftInternalOrigin}/> </p>
-          {!leftInternalOrigin ? <Input name="url" placeholder="Ingrese URL de la imagen" onChange={e=> setLeft(e.target.value)}/>
-          :<CollectionSelector variable={left} setVariable={setLeft} type="image"/>}
-        </div>
-        <div className='border border-zinc-200 p-2 rounded-lg m-1'>
-          <Label>Imagen de la Derecha</Label>
-          <p>Seleccionar desde las Colecciones guardadas  <Switch checked={rightInternalOrigin} onChange={setRightInternalOrigin}/> </p>
-          {!rightInternalOrigin ? <Input name="url" placeholder="Ingrese URL de la imagen" onChange={e=> setRight(e.target.value)}/>
-          :<CollectionSelector variable={right} setVariable={setRight} type="image"/>}
-        </div>
-        <Button type="submit" className="mx-1 my-2" onClick={save}>Guardar</Button>
-        <Button className="mx-1 my-2" onClick={()=> setEditor(false)}>Cancelar</Button>
-      </Field>
-    </Modal>
+    </div></>
    }
     </>
   );

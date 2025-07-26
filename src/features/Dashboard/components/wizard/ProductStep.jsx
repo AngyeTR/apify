@@ -11,18 +11,36 @@ import { pricesModel } from "../../utils/models"
 
 const paymentOptions = [{name:"Efectivo Contraentrega", id:"paymentOnDelivery"}, {name: "Pago online", id:"paymentGateway"}]
 const colors = [ {name: "Verde", value:"green"}, {name: "Rojo", value: "red"}, {name: "Amarillo", value: "ambar"}]
+
 export const ProductStep = ({data, setData})=>{
   console.log(data)
     const [stored] = useLocalStorage("data")
     const [prices, setPrices] = useState([])
     const [price, setPrice] = useState(pricesModel)
     const methods = [{name:"Efectivo Contraentrega", id:"paymentOnDelivery"}, {name: "Pago online", id:"paymentGateway"}]
-  useEffect(()=>{getByID("Products", data.idProduct).then(res=> setPrice(prev=>({...prev, oldPrice: res.data.price + 20000, price: res.data.price})))},[])
+  useEffect(()=>{
+    data.prices && setPrices(data.prices)
+    getByID("Products", data.idProduct).then(res=> setPrice(prev=>({...prev, oldPrice: res.data.price + 20000, price: res.data.price})))},[])
  
-const handleprice = ()=>{ 
-  price.idProduct = data.idProduct
-  setData(prev => ({...prev, prices: [...prev.prices, price]}))
-    setPrice(pricesModel)}
+const handleprice = (action, name)=>{ 
+  // const filtered = internalData.filter(int=> int.idProduct != id) 
+   const filtered = prices.filter(int=> int.name != name) 
+  action == "add" && filtered.push(price)
+  setPrices(filtered)
+  setPrice(pricesModel)
+  console.log(filtered  )
+  setData(prev=>({...prev, "prices": filtered}))}
+  // setData(prev => ({...prev, prices: [...prev.prices, price]}))
+  //   setPrice(pricesModel)}
+
+
+  // const handleInternal= (action, id)=>{
+  //         const filtered = internalData.filter(int=> int.idProduct != id) 
+  //         action == "add" && filtered.push(newItem)
+  //         setInternalData(filtered)
+  //         setNewItem(orderBoundModel)
+  //         console.log(filtered  )
+  //         setData(prev=>({...prev, "orderBounds": filtered}))}
 
 const handlePaymentMethod = (name, value) => {name == "Efectivo Contraentrega" ? setData(prev=>({...prev, paymentOnDelivery: value})): setData(prev=>({...prev, paymentGateway: value}))}
 
@@ -49,7 +67,7 @@ const handlePaymentMethod = (name, value) => {name == "Efectivo Contraentrega" ?
         <p className="text-[14px] mb-5 text-zinc-700">Este precio se mostrará <span className="line-through">tachado</span></p>
         <Label >Precio Final</Label>
         <Input defaultValue={price?.price} type="number" placeholder="Precio Final" onChange={e=> setPrice(prev=> ({...prev, price : parseFloat(e.target.value)}))}/>
-        <Label >Etiquetas</Label>
+        <Label >Etiquetas</Label> 
         <Input placeholder="Etiqueta" onChange={e=> setPrice(prev=> ({...prev, tagName : e.target.value}))}/>
         <p className="text-[14px] mb-3 text-zinc-700">Una etiqueta llamativa, por ejemplo:
             <span className="bg-red-600 text-white">HotSale</span>, <span className="bg-green-600 text-white">Fin de temporada</span></p>
@@ -57,13 +75,16 @@ const handlePaymentMethod = (name, value) => {name == "Efectivo Contraentrega" ?
             <option>Selecciona un color para la etiqueta</option>
             {colors.map(color=> <option value={color.value}>{color.name}</option>)}
         </Select>
-        <Button className="my-2" onClick={handleprice} disabled={!price.name || !price.oldPrice || !price.price}>Crear Precio</Button>
+        <Button className="my-2" onClick={()=>handleprice("add", price.name)} disabled={!price.name || !price.oldPrice || !price.price}>Crear Precio</Button>
         </Field>
       </Field>
         <h2 className="font-medium my-2">Tus compradores verán estos precios especiales:</h2>
-        {data.prices?.length > 0 ? data.prices?.map(price=> 
-        <p className="my-2">{price.name} {price.tagName && <span className={`bg-${price.tagColor}-600 text-white`}> {price.tagName}</span>} - {price.price}</p>) : 
+        {prices?.length > 0 ? prices?.map(price=> 
+        // <p className="my-2">{price.name} {price.tagName && <span className={`bg-${price.tagColor}-600 text-white`}> {price.tagName}</span>} - {price.price}</p>) 
+        <p className="my-2" key={price.tagName}>
+            <span className="text-red-500 hover:underline cursor-pointer font-bold" onClick={()=>handleprice("delete", price.name)}> X </span>  {price.name} {price.tagName && <span className={`bg-${price.tagColor}-600 text-white`}> {price.tagName}</span>} - {price.price}</p>) 
+        : 
         <p className="my-2"> Aún no hay precios creados</p>}
     </div>
    )
-}
+} 

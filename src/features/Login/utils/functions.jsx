@@ -57,7 +57,8 @@ export const getTranslate= (name)=>{
         vendedores: "salesman", 
         "not-found": "not-found",
         tienda: "store",
-        chat: "chat"
+        chat: "chat",
+        pedidos: "orders"
     }
     return dictionary[name] ?  dictionary[name] : "not-found"
 }

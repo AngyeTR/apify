@@ -20,10 +20,9 @@ export const SalesForm =({data, setDataSet, dataSet, handleClick})=> {
     const { updateQuantity, updateCart }  = useTunnelCart()
     const checked = data?.paymentOnDelivery && data?.paymentGateway
     
-
     useEffect(()=>{
-      getByID("Product", data?.idProduct).then(res=>{setMainProduct(res.data);console.log(res)})
-      setDataSet(prev => ({ ...prev, price: { name: "Precio Normal", price: mainProduct?.price, quantity: 1 } }));
+      getByID("Product", data?.idProduct).then(res=>{setMainProduct(res.data);console.log(res);
+      setDataSet(prev => ({ ...prev, price: { name: "Precio Normal", price: res.data.price, quantity: 1 } }))})
       setPriced({ name: "Precio Normal", price: mainProduct?.price, quantity: 1 });
       !dataSet.customerScore.isEnabled && setDataSet(prev=> ({...prev, paymentMethod: "paymentGateway"}))
       const defaultPaymentMethod = data?.paymentGateway ? "paymentGateway" : data?.paymentOnDelivery ? "paymentOnDelivery": null
@@ -31,7 +30,7 @@ export const SalesForm =({data, setDataSet, dataSet, handleClick})=> {
       data?.orderBounds?.map(bound=> getByID("Product", bound.idProduct).then(res=>setOrderBounds(prev=> [...prev,res.data])))},[ , data])
 
       const save= async()=>{
-        const result = await updateQuantity(dataSet.cart, mainProduct.id, dataSet.price.quantity, 0).then(res=> {console.log(res);()=> res; setDataSet(prev=> ({...prev, cart: res})); setCart(res)})
+        const result = await updateQuantity(dataSet.cart, mainProduct.id, dataSet.price.quantity, dataSet.price.price/dataSet.price.quantity).then(res=> {console.log(res);()=> res; setDataSet(prev=> ({...prev, cart: res})); setCart(res)})
         setDataSet(prev=>({...prev, orderBounds: acceptedOrderBounds}))
         // dataSet.price.name != "Precio Normal" && await  updateQuantity(cart, data.idProduct, dataSet.price.quantity, dataSet.oldPrice-dataSet.price).then(res=>{setDataSet(prev=> ({...prev, cart: res})); setCart(res)})
         result?.status && console.log(result)
@@ -39,12 +38,10 @@ export const SalesForm =({data, setDataSet, dataSet, handleClick})=> {
         acceptedOrderBounds?.map(ob=> console.log("ob ",ob))
         handleClick(1)
       }
-
+ console.log(dataSet)
     return (
         <div className="justify-center  justify-items-center bg-zinc-50 mt-5 w-[px] md:w-[600px] rounded-lg p-5">
-        <Field>
-{          console.log(dataSet)
-}{        console.log(data)}      
+        <Field>    
           <Heading className="text-center my-5">Información de Venta</Heading>
           <Label>Selecciona el precio que deseas pagar</Label>
           <RadioGroup name="price"  className="m-2" defaultValue="Precio Normal"

@@ -98,5 +98,5 @@ export function FormCompany(props) {
             <Button className="mx-1 my-2" onClick={()=>{setModalMode(null); setBase64("")}}>Cancelar</Button>
       </Field>
       </Modal>}
-    </> 
+    </>  
   )}

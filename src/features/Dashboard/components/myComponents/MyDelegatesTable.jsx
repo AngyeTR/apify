@@ -37,7 +37,6 @@ export const MyDelegatesTable = ({ data})=> {
             <TableCell className="font-medium">{item.email}</TableCell>
             <TableCell className="font-medium">
             {edit?.id == item.id ? <div className="w-[150px]"><Select onChange={e=> setNewStatus(e.target.value)}>
-                {console.log(edit)}
                 <option value={0} >Seleccione</option>
                 <option value={2} >Re-enviar</option>
                 <option value={4} >Revocar</option>

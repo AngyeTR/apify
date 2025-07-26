@@ -8,6 +8,8 @@ import { getByCompanyId} from "../../../../shared/services/API/api/";
 import { MyGeneralInfo } from "../../components/myComponents/MyGeneralInfo"
 import { TunnelTable } from "../../components/myComponents/MyTunelTable"
 import { Loader } from "../../../../shared/components/Loader"
+import { HomePage} from "../../../Designer/Pages/HomePage"
+import { ModulesTable } from "../../components/newTables/ModulesTable"
 // import { MyCampaignsTable } from "../../components/myComponents/myCampaignsTable"
 
 export const ModulePage =()=> {
@@ -30,6 +32,7 @@ export const ModulePage =()=> {
     return (
         <MyLayout >  
         {loading ? <div className="place-self-center mt-50"><Loader /></div> : 
-        getIsTable(params.option) ? <MyTable data={data} /> : params.option == "general" ? <MyGeneralInfo />: (params.option == "salestunnel" && <TunnelTable data={data}/>) }
+        // getIsTable(params.option) ? <MyTable data={data} /> : params.option == "general" ? <MyGeneralInfo />: params.option == "salestunnel" ? <TunnelTable data={data}/> : "designers" && <HomePage /> }
+        getIsTable(params.option) ? <ModulesTable data={data} /> : params.option == "general" ? <MyGeneralInfo />: params.option == "salestunnel" ? <TunnelTable data={data}/> : "designers" && <HomePage /> }
     </MyLayout>)
 }

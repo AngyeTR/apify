@@ -28,7 +28,7 @@ export const useScrollCheckpoints = (sections = 5, uuid, idLayout) => {
         await postNavigation( adaptedModel).then(res=> console.log(res))
 
       if (scrollTop + windowHeight >= docHeight - 1) {
-        const adaptedModel = adaptNavigationModel( navigationModel, "end", idLayout, uuid, timeSpent - currentTime, timeSpent, 1)
+        const adaptedModel = adaptNavigationModel( navigationModel, "end", idLayout, uuid, timeSpent - currentTimeRef.current, timeSpent, 1)
         await postNavigation( adaptedModel).then(res=> console.log(res))
   }}};
     window.addEventListener("scroll", handleScroll, { passive: true });

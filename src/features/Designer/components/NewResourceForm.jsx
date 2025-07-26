@@ -9,6 +9,7 @@ import { postImage, postFile } from "../../../shared/services/API/api";
 import { useNavigate } from "react-router-dom";
 
 export const NewResourceForm = ({setEditor, data})=>{
+    console.log(data)
     const user = {email: "angie.rodriguez@tambora.co", companyId: 1}
     const [file, setFile] = useState(false)
     const [dataSet, SetDataSet] = useState({  isActive: true, createdBy: user.email, modifiedBy:	user.email, idCompany: user.companyId,})

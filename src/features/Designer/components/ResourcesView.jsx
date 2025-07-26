@@ -7,10 +7,9 @@ import { NewResourceForm } from "./NewResourceForm";
 
 export const ResourcesView = ({collection, data})=> {
     const [file, setFile]  = useState(null)
-    const [editor, setEditor] = useState(false)
+    const [editor, setEditor] = useState(false) 
 
-    return ( 
-        <>
+    return ( <>
         {collection ? 
             <div className="pt-10 px-5">
                 <Heading >{collection.name}</Heading>

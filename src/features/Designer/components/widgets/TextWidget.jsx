@@ -17,22 +17,37 @@ export const TextWidget = ({content,  id, edit, editable, style, toEdit})=>{
     edit(id, variable, styles)
     setEditor(false)}
 
+  const handleCrossout = ()=>{
+    const textarea = document.querySelector("textarea");
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    if (start === end) return; 
+    const selected = variable.slice(start, end);
+    const newText =
+      variable.slice(0, start) +
+      `[strike]${selected}[/strike]` +
+      variable.slice(end);
+    setVariable(newText);
+  }
+
   return (
     <>
-    <div className="w-full rounded-lg self-center items-center"  >
-      {toEdit == id && <button onClick={()=>setEditor(true)} className="absolute top-1 right-10 bg-blue-500 text-white px-2 py-1  h-6 text-[6px] rounded z-300 hover:border hover:border-zinc-500 cursor-pointer"><HiOutlinePencil className="size-4"/></button>}
-      <Text className="p-2" style={styles ? styles : null}>{content ? content : "Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis aspernatur repudiandae aut eos fugiat, harum similique qui ratione fugit possimus maxime sit quia ullam id maiores! Asperiores iste provident ratione."}</Text>
-    </div>
-    {editor && 
+    {editor ?
     <Modal>
         <Field className="w-[90vw] h-[90vh] bg-zinc-50 p-5 pt-15 m-3 rounded-lg shadow-xl border border-zinc-200 justify-items-center">
           <Heading>Texto</Heading>
           <Textarea placeholder="Ingrese el Texto"  value={variable} onChange={e=> setVariable(e.target.value)} className="max-w-2xl my-5 h-50" />
           <TextController styles={styles} setStyles={setStyles} />
+          <div className="justify-items-center">
+          <Button className="mx-1" onClick={handleCrossout}> Tachar texto seleccionado</Button>
           <Button type="submit" className="mx-1 my-5" onClick={save} >Guardar</Button>
-          <Button className="mx-1 my-5" onClick={()=> setEditor(false)}>Cancelar</Button>
+          <Button className="mx-1 my-5" onClick={()=> setEditor(false)}>Cancelar</Button></div>
         </Field>
-    </Modal>
+    </Modal>: 
+    <div className="w-full rounded-lg self-center items-center"  >
+      {toEdit == id && <button onClick={()=>setEditor(true)} className="absolute top-1 right-10 bg-blue-500 text-white px-2 py-1  h-6 text-[6px] rounded z-300 hover:border hover:border-zinc-500 cursor-pointer"><HiOutlinePencil className="size-4"/></button>}
+      <Text className="p-2" style={styles ? styles : null} dangerouslySetInnerHTML={{ __html: (content || "Lorem ipsum...").replace(/\[strike\](.*?)\[\/strike\]/g,"<s>$1</s>"),}}/>
+    </div>
     }
     </>)
 }

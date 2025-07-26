@@ -5,7 +5,7 @@ import { getModuleId, getTranslate } from '../../utils/functions'
 import { useLocalStorage } from "../../../../shared/hooks/useLocalStorage"
 
 export function MyNavBar() {
-  const mods = useLocalStorage("alteredModules")?.[0]
+  const [mods] = useLocalStorage("alteredModules")
   const params = useParams()
   const opts = mods[getModuleId(params.module)?.name]?.options
   const handleClick = (option)=>{

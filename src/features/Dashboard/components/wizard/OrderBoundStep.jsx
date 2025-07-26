@@ -10,6 +10,7 @@ import { Combobox, ComboboxLabel, ComboboxOption } from '../../../../shared/comp
 import { orderBoundModel } from "../../utils/models"
 
 export const OrderBound = ({data, setData})=>{
+   console.log(data)
     const [ products, setProducts] = useState(null)
     const [ stored] = useLocalStorage("data")
     const [newItem, setNewItem] = useState(orderBoundModel)
@@ -35,7 +36,7 @@ export const OrderBound = ({data, setData})=>{
             <Combobox className="my-3 w-sm sm:w-md" name="product" options={products ? products : []} displayValue={(product) => product?.name} 
        onChange={(e)=> e && setNewItem(prev=> ({...prev, "idProduct": parseInt(e.id), quantity: 1, price: parseFloat(e.price)}))} placeholder={newItem?.idProduct ? products?.filter(prod=>prod.id == newItem?.idProduct)?.[0].name  :"Buscar y Seleccionar producto"}>
         {(product) => (
-          <ComboboxOption value={product}>
+          <ComboboxOption value={product}> 
             <ComboboxLabel>{product.name}</ComboboxLabel>
           </ComboboxOption>)} 
       </Combobox>
@@ -47,7 +48,7 @@ export const OrderBound = ({data, setData})=>{
         <div className="my-5">
             {internalData?.map(item=> <p className="my-2" key={item.idProduct}>
             <span className="text-red-500 hover:underline cursor-pointer font-bold" onClick={()=>handleInternal("delete", item.idProduct)}> X </span> {products?.filter(prod=>prod.id == item.idProduct)[0].name}: ${item.price}</p>)}
-        </div>
+        </div> 
     </div>
    )
 }

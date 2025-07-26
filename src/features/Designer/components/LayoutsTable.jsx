@@ -71,7 +71,7 @@ export function LayoutsTable(props) {
         <Table  data={data.reverse()} headers={headers} setIdToClone={setIdToClone}/>
         </div>
       )}}
-console.log(idToClone)
+
   return (
     <>
     { !data  ? <p>Cargando tabla.. </p> : data?.length ==0 ? <p>No se encontraron registros </p> :render()}

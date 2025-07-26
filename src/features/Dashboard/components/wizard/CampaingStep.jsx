@@ -9,6 +9,7 @@ import { Input } from "../../../../shared/components/uikit/input"
 import { Field, Label } from "../../../../shared/components/uikit/fieldset"
 
 export const CampaignStep = ({data, setData})=>{
+  console.log(data)
     const [stored] = useLocalStorage("data")
     const [ campaigns, setCampaigns] = useState(null)
     const [ products, setProducts] = useState(null)
@@ -24,7 +25,7 @@ export const CampaignStep = ({data, setData})=>{
         <Label>Campaña<span className="text-red-600">*</span></Label>
         <Select  className="mb-5 w-sm sm:w-md" onChange={(e)=> setData(prev=> ({...prev, "idCampaign": parseInt(e.target.value)})) }>
             <option> Seleccione una campaña</option>
-            {campaigns?.map(campaign => <option value={campaign.id} key={campaign.id}>{campaign.name}</option>)}
+            {campaigns?.map(campaign => <option value={campaign.id} key={campaign.id} selected={campaign.id == data.idCampaign } >{campaign.name}</option>)}
         </Select>
         <Label>Producto<span className="text-red-600">*</span></Label>
         <Combobox className="my-3 w-sm sm:w-md" name="product" options={products ? products : []} displayValue={(product) => product?.name} 
@@ -38,11 +39,11 @@ export const CampaignStep = ({data, setData})=>{
       <Input className="my-3" placeholder={data?.facebookPixel ? data?.facebookPixel :"Ingresar Facebook Pixel"} onChange={(e)=> setData(prev=> ({...prev, "facebookPixel": e.target.value}))}/>
       <Input className="my-3" placeholder={data?.tikTokPixel ? data?.tikTokPixel: "Ingresar TikTok Pixel"} onChange={(e)=> setData(prev=> ({...prev, "tikTokPixel": e.target.value}))}/>
       <Label>Dominio<span className="text-red-600">*</span></Label>
-      <Select className="my-5 w-sm sm:w-md"  onChange={(e)=> setData(prev=> ({...prev, "domain": e.target.value})) }>
+      <Select className="my-5 w-sm sm:w-md" onChange={(e)=> setData(prev=> ({...prev, "domain": e.target.value})) }>
         <option>{data.domain? data.domain : "Seleccione un dominio"}</option>
-        {domains?.map(domain => <option value={domain.domain} key={domain.id}>{domain.domain}</option>)}
+        {domains?.map(domain => <option value={domain.domain} key={domain.id} selected={data.domain == domain.domain}>{domain.domain}</option>)}
       </Select>
-        <p className="my-2">¿Incluir pruebas A/B en este tunel de ventas? <Switch checked={data?.abTesting || data.layouts?.length != 0} onChange={()=>setData(prev=>({...prev, abTesting: !prev.abTesting}))}/></p>
-        <p className="text-xs mt-2 mb-5 text-zinc-700 max-w-md">Si elige realizar pruebas A/B se utilizarán varios layouts en diferentes procentajes para mostrar a los compradores</p>
+        <p className="my-2">¿Incluir pruebas A/B en este tunel de ventas? <Switch checked={data?.abTesting } onChange={()=>setData(prev=>({...prev, abTesting: !prev.abTesting}))}/></p>
+        <p className="text-xs mt-2 mb-5 text-zinc-700 max-w-md">Si elige realizar pruebas A/B se utilizarán varios layouts en diferentes porcentajes para mostrar a los compradores</p>
     </Field></div>
    )}

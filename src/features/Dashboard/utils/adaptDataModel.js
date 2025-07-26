@@ -8,6 +8,8 @@ const rawStore = window.localStorage.getItem("store")
 const stored = JSON.parse(rawData)
 const store = JSON.parse(rawStore)
 const date = new Date().toISOString();
+const rawPolicies = window.localStorage.getItem("policies");
+const policies = JSON.parse(rawPolicies)
 
 export const adaptWarehouseModel = (dataSet, origin, selectedCity,) =>{
    !dataSet.createdBy && (dataSet["createdBy"] = stored?.user.email)
@@ -27,7 +29,7 @@ export const adaptCompanymodel = async (dataSet, origin, base64, fileOrigin)=> {
       const data ={name: `companyImage${Date.now()}`, "base64": value, "imageType": 1}
         const url  = await postImage(data).then(res => {return res.data})
         dataSet["urlLogo"] = url
-      } catch (error) {console.log(error)}}
+      } catch (error) {console.log(error)}} 
    
     if (base64 && fileOrigin == "local" ) {await getUrl(base64)}
     else if (base64 && fileOrigin != "local" ){dataSet["urlLogo"] = base64}
@@ -180,18 +182,18 @@ export const adaptLibraryModel = (name) =>{
 }
 
 export const adaptNewCartModel= (dataSet, product, customer) => {
+  console.log(customer)
   dataSet["status"] = 0
   dataSet["idCompany"]=  store.idCompany
   dataSet["idProduct"] = product.id
   dataSet["idCustomer"]= customer.id
   dataSet["fUllname"] = customer.firstName + " " + customer.lastName
-  dataSet["address"] = customer.address != "none" ? customer.address : ""
+  dataSet["address"] = customer.address + ", " + customer.cityData.name
   dataSet["cellphone"]= customer.cellphone,
   dataSet["idCity"]= customer.idCity,
   dataSet["docDate"]= date
   dataSet["app"]= 1
   dataSet["lines"]=   dataSet["lines"]= [
-    // ...dataSet.lines, 
     {
       isActive: true,
       idCompany: store.idCompany,
@@ -207,7 +209,7 @@ export const adaptNewCartModel= (dataSet, product, customer) => {
       taxValue: 0,
       discPrcnt: 0,
       discValue: 0,
-      total: 0,
+      total: product.price,
       idPreOrder: dataSet.id
     }]
     console.log(dataSet)
@@ -218,9 +220,7 @@ export const adaptAddingCartModel= (dataSet, product, userId, quantity, origin) 
   dataSet["status"] = 0
   const quant = quantity ?  quantity  : 1
   dataSet["app"]= dataSet.app + 1
-  dataSet["lines"]= [
-    // ...dataSet.lines, 
-    {
+  dataSet["lines"].push( {
       isActive: true,
       idCompany: origin == "salesTunnel" ? store.idCompany : stored?.company.id,
       createdBy: origin == "salesTunnel"?  "SalesTunnel": stored?.user.email,
@@ -237,30 +237,25 @@ export const adaptAddingCartModel= (dataSet, product, userId, quantity, origin) 
       discValue: 0,
       total: 0,
       idPreOrder: dataSet.id
-    }]
+    })
     return dataSet
 }
 
-export const adaptquantityChangeCartModel= (dataSet, productId, quantity, discount) => {
-const index = dataSet.lines.findIndex(item => item.idProduct == productId);
+export const adaptquantityChangeCartModel= (dataSet, productId, quantity, price) => {
+  const index = dataSet.lines.findIndex(item => item.idProduct == productId);
   dataSet["status"] = 0
- dataSet["lines"][index].quantity= quantity
- discount && (dataSet["lines"][index].discValue = discount)
+  dataSet["lines"][index].quantity= quantity
+  dataSet["lines"][index].price = price
   return dataSet 
 }
 
 export const adaptDeleteCartModel= (dataSet, productId) => {
-    dataSet["status"] = 0
-  console.log(dataSet.lines)
-    const newLines = dataSet.lines.filter(item => item.idProduct != productId)
-    console.log(newLines)
-    newLines.map(item => {delete item.id; delete item.idPreOrder})
-    const { id, lines, ...rest } = dataSet;
-
-  rest["app"]= dataSet.app -1
-  rest["lines"]= newLines
-
-  return rest
+  dataSet["status"] = 0
+  const newLines = dataSet.lines.filter(item => item.idProduct != productId)
+  newLines.map(item => {delete item.id; delete item.idPreOrder})
+  dataSet["app"]= dataSet.app -1
+  dataSet["lines"]= newLines
+  return dataSet
 }
 
 export const adaptNavigationModel = (dataSet, section, idLayout, uuid, time, timeSpent, type, isPurchase, idPreOrder ) => {
@@ -275,8 +270,36 @@ export const adaptNavigationModel = (dataSet, section, idLayout, uuid, time, tim
     return dataSet
 }
 
-export const adaptFinishCartModel= (dataSet) => {
-  dataSet.status = 1
-  const { lines, ...rest } = dataSet;
-    return rest
+export const adaptFinishCartModel= (dataSet, score, address) => {
+  let status = 1
+  if (policies){
+    if(score < policies.min ){status = 13}
+    else if ( score <= policies.mid) { status = 12}
+    else {status = 1}
+  }
+  console.log(status)
+  dataSet.status = status
+  dataSet.address = address
+  return dataSet
+}
+
+export const adaptPhoneModel = (dataSet, phone, id)=>{
+  dataSet["phone"]= phone, 
+  dataSet["whatsappID"]= id
+  return dataSet
+}
+
+export const adaptPolicyModel = (dataSet, policy)=>{
+  dataSet["minimalValue"]= policy.min, 
+  dataSet["mediumValue"]= policy.mid
+  dataSet["ammount"]= policy.amount, 
+  dataSet["description"]= policy.description
+  return dataSet
+}
+export const adaptPixelModel = (dataSet, pixel)=>{
+  dataSet["plattform"]= pixel.plattform, 
+  dataSet["pixelId"]= pixel.pixelId
+  dataSet["accessToken"]= pixel.accessToken, 
+  dataSet["description"]= pixel.description
+  return dataSet
 }

@@ -2,15 +2,19 @@ import {Navigate, Route} from "react-router-dom"
 import { ModulePage } from "../pages/ModulePage/ModulePage"
 import { WizardPage } from "../pages/WizardPage/WizardPage"
 import { FormPage } from "../pages/FormPage.jsx/FormPage"
-import { UploadPage } from "../pages/UploadPage.jsx/UploadPage"
-import { DelegatesPage } from "../pages/DelegatesPage/DelegatesPage"
+import { UploadPage } from "../pages/GeneralInfoPages/UploadPage"
+import { DelegatesPage } from "../pages/GeneralInfoPages/DelegatesPage"
 import { HomePage} from "../pages/HomePage/HomePage"
 import { StoreManagerPage } from "../pages/StoreManagerPage/StoreManagerPage"
 import { CampaignWizard } from "../pages/CampaignWizard/CampaignWizard"
 import { SalesTunnelPage } from "../pages/SalesTunnelPage/SalesTunnelPage"
-import { DomainsPage } from "../pages/DomainsPage/DomainsPage"
+import { DomainsPage } from "../pages/GeneralInfoPages/DomainsPage"
 import { getToken } from "../../../shared/services/cookies"
 import { LayoutPage } from "../components/salesWizard/Layout"
+import { PhonesPage } from "../pages/GeneralInfoPages/PhonesPage"
+import { PoliciesPage } from "../pages/GeneralInfoPages/PoliciesPage"
+import { SocialsPage } from "../pages/GeneralInfoPages/SocialsPage"
+import { OrdersPage } from "../pages/OrdersPage/OrdersPage"
 
 
   let token  = getToken()
@@ -25,7 +29,11 @@ const dashboardRoutes =[
       <Route path="/dashboard/upload" element={token ?  <UploadPage />  : <Navigate replace to={"/login"}/>} />,
       <Route path="/dashboard/delegates" element={token ?  <DelegatesPage />  : <Navigate replace to={"/login"}/>} />,
       <Route path="/dashboard/domains" element={token ?  <DomainsPage />  : <Navigate replace to={"/login"}/>} />,
+      <Route path="/dashboard/policies" element={token ?  <PoliciesPage />  : <Navigate replace to={"/login"}/>} />,
+      <Route path="/dashboard/phones" element={token ?  <PhonesPage />  : <Navigate replace to={"/login"}/>} />,
+      <Route path="/dashboard/socials" element={token ?  <SocialsPage />  : <Navigate replace to={"/login"}/>} />,
       <Route path="/dashboard/storemanager" element={token ?  <StoreManagerPage /> : <Navigate replace to={"/login"}/>} />,
+      <Route path="/dashboard/orders" element={token ?  <OrdersPage /> : <Navigate replace to={"/login"}/>} />,
       <Route path="/dashboard/salestunnel/:tunnel" element={<SalesTunnelPage/> } />,
       <Route path="/dashboard/layout/:layout" element={<LayoutPage/> } />,
       <Route path="/*" element={<h1>No se encontraron resultados</h1>  } />,

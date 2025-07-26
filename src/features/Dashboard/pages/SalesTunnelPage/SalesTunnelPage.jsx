@@ -8,12 +8,10 @@ import { useScrollCheckpoints } from "../../hooks/useScrollCheckPoints";
 import { useReport } from "../../hooks/useReport";
 import { useExit } from "../../hooks/useExit";
 import { useScript } from "../../hooks/useScript";
-import { getFbp } from "../../../../shared/services/cookies";
  import { v4 as uuidv4 } from 'uuid';
 import { adaptNavigationModel } from "../../utils/adaptDataModel";
 import { navigationModel } from "../../utils/models";
 
-//Importante: Guardar 
 export const SalesTunnelPage = ()=> {
     const [uuid] = useState(uuidv4())
     const { reportView} = useReport()
@@ -24,6 +22,7 @@ export const SalesTunnelPage = ()=> {
     const [color, setColor] = useState({backgroundColor: "#ffffff"}) 
     const [ layouts, setLayouts] = useState(null)
     const [store, setStore] = useLocalStorage("store", null)
+    const [policies, setpolicies] = useLocalStorage("policies", null)
     const [grid, setGrid] = useState()
     const [ fbPixel, setFbPixel] = useState(null)
     const location = window.location
@@ -32,9 +31,11 @@ export const SalesTunnelPage = ()=> {
 
     useEffect(()=>{
         const host = location.hostname
-        getByDomain(host == "localhost" ||  host == "apify-livid.vercel.app" ? "store.apify.com.co": host).then(res=>  {setStore({idStore: res.data.id, idCompany: res.data?.idCompany});
+        getByDomain(host == "localhost" ||  host == "apify-livid.vercel.app" ? "store.apify.com.co": host).then(res=>  {
+        setStore({idStore: res.data.id, idCompany: res.data?.idCompany});
         // getByDomain(host == "localhost" || host == "apify-livid.vercel.app" ? "store.apify.com.co": host).then(res=>  {setStore({idStore: 3, idCompany: 3});
         // getByCompanyId("Layout", 3).then(res => setLayouts(res.data))})
+        getByID("Company", res.data?.idCompany).then(rta=> rta?.data?.policies?.[0] && setpolicies({min: rta?.data?.policies?.[0]?.minimalValue, mid: rta?.data?.policies?.[0]?.mediumValue}))
         getByCompanyId("Layout", res.data?.idCompany).then(res => setLayouts(res.data))})
         getByID("SalesTunnel", params.tunnel).then(res=> {setData(res.data);
         setFbPixel(res.data.facebookPixel)

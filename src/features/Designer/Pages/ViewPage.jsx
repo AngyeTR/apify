@@ -4,6 +4,7 @@ import { GridContainer } from "../components/GridContainer"
 import { Button } from "../../../shared/components/uikit/button"
 import { getByCompanyId } from "../../../shared/services/API/api"
 import { useLocalStorage } from "../../../shared/hooks/useLocalStorage"
+import { HiOutlineX } from "react-icons/hi";
 
 export const ViewPage = ()=>{
     useEffect(() => { getByCompanyId("Layouts", stored?.company.id).then(res => setLayouts(res.data))}, []);
@@ -13,10 +14,7 @@ export const ViewPage = ()=>{
     const [color, setColor] = useState({backgroundColor: "#ffffff"}) 
     const [ layouts, setLayouts] = useState(null)
     const [stored] = useLocalStorage("data")
-const [grid, setGrid] = useState()
-    const navigate= ()=>{
-        nav(`/designer/editor/${params.id}`)
-        nav(0)}  
+    const [grid, setGrid] = useState()
 
     useEffect(() => {
         const layoutOBJ = layouts?.filter(item => item.id == params.id)
@@ -32,13 +30,11 @@ const [grid, setGrid] = useState()
 
 
     return (
-        <div className="w-[90vw] sm:w-[70vw] m-0 p-0  justify-self-center" style={{backgroundColor: color?.["backgroundColor"],  
+        <div className="relative w-[90vw] sm:w-[70vw] m-0 p-0  justify-self-center" style={{backgroundColor: color?.["backgroundColor"],  
       backgroundImage: `url('${color?.["backgroundImage"]}')`,  backgroundSize: 'cover',
       backgroundPosition: 'center', repeat: "no-repeat",  backgroundBlendMode: 'multiply' }}>
-         {/* <div className="w-[400px] md:w-[800px] m-0 p-0 justify-self-center bg-amber-300"   > */}
+            <Button onClick={()=>nav(-1)} color="red" className="absolute top-5 right-10 shadow-xl"><HiOutlineX/></Button>
             <GridContainer canEdit={false} items={layout}  setGrid={setGrid}/>
-            {/* <GridContainer canEdit={false} items={layout} layoutColor={color} setGrid={setGrid}/> */}
-            {/* <Button className="mt-2" onClick={navigate}>Editar</Button> */}
         </div>
     )
 }

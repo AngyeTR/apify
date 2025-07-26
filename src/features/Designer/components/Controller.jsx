@@ -32,8 +32,8 @@ const renderIcon = (type)=> {
 export const Controller = ({type, handleClick})=>{
     return (
         <div onClick={()=> handleClick(type)} 
-        className="w-[100%]  sm:w-[90%] py-1 px-1 rounded-lg m-1 justify-center justify-items-center bg-zinc-100 hover:border hover: border-zinc-500">
-            <p className="hidden  sm:visible sm:block sm:text-[10px] text-center">{dictionary[type]}</p>
+        className="py-1 px-1 rounded-lg m-1 justify-center justify-items-center bg-zinc-100 hover:border hover: border-zinc-500">
+            <p className="hidden  md:visible md:block md:text-[10px] text-center">{dictionary[type]}</p>
             {renderIcon(type)}
         </div>)
 }

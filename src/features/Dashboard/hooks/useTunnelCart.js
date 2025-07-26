@@ -2,22 +2,12 @@ import { useState } from "react";
 import { edit, getByCompanyId, post } from "../../../shared/services/API/landingApi";
 import { CartModel } from "../utils/models";
 import { adaptAddingCartModel,  adaptDeleteCartModel,  adaptFinishCartModel,  adaptNewCartModel, adaptquantityChangeCartModel } from "../utils/adaptDataModel"
-import { useLocalStorage } from "../../../shared/hooks/useLocalStorage";
-import { getStoreUser } from "../../../shared/services/cookies";
 
 export function useTunnelCart(initialCart = null) {
   const [cart, setCart] = useState(initialCart);
-  const [newCart, setNewCart] = useLocalStorage("cart")
-//   const [stored] = {company:{id:1}}
-  const storeUser = getStoreUser()
-
- //Importante: Se debe incorporar el endpoint de obetenr idCompany con el dominio 
-
-//   const updateLocalCart = async() =>{
-//     await getByCompanyId("PreOrders", stored?.company.id).then(response=> setNewCart(filtercarts(response.data, storeUser))) 
-//   }
 
   const createCart = async (product, customerData, status) => {
+    console.log(product)
     try {
        const adaptedProduct = adaptNewCartModel(CartModel, product, customerData)
        console.log(JSON.stringify(adaptedProduct))
@@ -45,11 +35,11 @@ export function useTunnelCart(initialCart = null) {
     }
   };
 
-    const updateQuantity = async (cart, productId, quantity, discount) => {
-        console.log(productId, quantity, discount)
+    const updateQuantity = async (cart, productId, quantity, price) => {
+        console.log(productId, quantity, price)
     console.log(cart)
     try {
-      const adaptedProduct = adaptquantityChangeCartModel(cart, productId, quantity, discount)
+      const adaptedProduct = adaptquantityChangeCartModel(cart, productId, quantity, price)
        console.log(JSON.stringify(adaptedProduct))
       const res = await edit("PreOrder", adaptedProduct)
       setCart(res.data);
@@ -74,9 +64,9 @@ export function useTunnelCart(initialCart = null) {
   };
 
 
-   const finishCart = async (cart) => {
+   const finishCart = async (cart, score, address) => {
     try {
-       const adaptedProduct = adaptFinishCartModel(cart)
+       const adaptedProduct = adaptFinishCartModel(cart, score, address)
        console.log(JSON.stringify(adaptedProduct))
       const res = await edit("PreOrder", adaptedProduct)
       setCart(res.data);

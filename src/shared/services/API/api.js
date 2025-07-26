@@ -117,7 +117,7 @@ export const post = async (query, data)=>{
 }
 
 export const edit = async (query, data)=>{
-  const res = await api.patch(`/${query}/Update`, data).then(response =>  response.data).catch(error => {return error.response.data});
+  const res = await api.patch(`/${query}/Update`, data).then(response =>  response.data).catch(error => {return error.response});
   return res
 }
 
@@ -186,10 +186,16 @@ export const postFile = async (data)=>{
   return res.data
 }
 
-export const sendMessage = async (data) =>{
-  const res = await api.post(`WhatsAppCloud/sendTextMessage`, data).then(response => response).catch(error => {return error.response}); 
+export const sendMessage = async (type, data) =>{
+  const res = await api.post(`WhatsAppCloud/send${type}Message`, data).then(response => response).catch(error => {return error.response}); 
   return res.data
 }
+
+export const markRead = async (idCompany, cellphone) =>{
+  const res = await api.post(`WhatsAppCloud/MarkRead?idCompany=${idCompany}&cellphone=${cellphone}`).then(response => response).catch(error => {return error.response}); 
+  return res.data
+}
+
 
 
 
